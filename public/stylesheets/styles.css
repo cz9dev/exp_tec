@@ -1,0 +1,215 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Asegura que el body ocupe toda la altura de la ventana */
+}
+
+.register-container,
+.forgot-password-container,
+.login-container,
+.error-container {
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+.links {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.links a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.links a:hover {
+  text-decoration: underline;
+}
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Ocupa todo el espacio disponible */
+}
+
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  width: 100%;
+}
+
+.search-box {
+  display: flex;
+}
+
+.search-box input {
+  padding: 5px;
+  border: none;
+  border-radius: 3px;
+}
+
+.search-box button {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  margin-left: 5px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.user-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  /* Mueve el menú a la derecha */
+}
+
+.user-icon {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.user-icon img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.user-icon span {
+  color: white;
+  font-size: 14px;
+}
+
+/* Estilos para el menú desplegable */
+.dropdown-menu {
+  display: none;
+  /* Oculto por defecto */
+  position: absolute;
+  top: 100%;
+  /* Posición debajo del avatar */
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  /* Asegura que esté por encima de otros elementos */
+}
+
+.dropdown-menu ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-menu ul li {
+  padding: 10px 20px;
+}
+
+.dropdown-menu ul li a {
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+}
+
+.dropdown-menu ul li a:hover {
+  color: #007bff;
+}
+
+/* Mostrar el menú desplegable al hacer clic */
+.user-menu.active .dropdown-menu {
+  display: block;
+}
+
+.sidebar {
+  width: 200px; /* Ancho fijo para el sidebar */
+  background-color: #f8f9fa;
+  padding: 20px;
+  height: calc(100vh - 60px); /* Altura total menos la altura del top-nav */
+  position: fixed; /* Fija el sidebar a la izquierda */
+  top: 60px; /* Ajusta la posición para que no se superponga con el top-nav */
+  left: 0;
+  overflow-y: auto; /* Permite el desplazamiento si el contenido es largo */
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #333;
+}
+
+.sidebar ul li a:hover {
+  color: #007bff;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  margin-left: 240px;  /* Deja espacio para el sidebar */  
+}
+
+.alert {
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.alert.error {
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #c62828;
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/styles.css" />
+    <!-- Asegúrate de tener tu archivo CSS -->
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <!-- Barra de navegación superior -->
+      <nav class="top-nav">
+        <!-- Search box a la izquierda -->
+        <div class="search-box">
+          <input type="text" placeholder="Buscar..." />
+          <button type="submit">🔍</button>
+        </div>
+
+        <!-- Avatar y menú desplegable a la derecha -->
+        <div class="user-menu">
+          <div class="user-icon" id="user-avatar">
+            <img src="/images/user-icon.png" alt="Usuario" />
+            <span>Usuario Autenticado</span>
+          </div>
+          <!-- Menú desplegable -->
+          <div class="dropdown-menu" id="dropdown-menu">
+            <ul>
+              <li><a href="/perfil">Administrar perfil</a></li>
+              <li><a href="/logout">Cerrar sesión</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <ul>
+          <li><a href="/expedientes">Expedientes Técnicos</a></li>
+          <li><a href="/marcas">Marcas</a></li>
+          <li><a href="/modelos">Modelos</a></li>
+          <!-- Agrega más opciones según sea necesario -->
+        </ul>
+      </aside>
+
+      <!-- Contenido dinámico -->
+      <main class="main-content">
+        <%- body %>
+        <!-- Aquí se insertará el contenido específico de cada página -->
+        <p>Este es el layout base.</p>
+        <!-- Depuración -->
+      </main>
+    </div>
+
+    <script>
+      // Selecciona el avatar y el menú desplegable
+      const userAvatar = document.getElementById("user-avatar");
+      const dropdownMenu = document.getElementById("dropdown-menu");
+
+      // Alternar la visibilidad del menú desplegable
+      userAvatar.addEventListener("click", function (event) {
+        event.stopPropagation(); // Evita que el clic se propague
+        userAvatar.parentElement.classList.toggle("active");
+      });
+
+      // Cerrar el menú desplegable al hacer clic fuera de él
+      document.addEventListener("click", function () {
+        dropdownMenu.style.display = "none";
+        userAvatar.parentElement.classList.remove("active");
+      });
+
+      // Evitar que el menú desplegable se cierre al hacer clic dentro de él
+      dropdownMenu.addEventListener("click", function (event) {
+        event.stopPropagation();
+      });
+    </script>
+  </body>
+</html>

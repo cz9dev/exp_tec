@@ -103,8 +103,7 @@ button:hover {
   position: relative;
   display: flex;
   align-items: center;
-  margin-left: auto;
-  /* Mueve el menú a la derecha */
+  margin-left: auto; /* Mueve el menú a la derecha */
 }
 
 .user-icon {
@@ -127,18 +126,15 @@ button:hover {
 
 /* Estilos para el menú desplegable */
 .dropdown-menu {
-  display: none;
-  /* Oculto por defecto */
+  display: none; /* Oculto por defecto */
   position: absolute;
-  top: 100%;
-  /* Posición debajo del avatar */
+  top: 100%; /* Posición debajo del avatar */
   right: 0;
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  /* Asegura que esté por encima de otros elementos */
+  z-index: 1000; /* Asegura que esté por encima de otros elementos */
 }
 
 .dropdown-menu ul {
@@ -212,4 +208,9 @@ button:hover {
   background-color: #ffebee;
   color: #c62828;
   border: 1px solid #c62828;
+}
+
+/* Mantener los valores del formulario */
+input {
+  margin-bottom: 10px;
 }

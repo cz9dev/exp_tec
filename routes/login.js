@@ -1,39 +1,60 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
+const User = require("../models/userModel");
+const { use } = require("./users");
 
-// Credenciales válidas (en un entorno real, esto debería estar en una base de datos)
-const validEmail = "ramon@nauta.cu";
-const validPasswordHash =
-  "$2b$10$ZmWLaxvlxxDBVo61NkmYEuhJD6/lNbPsymGFGTSijmFAy3EG4Bhcm"; // Hash de "QSw123+-"
-
-/* GET login page. */
+/* GET login page */
 router.get("/", function (req, res, next) {
-  res.render("login", { title: "Login", layout: false, error: null });
+  res.render("login", {
+    title: "Login",
+    layout: false,
+    error: null,
+    formData: {}, // Añadido para consistencia
+  });
 });
 
 /* POST login page */
 router.post("/", async function (req, res, next) {
   const { email, password } = req.body;
 
-  if (email === validEmail) {
-    // Comparar la contraseña ingresada con el hash almacenado
-    const passwordMatch = await bcrypt.compare(password, validPasswordHash);
+  try {
+    // 1. Buscar usuario por email
+    const user = await User.findByEmail(email);
 
-    if (passwordMatch) {
-      // Guardar el usuario en la sesión
-      req.session.user = { email };
-      // Credenciales correctas: Redirigir al dashboard
-      res.redirect("/dashboard");
-    } else {
-      // Contraseña incorrecta: Mostrar alerta
-      const error = "Contraseña incorrecta.";
-      res.render('login', { title: 'Login', layout: false, error });
+    // 2. Verificar si el usuario existe y la contraseña coincide
+    if (!user) {
+      return res.status(401).render("login", {
+        title: "Login",
+        layout: false,
+        error: "Credenciales inválidas",
+        formData: req.body, // Mantener los datos del formulario
+      });
     }
-  } else {
-    // Correo incorrecto: Mostrar alerta
-    const error = "Correo electrónico incorrecto.";
-    res.render('login', { title: 'Login', layout: false, error });
+
+    const isPasswordValid = await User.verifyPassword(user, password);
+    if (!isPasswordValid) {
+      return res.status(401).render("login", {
+        title: "Login",
+        layout: false,
+        error: "Credenciales inválidas",
+        formData: req.body,
+      });
+    }
+
+    // 3. Si todo es correcto, crear sesión
+    req.session.userId = user.id;    
+    req.session.save(() => {
+      res.redirect("/dashboard");
+    });
+  } catch (error) {
+    console.error("Error en autenticación:", error);
+    res.status(500).render("login", {
+      title: "Login",
+      layout: false,
+      error: "Ocurrió un error durante la autenticación",
+      formData: req.body,
+    });
   }
 });
 

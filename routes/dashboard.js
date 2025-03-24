@@ -1,10 +1,15 @@
 var express = require("express");
 var router = express.Router();
+const { checkAuth } = require("../middleware/auth");
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
-  console.log("Renderizando dashboard..."); // Depuración
-  res.render("dashboard", { title: "Exp-Tec" });
+router.get("/", checkAuth("VIEW_DASHBOARD"), (req, res) => {
+  var userName = req.session.userId;
+  var locals = {
+    title: "Exp - Tec",
+    userName: userName,
+  };
+  res.render("dashboard", locals);
 });
 
 module.exports = router;

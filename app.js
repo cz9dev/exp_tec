@@ -35,6 +35,7 @@ app.use(session({
 }));
 
 // Crea un middleware para verificar si el usuario está autenticado.
+/*
 function ensureAuthenticated(req, res, next) {
   if (req.session.user) {
     next(); // Usuario autenticado, continuar
@@ -42,6 +43,7 @@ function ensureAuthenticated(req, res, next) {
     res.redirect("/login"); // Redirigir al login si no está autenticado
   }
 }
+*/
 
 // Ruta de logout para cerrar sessión
 app.get("/logout", (req, res) => {
@@ -53,12 +55,18 @@ app.get("/logout", (req, res) => {
   });
 });
 
-app.use("/", dashboardRouter);
+// Ruta de /
+app.get("/",function(req, res, next) {
+  res.redirect("/dashboard");
+})
+
+//app.use("/", ensureAuthenticated, dashboardRouter);
 app.use('/users', usersRouter);
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
 app.use("/forgot-password", forgotPasswordRouter);
-app.use("/dashboard", ensureAuthenticated, dashboardRouter);
+//app.use("/dashboard", ensureAuthenticated, dashboardRouter);
+app.use("/dashboard", dashboardRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -43,7 +43,12 @@ router.post("/", async function (req, res, next) {
     }
 
     // 3. Si todo es correcto, crear sesión
-    req.session.userId = user.id;    
+    req.session.user = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+    };
+
     req.session.save(() => {
       res.redirect("/dashboard");
     });

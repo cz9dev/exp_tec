@@ -1,0 +1,22 @@
+<nav class="top-nav">
+  <!-- Search box a la izquierda -->
+  <div class="search-box">
+    <input type="text" placeholder="Buscar..." />
+    <button type="submit">🔍</button>
+  </div>
+
+  <!-- Avatar y menú desplegable a la derecha -->
+  <div class="user-menu">
+    <div class="user-icon" id="user-avatar">
+      <img src="/images/user-icon.png" alt="Usuario" />
+      <span><%= user.username%></span>
+    </div>
+    <!-- Menú desplegable -->
+    <div class="dropdown-menu" id="dropdown-menu">
+      <ul>        
+        <li><a href="/perfil">Administrar perfil</a></li>
+        <li><a href="/logout">Cerrar sesión</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>

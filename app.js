@@ -1,17 +1,12 @@
-var createError = require('http-errors');
+const createError = require('http-errors');
 const express = require("express");
-var path = require('path');
+const ejsLayouts = require("express-ejs-layouts");
 
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var ejsLayouts = require("express-ejs-layouts");
+const path = require('path');
+
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const session = require("express-session");
-
-const usersRouter = require("./routes/users");
-const loginRouter = require("./routes/login");
-const registerRouter = require("./routes/register");
-const forgotPasswordRouter = require("./routes/forgot-password");
-const dashboardRouter = require("./routes/dashboard");
 
 const app = express();
 
@@ -19,12 +14,14 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set("views", path.join(__dirname, "views"));
 app.use(ejsLayouts);
+app.set("layout", "layouts/layout");
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// Rutas
+//const usersRouter = require("./routes/users");
+const loginRouter = require("./routes/login");
+const registerRouter = require("./routes/register");
+const forgotPasswordRouter = require("./routes/forgot-password");
+const dashboardRouter = require("./routes/dashboard");
 
 // Configuración de sesiones
 app.use(session({
@@ -34,16 +31,17 @@ app.use(session({
   cookie: { secure: false } // En producción, usa `secure: true` con HTTPS
 }));
 
-// Crea un middleware para verificar si el usuario está autenticado.
-/*
-function ensureAuthenticated(req, res, next) {
-  if (req.session.user) {
-    next(); // Usuario autenticado, continuar
-  } else {
-    res.redirect("/login"); // Redirigir al login si no está autenticado
-  }
-}
-*/
+// 
+app.use((req, res, next) => {
+  res.locals.user = req.session.user ? { id: req.session.user } : null;
+  next();
+});
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Ruta de logout para cerrar sessión
 app.get("/logout", (req, res) => {
@@ -55,17 +53,19 @@ app.get("/logout", (req, res) => {
   });
 });
 
-// Ruta de /
-app.get("/",function(req, res, next) {
-  res.redirect("/dashboard");
-})
+// Modificar la ruta raíz
+app.get("/", (req, res) => {
+  if (req.session.user) {
+    res.redirect("/dashboard");
+  } else {
+    res.redirect("/login");
+  }
+});
 
-//app.use("/", ensureAuthenticated, dashboardRouter);
-app.use('/users', usersRouter);
+//app.use('/users', usersRouter);
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
 app.use("/forgot-password", forgotPasswordRouter);
-//app.use("/dashboard", ensureAuthenticated, dashboardRouter);
 app.use("/dashboard", dashboardRouter);
 
 // catch 404 and forward to error handler

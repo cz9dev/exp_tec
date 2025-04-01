@@ -19,24 +19,26 @@ module.exports = {
 
   showCreateForm: async (req, res) => {
     try {
-      const roles = await User.getRoles();
+      const roles = await Role.findAll();
       res.render("users/create", {
+        title: "Exp - Tec Crear Usuarios",
         roles,
         user: req.session.user,
       });
     } catch (error) {
-      console.error(error);
-      res.redirect("users/list");
+      console.error(error);      
     }
   },
 
   createUser: async (req, res) => {
     try {
-      const { username, email, password, roles } = req.body;
+      const { username, email, nombre, apellido, password, roles } = req.body;
 
       const userId = await User.create({
         username,
         email,
+        nombre,
+        apellido,
         password,
       });
 
@@ -45,55 +47,70 @@ module.exports = {
       }
 
       req.flash("success_msg", "Usuario creado exitosamente");
-      res.redirect("users/list");
+      res.redirect("users");
     } catch (error) {
       console.error(error);
-      req.flash("error_msg", "Error al crear usuario");
-      res.redirect("users/new");
+      req.flash("error_msg", "Error al crear usuario");      
+    }
+  },
+
+  deleteUser: async (req, res) => {
+    try {      
+      await User.deleteUserRoles(req.params.id)
+      await User.delete(req.params.id);
+      
+      req.flash("success_msg", "Usuario eliminado exitosamente");
+      return res.redirect("../");
+      
+    } catch (error) {
+      console.error(error);
+      req.flash("error_msg", "Error al eliminar el usuario");      
     }
   },
 
   showEditForm: async (req, res) => {
     try {
-      const user = await User.findById(req.params.id);
-      const roles = await User.getRoles();
+      const uedit = await User.findById(req.params.id);
+      const roles = await Role.findAll();
       const userRoles = await User.getUserRoles(req.params.id);
 
-      if (!user) {
-        return res.redirect("users/lists");
+      if (!uedit) {
+        return res.redirect("users");
       }
 
       res.render("users/edit", {
-        user,
+        title: "Exp-Tec Editar Usuario",
+        uedit,
         roles,
         userRoles: userRoles.map((r) => r.rol_id),
         user: req.session.user,
       });
     } catch (error) {
       console.error(error);
-      res.redirect("users/lists");
     }
   },
 
   updateUser: async (req, res) => {
     try {
       const { id } = req.params;
-      const { username, email, password, roles } = req.body;
+      const { username, email, password, nombre, apellido, roles } = req.body;
 
       await User.update(id, {
         username,
         email,
         ...(password && { password }), // Solo actualiza password si se proporciona
+        nombre,
+        apellido,
       });
 
       await User.setUserRoles(id, Array.isArray(roles) ? roles : [roles]);
 
       req.flash("success_msg", "Usuario actualizado exitosamente");
-      res.redirect("users/list");
+      return res.redirect("../");
+
     } catch (error) {
       console.error(error);
-      req.flash("error_msg", "Error al actualizar usuario");
-      res.redirect(`users/list/${req.params.id}/edit`);
+      req.flash("error_msg", "Error al actualizar usuario");      
     }
   },
 

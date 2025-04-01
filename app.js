@@ -7,21 +7,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const session = require("express-session");
+const flash = require("express-flash");
 
 const app = express();
-
-// view engine setup
-app.set('view engine', 'ejs');
-app.set("views", path.join(__dirname, "views"));
-app.use(ejsLayouts);
-app.set("layout", "layouts/layout");
-
-// Rutas
-//const usersRouter = require("./routes/users");
-const loginRouter = require("./routes/login");
-const registerRouter = require("./routes/register");
-const forgotPasswordRouter = require("./routes/forgot-password");
-const dashboardRouter = require("./routes/dashboard");
 
 // Configuración de sesiones
 app.use(session({
@@ -31,9 +19,25 @@ app.use(session({
   cookie: { secure: false } // En producción, usa `secure: true` con HTTPS
 }));
 
-// 
+// view engine setup
+app.set('view engine', 'ejs');
+app.set("views", path.join(__dirname, "views"));
+app.use(ejsLayouts);
+app.set("layout", "layouts/layout");
+
+app.use(flash());
+
+// Middleware
 app.use((req, res, next) => {
+  // Asignar usuario de la sesión
   res.locals.user = req.session.user ? { id: req.session.user } : null;
+
+  // Asignar mensajes flash de éxito y error
+  res.locals.success_msg = req.flash("success_msg") || null;
+  res.locals.error_msg = req.flash("error_msg") || null;
+  
+  // Registro de depuración
+  console.log(`Ruta solicitada: ${req.method} ${req.path}`);
   next();
 });
 
@@ -42,6 +46,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Rutas
+const loginRouter = require("./routes/login");
+const registerRouter = require("./routes/register");
+const forgotPasswordRouter = require("./routes/forgot-password");
+const dashboardRouter = require("./routes/dashboard");
 
 // Ruta de logout para cerrar sessión
 app.get("/logout", (req, res) => {
@@ -62,7 +72,6 @@ app.get("/", (req, res) => {
   }
 });
 
-//app.use('/users', usersRouter);
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
 app.use("/forgot-password", forgotPasswordRouter);

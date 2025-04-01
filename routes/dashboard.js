@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const adminController = require("../controllers/adminController");
+const userController = require("../controllers/userController");
+const rolesController = require("../controllers/rolesController");
+const permissionsController = require("../controllers/permissionsController");
 const { checkAuth } = require("../middleware/auth");
 
 // Middleware para verificar rol de administrador
@@ -21,12 +23,17 @@ router.get("/", checkAuth(["VIEW_DASHBOARD"]), (req, res) => {
 });
 
 // Gestión de usuarios
-router.get("/users", isAdmin, adminController.listUsers);
+router.get("/users", isAdmin, userController.listUsers);
+router.get("/users/new", isAdmin, userController.showCreateForm);
+router.post("/users", isAdmin, userController.createUser);
+router.get("/users/:id/edit", isAdmin, userController.showEditForm);
+router.post("/users/:id/update", isAdmin, userController.updateUser);
+router.post("/users/:id/delete", isAdmin, userController.deleteUser);
 
 // Gestión de roles
-router.get("/roles", isAdmin, adminController.listRoles);
+router.get("/roles", isAdmin, rolesController.listRoles);
 
 // Gestión de roles
-router.get("/permissions", isAdmin, adminController.listPermissions);
+router.get("/permissions", isAdmin, permissionsController.listPermissions);
 
 module.exports = router;

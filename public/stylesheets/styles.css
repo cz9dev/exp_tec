@@ -45,6 +45,19 @@ button {
   cursor: pointer;
 }
 
+.btn-sm {
+    /* Hacer que el ancho se base en el contenido */
+      width: fit-content;
+      /* Remover cualquier ancho máximo o fijo */
+      max-width: none;
+      /* Asegurar que no se aplica un ancho del 100% */
+      width: auto;
+      /* Añadir padding para que no quede pegado el texto */
+      padding: 0.25rem 0.5rem;
+      /* Opcional: Centrar el texto */
+      text-align: center;
+}
+
 button:hover {
   background-color: #218838;
 }
@@ -199,6 +212,7 @@ button:hover {
   margin-left: 240px;  /* Deja espacio para el sidebar */  
 }
 
+/* Para mostrar alertas */
 .alert {
   padding: 10px;
   margin-bottom: 15px;
@@ -210,6 +224,16 @@ button:hover {
   background-color: #ffebee;
   color: #c62828;
   border: 1px solid #c62828;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
 }
 
 /* Mantener los valores del formulario */

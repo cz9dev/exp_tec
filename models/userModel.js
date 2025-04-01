@@ -7,11 +7,11 @@ class User {
    * @param {*} param0
    * @returns
    */
-  static async create({ username, email, password }) {
+  static async create({ username, email, nombre, apellido, password }) {
     const hash = await bcrypt.hash(password, 12);
     const [result] = await pool.execute(
-      "INSERT INTO usuarios (username, email, password_hash) VALUES (?, ?, ?)",
-      [username, email, hash]
+      "INSERT INTO usuarios (username, email, nombre, apellido, password_hash) VALUES (?, ?, ?, ?, ?)",
+      [username, email, nombre, apellido, hash]
     );
     return result.insertId;
   }
@@ -87,10 +87,10 @@ class User {
    * @param {*} user
    */
   static async update(id, user) {
-    const { username, email } = user;
+    const { username, email, nombre, apellido } = user;
     await pool.query(
-      "UPDATE usuarios SET username = ?, email = ? WHERE id = ?",
-      [username, email, id]
+      "UPDATE usuarios SET username = ?, email = ?, nombre = ?, apellido =? WHERE id = ?",
+      [username, email, nombre, apellido, id]
     );
   }
 
@@ -100,6 +100,47 @@ class User {
    */
   static async delete(id) {
     await pool.query("DELETE FROM usuarios WHERE id = ?", [id]);
+  }
+
+  /**
+   * Traer roles del usuario
+   * @param {*} userId 
+   * @returns 
+   */
+  static async getUserRoles(id) {
+    const [rows] = await pool.query(
+      "SELECT * FROM usuarios_roles WHERE usuario_id = ?",
+      [id]
+    );
+    return rows;
+  }
+
+  /**
+   * Borrar roles del usuario
+   * @param {*} userId 
+   */
+  static async deleteUserRoles(userId) {
+    await pool.query("DELETE FROM usuarios_roles WHERE usuario_id = ?", [
+      userId,
+    ]);    
+  }
+
+  /**
+   * Asignar rol de usuario
+   * @param {*} userId
+   * @param {*} roles
+   */
+  static async setUserRoles(userId, roles) {
+    await pool.query("DELETE FROM usuarios_roles WHERE usuario_id = ?", [
+      userId,
+    ]);
+
+    for (const roleId of roles) {
+      await pool.query(
+        "INSERT INTO usuarios_roles (usuario_id, rol_id) VALUES (?, ?)",
+        [userId, roleId]
+      );
+    }
   }
 }
 

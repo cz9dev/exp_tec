@@ -32,8 +32,10 @@ router.post("/users/:id/delete", isAdmin, userController.deleteUser);
 
 // Gestión de roles
 router.get("/roles", isAdmin, rolesController.listRoles);
+// Ruta para ver permisos de un rol
+router.get("/roles/:id", rolesController.roleDetails);
 
 // Gestión de roles
-router.get("/permissions", isAdmin, permissionsController.listPermissions);
+//router.get("/permissions", isAdmin, permissionsController.listPermissions);
 
 module.exports = router;

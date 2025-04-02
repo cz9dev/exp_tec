@@ -20,6 +20,11 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.card {         
+    /* Añadir padding para que no quede pegado el texto */
+    padding: 0.25rem 0.5rem;    
+}
+
 .form-group {
   margin-bottom: 15px;
 }
@@ -240,3 +245,4 @@ button:hover {
 input {
   margin-bottom: 10px;
 }
+

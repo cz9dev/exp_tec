@@ -111,34 +111,4 @@ module.exports = {
       req.flash("error_msg", "Error al actualizar usuario");      
     }
   },
-
-  // Usuarios
-  listPermissions: async (req, res) => {
-    try {
-      const permmisions = await User.findAll();
-      res.render("permissions/list", {
-        permmisions,
-        title: "Exp-Tec Permisos",
-        user: req.session.user,
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).render("error", { message: "Error al listar permisos" });
-    }
-  },
-
-  // Roles y permisos
-  listRoles: async (req, res) => {
-    try {
-      const roles = await Role.findAll();
-      res.render("roles/list", {
-        title: "Exp-Tec Roles",
-        user: req.session.user,
-        roles,
-      });
-    } catch (error) {
-      console.log("Error en listUsers:", error);
-      res.status(500).send("Error interno");
-    }
-  },
 };

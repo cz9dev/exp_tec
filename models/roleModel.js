@@ -15,10 +15,16 @@ class Role {
    * @param {*} roleId
    * @returns
    */
-  async findWithPermissions(roleId) {
+  static async findWithPermissions(roleId) {
+    try {
     const [role] = await pool.query("SELECT * FROM roles WHERE id = ?", [
       roleId,
     ]);
+
+    if (role.length === 0) {
+      return null;
+    }
+
     const [permissions] = await pool.query(
       `
       SELECT p.* FROM permisos p
@@ -30,8 +36,12 @@ class Role {
 
     return {
       ...role[0],
-      permissions,
+      permissions: permissions || [],
     };
+    } catch (error) {
+      console.error("Error en findWithPermissions:", error);
+      return null;
+    }
   }
 }
 

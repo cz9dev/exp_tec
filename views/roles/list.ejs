@@ -1,10 +1,9 @@
 <div class="container mt-4">
   <h2>Gestión de Roles</h2>
   
-  <table class="table">
+  <table class="table table-bordered table-striped text-center mt-4">
     <thead>
-      <tr>
-        <th>ID</th>
+      <tr>        
         <th>Nombre</th>
         <th>Descripción</th>
         <th>Acciones</th>
@@ -12,8 +11,7 @@
     </thead>
     <tbody>
       <% roles.forEach(role => { %>
-        <tr>
-          <td><%= role.id %></td>
+        <tr>          
           <td><%= role.nombre %></td>
           <td><%= role.descripcion %></td>
           <td>

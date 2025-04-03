@@ -1,0 +1,33 @@
+  <div class="container mt-4">
+    <h2>Perfil de <%= user.nombre %> <%= user.apellido %></h2>
+    
+    <div class="profile-info">
+      <p><strong>Username:</strong> <%= user.username %></p>
+      <p><strong>Email:</strong> <%= user.email %></p>
+      <p><strong>Nombre:</strong> <%= user.nombre %></p>
+      <p><strong>Apellido:</strong> <%= user.apellido %></p>
+    </div>
+
+    <div class="profile-edit">
+      <h2>Editar Perfil</h2>
+      <form action="/dashboard/profile/update" method="POST">
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <input type="text" id="username" name="username" value="<%= user.username %>" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" value="<%= user.email %>" required>
+        </div>
+        <div class="form-group">
+          <label for="nombre">Nombre:</label>
+          <input type="text" id="nombre" name="nombre" value="<%= user.nombre %>" required>
+        </div>
+        <div class="form-group">
+          <label for="apellido">Apellido:</label>
+          <input type="text" id="apellido" name="apellido" value="<%= user.apellido %>" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+      </form>
+    </div>
+  </div>

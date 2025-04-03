@@ -5,10 +5,6 @@ const rolesController = require("../controllers/rolesController");
 const permissionsController = require("../controllers/permissionsController");
 const { checkAuth } = require("../middleware/auth");
 
-// Middleware para verificar rol de administrador
-//const isAdmin = checkAuth(["ADMIN"]);
-const isAdmin = checkAuth(["VIEW_DASHBOARD"]);
-
 /* GET home page. */
 router.get("/", checkAuth(["VIEW_DASHBOARD"]), (req, res) => {
   try {
@@ -23,19 +19,23 @@ router.get("/", checkAuth(["VIEW_DASHBOARD"]), (req, res) => {
 });
 
 // Gestión de usuarios
-router.get("/users", isAdmin, userController.listUsers);
-router.get("/users/new", isAdmin, userController.showCreateForm);
-router.post("/users", isAdmin, userController.createUser);
-router.get("/users/:id/edit", isAdmin, userController.showEditForm);
-router.post("/users/:id/update", isAdmin, userController.updateUser);
-router.post("/users/:id/delete", isAdmin, userController.deleteUser);
+router.get("/users", checkAuth(["MANAGE_USERS"]), userController.listUsers);
+router.get("/users/new", checkAuth(["MANAGE_USERS"]), userController.showCreateForm);
+router.post("/users", checkAuth(["MANAGE_USERS"]), userController.createUser);
+router.get("/users/:id/edit", checkAuth(["MANAGE_USERS"]), userController.showEditForm);
+router.post("/users/:id/update", checkAuth(["MANAGE_USERS"]), userController.updateUser);
+router.post("/users/:id/delete", checkAuth(["MANAGE_USERS"]), userController.deleteUser);
+
+// Ruta para el perfil del usuario
+router.get("/profile", checkAuth(["VIEW_DASHBOARD"]), userController.profile);
+router.post("/profile/update", checkAuth(["VIEW_DASHBOARD"]), userController.updateProfile);
 
 // Gestión de roles
-router.get("/roles", isAdmin, rolesController.listRoles);
+router.get("/roles", checkAuth(["MANAGE_ROLES"]), rolesController.listRoles);
 // Ruta para ver permisos de un rol
-router.get("/roles/:id", rolesController.roleDetails);
+router.get("/roles/:id", checkAuth(["MANAGE_ROLES"]), rolesController.roleDetails);
 
-// Gestión de roles
-//router.get("/permissions", isAdmin, permissionsController.listPermissions);
+// Gestión de permisos
+//router.get("/permissions", checkAuth(["VIEW_PERMISSIONS"]), permissionsController.listPermissions);
 
 module.exports = router;

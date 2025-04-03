@@ -183,12 +183,12 @@ button:hover {
 }
 
 .sidebar {
-  width: 200px; /* Ancho fijo para el sidebar */
+  width: 280px; /* Ancho fijo para el sidebar */
   background-color: #f8f9fa;
   padding: 20px;
   height: calc(100vh - 60px); /* Altura total menos la altura del top-nav */
   position: fixed; /* Fija el sidebar a la izquierda */
-  top: 60px; /* Ajusta la posición para que no se superponga con el top-nav */
+  top: 54px; /* Ajusta la posición para que no se superponga con el top-nav */
   left: 0;
   overflow-y: auto; /* Permite el desplazamiento si el contenido es largo */
 }
@@ -214,7 +214,7 @@ button:hover {
 .main-content {
   flex-grow: 1;
   padding: 20px;
-  margin-left: 240px;  /* Deja espacio para el sidebar */  
+  margin-left: 280px;  /* Deja espacio para el sidebar */  
 }
 
 /* Para mostrar alertas */

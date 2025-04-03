@@ -26,7 +26,7 @@ module.exports = {
         user: req.session.user,
       });
     } catch (error) {
-      console.error(error);      
+      console.error(error);
     }
   },
 
@@ -50,21 +50,20 @@ module.exports = {
       res.redirect("users");
     } catch (error) {
       console.error(error);
-      req.flash("error_msg", "Error al crear usuario");      
+      req.flash("error_msg", "Error al crear usuario");
     }
   },
 
   deleteUser: async (req, res) => {
-    try {      
-      await User.deleteUserRoles(req.params.id)
+    try {
+      await User.deleteUserRoles(req.params.id);
       await User.delete(req.params.id);
-      
+
       req.flash("success_msg", "Usuario eliminado exitosamente");
       return res.redirect("../");
-      
     } catch (error) {
       console.error(error);
-      req.flash("error_msg", "Error al eliminar el usuario");      
+      req.flash("error_msg", "Error al eliminar el usuario");
     }
   },
 
@@ -107,10 +106,9 @@ module.exports = {
 
       req.flash("success_msg", "Usuario actualizado exitosamente");
       return res.redirect("../");
-
     } catch (error) {
       console.error(error);
-      req.flash("error_msg", "Error al actualizar usuario");      
+      req.flash("error_msg", "Error al actualizar usuario");
     }
   },
 
@@ -143,4 +141,50 @@ module.exports = {
       res.status(500).send("Error interno");
     }
   },
+
+  // Ver perfil del usuario
+  profile: async (req, res) => {
+    try {
+      const userId = req.session.user.id;
+      const user = await User.findById(userId);
+
+      if (!user) {
+        req.flash("error_msg", "Usuario no encontrado");
+        return res.redirect("/dashboard");
+      }
+
+      res.render("profile/view", {
+        title: "Exp-Tec Perfil",
+        user: user,
+        user_session: req.session.user,
+      });
+    } catch (error) {
+      console.error(error);
+      req.flash("error_msg", "Error al cargar el perfil");
+      res.redirect("/dashboard");
+    }
+  },
+
+  // Actualizar perfil del usuario
+  updateProfile: async (req, res) => {
+    try {
+      const userId = req.session.user.id;
+      const { username, email, nombre, apellido } = req.body;
+
+      await User.update(userId, {
+        username,
+        email,
+        nombre,
+        apellido,
+      });
+
+      req.flash("success_msg", "Perfil actualizado exitosamente");
+      res.redirect("/dashboard/profile");
+    } catch (error) {
+      console.error(error);
+      req.flash("error_msg", "Error al actualizar el perfil");
+      res.redirect("/dashboard/profile");
+    }
+  },
+
 };

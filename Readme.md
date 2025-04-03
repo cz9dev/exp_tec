@@ -2,13 +2,15 @@
 Es una aplicación web para el registro y control de expedientes técnicos de dispositivos, controlando marcas, modelos y numeros de series, componentes y perifericos. Además un control de sellos de estos dispositivos y un registro de insidencias.
 
 ![GitHub License](https://img.shields.io/github/license/cz9dev/exp_tec)
+![GitHub repo size](https://img.shields.io/github/repo-size/cz9dev/exp_tec)
+![GitHub Tag](https://img.shields.io/github/v/tag/cz9dev/exp_tec)
 
 # Requerimientos
 - MySQL o MariaDB
 - Node.js
 
 # Instalación
-Proximamente se esta documentando como instalar la aplicación
+Proximamente se estará documentando como instalar la aplicación
 
 # Contribuir
 Para contribuir con el prollecto usted debe revizar como va el desarrollo de la aplicación, a continuación muestro los módulos que estan previstos, con una x seleccionado los que ya han sido implementado, seguido del desarrollador, si usted desea contribuir solo debe poner al final del módulo su usuario y una ves termanado una x.
@@ -38,5 +40,6 @@ Para contribuir con el prollecto usted debe revizar como va el desarrollo de la 
 - [  ] Expedientes Técnicos
 - [  ] Registros de Incidencia
 - [  ] Registro de partes y Piezas
+
 # Desarrolladores
 [cz9dev](https://github.com/cz9dev)

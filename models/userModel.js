@@ -7,11 +7,11 @@ class User {
    * @param {*} param0
    * @returns
    */
-  static async create({ username, email, nombre, apellido, password }) {
+  static async create({ username, email, nombre, apellido, password, profile_image}) {
     const hash = await bcrypt.hash(password, 12);
     const [result] = await pool.execute(
-      "INSERT INTO usuarios (username, email, nombre, apellido, password_hash) VALUES (?, ?, ?, ?, ?)",
-      [username, email, nombre, apellido, hash]
+      "INSERT INTO usuarios (username, email, nombre, apellido, password_hash, profile_image) VALUES (?, ?, ?, ?, ?, ?)",
+      [username, email, nombre, apellido, hash, profile_image]
     );
     return result.insertId;
   }
@@ -87,11 +87,18 @@ class User {
    * @param {*} user
    */
   static async update(id, user) {
-    const { username, email, nombre, apellido } = user;
-    await pool.query(
-      "UPDATE usuarios SET username = ?, email = ?, nombre = ?, apellido =? WHERE id = ?",
-      [username, email, nombre, apellido, id]
-    );
+    const { username, email, nombre, apellido, profile_image} = user;
+    if (username == null){
+      await pool.query(
+        "UPDATE usuarios SET email = ?, nombre = ?, apellido =?, profile_image =? WHERE id = ?",
+        [email, nombre, apellido, profile_image, id]
+      );
+    }else{
+      await pool.query(
+        "UPDATE usuarios SET username = ?, email = ?, nombre = ?, apellido =?, profile_image =?  WHERE id = ?",
+        [username, email, nombre, apellido, profile_image, id]
+      );
+    }
   }
 
   /**

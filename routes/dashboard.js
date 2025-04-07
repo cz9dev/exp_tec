@@ -4,6 +4,7 @@ const userController = require("../controllers/userController");
 const rolesController = require("../controllers/rolesController");
 const permissionsController = require("../controllers/permissionsController");
 const { checkAuth } = require("../middleware/auth");
+const multer = require('multer');
 
 /* GET home page. */
 router.get("/", checkAuth(["VIEW_DASHBOARD"]), (req, res) => {

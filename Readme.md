@@ -15,31 +15,34 @@ Proximamente se estará documentando como instalar la aplicación
 # Contribuir
 Para contribuir con el prollecto usted debe revizar como va el desarrollo de la aplicación, a continuación muestro los módulos que estan previstos, con una x seleccionado los que ya han sido implementado, seguido del desarrollador, si usted desea contribuir solo debe poner al final del módulo su usuario y una ves termanado una x.
 
-## Login y Logout
-- [ x ] Login - @cz9dev
-- [ x ] Register - @cz9dev
-- [ x ] Logout - @cz9dev
-## Dashboard
-- [ x ] Dashboard
-## Seguridad
-- [ x ] Usuario - @cz9dev
-- [ x ] Roles - @cz9dev
-- [  ] Permisos
-## Gestion
-- [  ] Marcas
-- [  ] Modelos
-- [  ] Áreas
-- [  ] Trabajadores
-- [  ] Tipos de Componentes
-- [  ] Componentes
-- [  ] Tipos de Perifericos
-- [  ] Perifericos
-- [  ] Dispositivos
+- [x] Login y Logout
+    - [x] Login - @cz9dev
+    - [x] Register - @cz9dev
+    - [x] Logout - @cz9dev
+- [ ] Dashboard
+    - [ ] Dashboard
+- [ ] Seguridad
+    - [x] Usuario - @cz9dev
+    - [x] Roles - @cz9dev
+    - [ ] Permisos
+- [ ] Gestion
+    - [ ] Marcas
+    - [ ] Modelos
+    - [ ] Áreas
+    - [ ] Trabajadores
+    - [ ] Tipos de Componentes
+    - [ ] Componentes
+    - [ ] Tipos de Perifericos
+    - [ ] Perifericos
+    - [ ] Dispositivos
 
-## Reportes
-- [  ] Expedientes Técnicos
-- [  ] Registros de Incidencia
-- [  ] Registro de partes y Piezas
+- [ ] Reportes
+    - [ ] Expedientes Técnicos
+    - [ ] Registros de Incidencia
+    - [ ] Registro de partes y Piezas
+
+- [x] Perfil de usuario
+    - [x] Gestionar perfil - @cz9dev
 
 # Desarrolladores
 [cz9dev](https://github.com/cz9dev)

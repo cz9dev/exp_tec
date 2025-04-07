@@ -10,7 +10,7 @@ const multer = require('multer');
 router.get("/", checkAuth(["VIEW_DASHBOARD"]), (req, res) => {
   try {
     res.render("dashboard", {
-      title: "Exp - Tec",
+      title: "Dashboard",
       user: req.session.user,
     });
   } catch (error) {

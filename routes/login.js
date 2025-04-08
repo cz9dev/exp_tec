@@ -46,6 +46,7 @@ router.post("/", async function (req, res, next) {
       id: user.id,
       username: user.username,
       email: user.email,
+      profile_image: user.profile_image,
     };
 
     req.session.save(() => {

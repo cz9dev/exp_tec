@@ -8,7 +8,7 @@
   <!-- Avatar y menú desplegable a la derecha -->
   <div class="user-menu">
     <div class="user-icon" id="user-avatar">
-      <img src="/images/user-icon.png" alt="Usuario" />
+      <img src="<%= user.profile_image ? '/uploads/'+user.profile_image : '/images/user-icon.png' %>" alt="Usuario" />
       <span><%= user.username%></span>
     </div>
     <!-- Menú desplegable -->

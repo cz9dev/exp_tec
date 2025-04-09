@@ -1,7 +1,11 @@
 body {  
-  display: flex;
-  min-height: 100vh; /* Asegúrate de que el body ocupe toda la altura */
+  font-family: Arial, sans-serif;
   margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Asegura que el body ocupe toda la altura de la ventana */
 }
 
 .register-container,
@@ -93,10 +97,6 @@ button:hover {
   color: white;
   padding: 10px 20px;
   width: 100%;
-  position: fixed; /* Fija el top-nav en la parte superior */
-  top: 0; /* Posición en la parte superior */
-  left: 0; /* Posición a la izquierda */
-  z-index: 100; /* Asegura que esté por encima de otros elementos */
 }
 
 .search-box {
@@ -204,86 +204,15 @@ button:hover {
   display: block;
 }
 
-.sidebar {  
-  width: 250px; /* Example width */
-  background-color: #343a40; /* Color de fondo del sidebar */
-  position: fixed; /* Keeps the sidebar in place */
-  top: 0;
+.sidebar {
+  width: 280px; /* Ancho fijo para el sidebar */
+  background-color: #f8f9fa;
+  padding: 20px;
+  height: calc(100vh - 60px); /* Altura total menos la altura del top-nav */
+  position: fixed; /* Fija el sidebar a la izquierda */
+  top: 54px; /* Ajusta la posición para que no se superponga con el top-nav */
   left: 0;
-  height: 100%; /* Makes the sidebar full height */
-  transition: width 0.3s ease-in-out; /* Agrega transición para una mejor animación */
-  overflow-y: auto; /* Add scrollbar if content is larger than screen height */  
-}
-
-.sticky-margin {
-  margin-top: 50px;
-}
-
-.sidebar-collapsed .sidebar-link {
-  padding: 0.5rem 0.5rem; /* Ajusta este padding a tu gusto */
-  text-align: center; /* Centra los iconos */
-}
-
-
-.sidebar-collapsed .sidebar-link span:first-child { /* Oculta el texto */
-  display: none;
-}
-
-.sidebar-collapsed .sidebar-link svg { /* Si usas SVG para iconos */
-  display: block; /* Mostrar los iconos */
-}
-
-
-.sidebar-collapsed #sidebar-toggle span {
-  /* Cambia el icono cuando el sidebar está colapsado */
-  content: "\25BC"; /* Ejemplo: Triángulo hacia abajo */
-}
-
-.sidebar:not(.sidebar-collapsed) #sidebar-toggle span {
-  /* Icono cuando el sidebar está expandido */
-  content: "\25B2"; /* Ejemplo: Triángulo hacia arriba */
-}
-
-/* Estilo para ocultar la sidebar */
-.sidebar.hide {
-  transform: translateX(-100%);
-  /* Desplaza la sidebar fuera de la vista */
-}
-
-#sidebar-toggle {
-  position: fixed;
-  top: 60px;
-  left: 180px;  /*Posición del botón  Ajusta este valor, debe estar a la derecha del sidebar*/
-  background-color: #28a745; /*Color del botón*/
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: left 0.3s ease-in-out; /* Para la transición suave */
-  z-index: 10; /* Asegúrate de que esté sobre el sidebar */
-}
-
-#sidebar-toggle span {
-  font-size: 20px;
-  width: 20px;
-  height: 20px; /* Ajustar según el icono que uses */
-}
-
-/*Optional styles to improve the look of the button*/
-#sidebar-toggle:hover{
-  background-color: #45a049;
-}
-
-#sidebar-toggle:focus{
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5); /* adds a nice focus outline */
-}
-
-/* El boton cuando el menu esta oculto */
-.sidebar.hide + #sidebar-toggle { /* Selecciona el boton solo cuando el sidebar tiene la clase 'hide' */
-  left: 10px; /*Ajusta este valor*/
-  opacity: 0.5; /* reduce la opacidad para hacerlo sutilmente visible */
+  overflow-y: auto; /* Permite el desplazamiento si el contenido es largo */
 }
 
 .sidebar ul {
@@ -304,11 +233,10 @@ button:hover {
   color: #007bff;
 }
 
-/*Estilos adicionales para el contenido principal*/
 .main-content {
+  flex-grow: 1;
   padding: 20px;
-  margin-left: 280px; /* Ajusta este valor al ancho del sidebar */
-  flex-grow:1;
+  margin-left: 280px;  /* Deja espacio para el sidebar */  
 }
 
 /* Para mostrar alertas */
@@ -413,27 +341,12 @@ input {
 
 /* Media queries para responsive */
 @media (max-width: 768px) {
-  .sidebar {
-    width: 200px;
-    /* Reduce el ancho del sidebar en pantallas pequeñas */
-    left: -200px;
+  .col-md-4 {
+    width: 100%;
+    margin-bottom: 20px;
   }
 
-  .sidebar.hide {
-    left: -200px;
-  }
-
-  .main-content {
-    margin-left: 200px;
-  }
-
-  #sidebar-toggle {
-    left: 210px;
-    /* Ajusta la posición del botón */
-  }
-
-  .sidebar.hide+#sidebar-toggle {
-    left: 10px;
-    /* Ajusta la posición del botón */
+  .col-md-8 {
+    width: 100%;
   }
 }

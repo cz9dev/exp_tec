@@ -1,0 +1,22 @@
+<div class="container mt-4 card border-secondary">
+  <h2>Editar Permiso</h2>
+  <% if (locals.error_msg && locals.success_msg.length> 0) { %>
+    <div class="alert alert-danger"><%= error_msg %></div>
+  <% } %>
+  <form action="/dashboard/permissions/<%= permission.id %>/update" method="POST">
+    <div class="mb-3">
+      <label for="nombre" class="form-label">Nombre</label>
+      <input type="text" class="form-control" id="nombre" name="nombre" value="<%= permission.nombre %>" required>
+    </div>
+    <div class="mb-3">
+      <label for="descripcion" class="form-label">Descripción</label>
+      <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required><%= permission.descripcion %></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="ruta" class="form-label">Ruta</label>
+      <textarea class="form-control" id="ruta" name="ruta" rows="3" required><%= permission.ruta %></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary btn-sm">Guardar Cambios</button>
+    <a href="/dashboard/permissions" class="btn btn-secondary btn-sm">Cancelar</a>
+  </form>
+</div>

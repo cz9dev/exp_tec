@@ -1,114 +1,79 @@
-const User = require("../models/userModel");
-const Role = require("../models/roleModel");
+// permissionsController.js
+
+const Permissions = require("../models/permissionModel");
 
 module.exports = {
-  // Usuarios
-  listUsers: async (req, res) => {
+  // Listar permisos
+  listPermissions: async (req, res) => {
     try {
-      const users = await User.findAll();
-      res.render("users/list", {
-        title: "Exp - Tec Usuarios",
-        user: req.session.user,
-        users,
-      });
-    } catch (error) {
-      console.log("Error en listUsers:", error);
-      res.status(500).send("Error interno");
-    }
-  },
-
-  showCreateForm: async (req, res) => {
-    try {
-      const roles = await Role.findAll();
-      res.render("users/create", {
-        title: "Exp - Tec Crear Usuarios",
-        roles,
+      const permissions = await Permissions.findAll();
+      res.render("permissions/list", {
+        permissions,
+        title: "Permisos",
         user: req.session.user,
       });
     } catch (error) {
-      console.error(error);      
+      console.error("Error en listPermissions:", error);
+      res.status(500).send("Error interno del servidor");
     }
   },
-
-  createUser: async (req, res) => {
+  showCreateForm: (req, res) => {
+    res.render("permissions/create", {
+      title: "Crear Permiso",
+      user: req.session.user,
+    });
+  },
+  createPermission: async (req, res) => {
     try {
-      const { username, email, password, roles } = req.body;
-
-      const userId = await User.create({
-        username,
-        email,
-        password,
-      });
-
-      if (roles && roles.length) {
-        await User.setUserRoles(userId, Array.isArray(roles) ? roles : [roles]);
-      }
-
-      req.flash("success_msg", "Usuario creado exitosamente");
-      res.redirect("users");
+      const { nombre, descripcion, ruta } = req.body;
+      await Permissions.create({ nombre, descripcion, ruta });
+      req.flash("success_msg", "Permiso creado exitosamente.");
+      res.redirect("/dashboard/permissions");
     } catch (error) {
-      console.error(error);
-      req.flash("error_msg", "Error al crear usuario");      
+      console.error("Error al crear permiso:", error);
+      req.flash("error_msg", "Error al crear el permiso.");
+      res.redirect("/dashboard/permissions");
     }
   },
-
-  deleteUser: async (req, res) => {
-    try {      
-      await User.deleteUserRoles(req.params.id)
-      await User.delete(req.params.id);
-      
-      req.flash("success_msg", "Usuario eliminado exitosamente");
-      return res.redirect("../");
-      
-    } catch (error) {
-      console.error(error);
-      req.flash("error_msg", "Error al eliminar el usuario");      
-    }
-  },
-
   showEditForm: async (req, res) => {
     try {
-      const uedit = await User.findById(req.params.id);
-      const roles = await Role.findAll();
-      const userRoles = await User.getUserRoles(req.params.id);
-
-      if (!uedit) {
-        return res.redirect("users");
+      const permission = await Permissions.findById(req.params.id);
+      if (!permission) {
+        req.flash("error_msg", "Permiso no encontrado.");
+        return res.redirect("/dashboard/permissions");
       }
-
-      res.render("users/edit", {
-        title: "Exp-Tec Editar Usuario",
-        uedit,
-        roles,
-        userRoles: userRoles.map((r) => r.rol_id),
+      res.render("permissions/edit", {
+        permission,
+        title: "Editar Permiso",
         user: req.session.user,
       });
     } catch (error) {
-      console.error(error);
+      console.error("Error al obtener permiso:", error);
+      req.flash("error_msg", "Error al obtener el permiso.");
+      res.redirect("/dashboard/permissions");
     }
   },
-
-  updateUser: async (req, res) => {
+  updatePermission: async (req, res) => {
     try {
-      const { id } = req.params;
-      const { username, email, password, nombre, apellido, roles } = req.body;
-
-      await User.update(id, {
-        username,
-        email,
-        ...(password && { password }), // Solo actualiza password si se proporciona
-        nombre,
-        apellido,
-      });
-
-      await User.setUserRoles(id, Array.isArray(roles) ? roles : [roles]);
-
-      req.flash("success_msg", "Usuario actualizado exitosamente");
-      return res.redirect("../");
-
+      const { nombre, descripcion, ruta } = req.body;
+      await Permissions.update(req.params.id, { nombre, descripcion, ruta });
+      req.flash("success_msg", "Permiso actualizado exitosamente.");
+      res.redirect("/dashboard/permissions");
     } catch (error) {
-      console.error(error);
-      req.flash("error_msg", "Error al actualizar usuario");      
+      console.error("Error al actualizar permiso:", error);
+      req.flash("error_msg", "Error al actualizar el permiso.");
+      res.redirect("/dashboard/permissions");
+    }
+  },
+  deletePermission: async (req, res) => {
+    try {
+      await Permissions.delete(req.params.id);
+      req.flash("success_msg", "Permiso eliminado exitosamente.");
+      res.redirect("/dashboard/permissions");
+    } catch (error) {
+      console.error("Error al eliminar permiso:", error);
+      req.flash("error_msg", "Error al eliminar el permiso.");
+      res.redirect("/dashboard/permissions");
     }
   },
 };

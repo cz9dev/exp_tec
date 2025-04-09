@@ -1,7 +1,11 @@
 const pool = require("../config/db");
-const User = require("../models/userModel"); // Importación añadida
+const User = require("../models/userModel");
+//const { checkAuth } = require("../middleware/auth");
 
-function checkAuth(requiredPermissions = []) {
+function checkAuth(
+  requiredPermissions = [],
+  flashMessage = "No tienes permisos para acceder a esta sección."
+) {
   return async (req, res, next) => {
     if (!req.session.user) {
       return res.redirect("/login");
@@ -11,10 +15,14 @@ function checkAuth(requiredPermissions = []) {
       // Verificar si el usuario existe
       const user = await User.findById(req.session.user.id);
       if (!user) {
+        req.flash(
+          "error",
+          "Usuario no encontrado. Por favor, inicia sesión de nuevo."
+        );
         return res.redirect("/login");
       }
 
-      // Verificar permisos del usuario
+      // Obtener permisos del usuario desde la base de datos
       const [permissions] = await pool.execute(
         `
         SELECT p.nombre FROM permisos p
@@ -25,25 +33,29 @@ function checkAuth(requiredPermissions = []) {
         [req.session.user.id]
       );
 
-      const userPermissions = permissions.map((p) => p.nombre);      
+      const userPermissions = permissions.map((p) => p.nombre) || []; // Manejo de caso donde no hay permisos
 
-      if (
-        requiredPermissions.length > 0 &&
-        !requiredPermissions.some((p) => userPermissions.includes(p))
-      ) {
-        return res.status(403).render("error", {
-          message: "Acceso no autorizado",
-          layout: false,
-        });
+      // Verificar permisos necesarios
+      const hasPermission = requiredPermissions.every((p) =>
+        userPermissions.includes(p)
+      );
+
+      if (!hasPermission) {
+        req.flash("error_msg", flashMessage);
+        return res.redirect("/dashboard"); // Redirigir a una página segura
       }
 
       req.user = user;
       next();
     } catch (error) {
       console.error("Error en checkAuth:", error);
-      next(error);
+      req.flash(
+        "error",
+        "Error al verificar permisos. Por favor, contacta al administrador."
+      );
+      return res.redirect("/dashboard"); // Redirigir a una página segura
     }
   };
 }
 
-module.exports = { checkAuth }; // Exportación nombrada
+module.exports = { checkAuth };

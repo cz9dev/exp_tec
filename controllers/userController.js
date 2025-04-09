@@ -113,7 +113,7 @@ module.exports = {
       await User.update(id, {
         username,
         email,
-        ...(password && { password }), // Solo actualiza password si se proporciona
+        password, // Solo actualiza password si se proporciona
         nombre,
         apellido,
       });

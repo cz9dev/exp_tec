@@ -1,33 +1,35 @@
 <div class="container mt-4">
   <h2>Gestión de Permisos</h2>
-  
-  <table class="table">
+  <a href="/dashboard/permissions/new" class="btn btn-success mb-2">Nuevo Permiso</a>
+  <table class="table table-bordered table-striped text-center mt-4 ">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Roles</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Ruta</th>
         <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
-      <% permmisions.forEach(permmision => { %>
+      <% permissions.forEach(permission=> { %>
         <tr>
-          <td><%= permmision.id %></td>
-          <td><%= permmision.username %></td>
-          <td><%= permmision.email %></td>
-          <td><%= permmision.roles %></td>
           <td>
-            <a href="/dashboard/permmisions/<%= user.id %>/edit" class="btn btn-sm btn-primary">Editar</a>
-            <form action="/dashboard/permmisions/<%= user.id %>/delete" method="POST" class="d-inline">
+            <%= permission.nombre %>
+          </td>
+          <td>
+            <%= permission.descripcion %>
+          </td>
+          <td>
+            <%= permission.ruta %>
+          </td>
+          <td>
+            <a href="/dashboard/permissions/<%= permission.id %>/edit" class="btn btn-sm btn-primary">Editar</a>
+            <form action="/dashboard/permissions/<%= permission.id %>/delete" method="POST" class="d-inline">
               <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
             </form>
           </td>
         </tr>
-      <% }); %>
+        <% }); %>
     </tbody>
   </table>
-  
-  <a href="/dashboard/permmisions/new" class="btn btn-success">Nuevo Permiso</a>
 </div>

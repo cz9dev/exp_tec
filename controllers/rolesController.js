@@ -1,4 +1,4 @@
-const User = require("../models/userModel");
+const User = require("../models/userModel").default;
 const Role = require("../models/roleModel");
 const Permission = require("../models/permissionModel"); // Asegúrate de que tengas este modelo
 

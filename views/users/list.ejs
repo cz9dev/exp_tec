@@ -1,23 +1,10 @@
-<!-- Para mostrar mensajes flash-->
-    <% if (success_msg && success_msg.length > 0) { %>
-      <div class="alert alert-success alert-dismissible fade show">
-        <%= success_msg %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-      </div>
-    <% } %>
-    <% if (error_msg && error_msg.length > 0) { %>
-      <div class="alert alert-danger alert-dismissible fade show">
-        <%= error_msg %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-      </div>
-    <% } %>
-
 <div class="container mt-4">
   <h2>Gestión de Usuarios</h2>
   
   <table class="table table-bordered table-striped text-center mt-4">
     <thead>
       <tr>        
+        <th>Avatar</th>
         <th>Username</th>
         <th>Nombre</th>
         <th>Apellidos</th>
@@ -28,7 +15,13 @@
     </thead>
     <tbody>
       <% users.forEach(user => { %>
-        <tr>          
+        <tr>            
+          <td>
+            <div class="user-icon">
+              <img class="user-icon" src="<%= user.profile_image ? '/uploads/' +user.profile_image : '/images/user-icon.png' %>"
+                alt="Usuario" />
+            </div>
+          </td>
           <td><%= user.username %></td>
           <td><%= user.nombre %></td>
           <td><%= user.apellido %></td>

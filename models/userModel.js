@@ -7,11 +7,11 @@ class User {
    * @param {*} param0
    * @returns
    */
-  static async create({ username, email, nombre, apellido, password, profile_image}) {
+  static async create({ username, email, nombre, apellido, password }) {
     const hash = await bcrypt.hash(password, 12);
     const [result] = await pool.execute(
-      "INSERT INTO usuarios (username, email, nombre, apellido, password_hash, profile_image) VALUES (?, ?, ?, ?, ?, ?)",
-      [username, email, nombre, apellido, hash, profile_image]
+      "INSERT INTO usuarios (username, email, nombre, apellido, password_hash) VALUES (?, ?, ?, ?, ?)",
+      [username, email, nombre, apellido, hash]
     );
     return result.insertId;
   }
@@ -87,18 +87,42 @@ class User {
    * @param {*} user
    */
   static async update(id, user) {
-    const { username, email, nombre, apellido, profile_image} = user;
-    if (username == null){
-      await pool.query(
-        "UPDATE usuarios SET email = ?, nombre = ?, apellido =?, profile_image =? WHERE id = ?",
-        [email, nombre, apellido, profile_image, id]
-      );
-    }else{
-      await pool.query(
-        "UPDATE usuarios SET username = ?, email = ?, nombre = ?, apellido =?, profile_image =?  WHERE id = ?",
-        [username, email, nombre, apellido, profile_image, id]
-      );
+    const { username, email, nombre, apellido, profile_image, password } = user;
+    let sql = "UPDATE usuarios SET ";
+    let params = [];
+
+    if (username !== undefined) {
+      sql += "username = ?, ";
+      params.push(username);
     }
+    if (email !== undefined) {
+      sql += "email = ?, ";
+      params.push(email);
+    }
+    if (nombre !== undefined) {
+      sql += "nombre = ?, ";
+      params.push(nombre);
+    }
+    if (apellido !== undefined) {
+      sql += "apellido = ?, ";
+      params.push(apellido);
+    }
+    if (profile_image !== undefined) {
+      sql += "profile_image = ?, ";
+      params.push(profile_image);
+    }
+    if (password !== undefined) {
+      const hash = await bcrypt.hash(password, 12);
+      sql += "password_hash = ?, ";
+      params.push(hash);
+    }
+
+    // Eliminar la coma y el espacio al final de la sentencia SQL
+    sql = sql.slice(0, -2);
+    sql += " WHERE id = ?";
+    params.push(id);
+
+    await pool.query(sql, params);
   }
 
   /**
@@ -111,8 +135,8 @@ class User {
 
   /**
    * Traer roles del usuario
-   * @param {*} userId 
-   * @returns 
+   * @param {*} userId
+   * @returns
    */
   static async getUserRoles(id) {
     const [rows] = await pool.query(
@@ -124,12 +148,12 @@ class User {
 
   /**
    * Borrar roles del usuario
-   * @param {*} userId 
+   * @param {*} userId
    */
   static async deleteUserRoles(userId) {
     await pool.query("DELETE FROM usuarios_roles WHERE usuario_id = ?", [
       userId,
-    ]);    
+    ]);
   }
 
   /**

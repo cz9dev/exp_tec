@@ -6,10 +6,10 @@ class Permission {
    * @param {*} param0 
    * @returns 
    */
-  static async create({ nombre, descripcion }) {
+  static async create({ nombre, descripcion, ruta}) {
     const [result] = await pool.execute(
-      "INSERT INTO permisos (nombre, descripcion) VALUES (?, ?)",
-      [nombre, descripcion]
+      "INSERT INTO permisos (nombre, descripcion, ruta) VALUES (?, ?, ?)",
+      [nombre, descripcion, ruta]
     );
     return result.insertId;
   }
@@ -57,10 +57,10 @@ class Permission {
    * @param {*} permission 
    */
   static async update(id, permission) {
-    const { nombre, descripcion } = permission;
+    const { nombre, descripcion, ruta } = permission;
     await pool.execute(
-      "UPDATE permisos SET nombre = ?, descripcion = ? WHERE id = ?",
-      [nombre, descripcion, id]
+      "UPDATE permisos SET nombre = ?, descripcion = ?, ruta = ? WHERE id = ?",
+      [nombre, descripcion, ruta, id]
     );
   }
 

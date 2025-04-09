@@ -4,7 +4,6 @@ const userController = require("../controllers/userController");
 const rolesController = require("../controllers/rolesController");
 const permissionsController = require("../controllers/permissionsController");
 const { checkAuth } = require("../middleware/auth");
-const multer = require('multer');
 
 /* GET home page. */
 router.get("/", checkAuth(["VIEW_DASHBOARD"]), (req, res) => {
@@ -20,7 +19,7 @@ router.get("/", checkAuth(["VIEW_DASHBOARD"]), (req, res) => {
 });
 
 // Gestión de usuarios
-router.get("/users", checkAuth(["MANAGE_USERS"]), userController.listUsers);
+router.get("/users", checkAuth(["VIEW_USERS"]), userController.listUsers);
 router.get("/users/new", checkAuth(["MANAGE_USERS"]), userController.showCreateForm);
 router.post("/users", checkAuth(["MANAGE_USERS"]), userController.createUser);
 router.get("/users/:id/edit", checkAuth(["MANAGE_USERS"]), userController.showEditForm);
@@ -32,11 +31,16 @@ router.get("/profile", checkAuth(["VIEW_DASHBOARD"]), userController.profile);
 router.post("/profile/update", checkAuth(["VIEW_DASHBOARD"]), userController.updateProfile);
 
 // Gestión de roles
-router.get("/roles", checkAuth(["MANAGE_ROLES"]), rolesController.listRoles);
+router.get("/roles", checkAuth(["VIEW_ROLES"]), rolesController.listRoles);
 // Ruta para ver permisos de un rol
-router.get("/roles/:id", checkAuth(["MANAGE_ROLES"]), rolesController.roleDetails);
+router.get("/roles/:id", checkAuth(["VIEW_ROLES"]), rolesController.roleDetails);
 
 // Gestión de permisos
-//router.get("/permissions", checkAuth(["VIEW_PERMISSIONS"]), permissionsController.listPermissions);
+router.get("/permissions", checkAuth(["VIEW_PERMISSIONS"]), permissionsController.listPermissions);
+router.get("/permissions/new", checkAuth(["MANAGE_PERMISSIONS"]), permissionsController.showCreateForm); // Nueva ruta para crear
+router.post("/permissions", checkAuth(["MANAGE_PERMISSIONS"]), permissionsController.createPermission); // Nueva ruta para crear
+router.get("/permissions/:id/edit", checkAuth(["MANAGE_PERMISSIONS"]), permissionsController.showEditForm);
+router.post("/permissions/:id/update", checkAuth(["MANAGE_PERMISSIONS"]), permissionsController.updatePermission);
+router.post("/permissions/:id/delete", checkAuth(["MANAGE_PERMISSIONS"]), permissionsController.deletePermission);
 
 module.exports = router;

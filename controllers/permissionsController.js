@@ -19,7 +19,7 @@ module.exports = {
   },
   showCreateForm: (req, res) => {
     res.render("permissions/create", {
-      title: "Crear Permiso",
+      title: "Permisos",
       user: req.session.user,
     });
   },
@@ -44,7 +44,7 @@ module.exports = {
       }
       res.render("permissions/edit", {
         permission,
-        title: "Editar Permiso",
+        title: "Permisos",
         user: req.session.user,
       });
     } catch (error) {

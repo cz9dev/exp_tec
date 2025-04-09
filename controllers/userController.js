@@ -23,7 +23,7 @@ module.exports = {
     try {
       const users = await User.findAll();
       res.render("users/list", {
-        title: "Exp - Tec Usuarios",
+        title: "Usuarios",
         user: req.session.user,
         users,
       });
@@ -37,7 +37,7 @@ module.exports = {
     try {
       const roles = await Role.findAll();
       res.render("users/create", {
-        title: "Exp - Tec Crear Usuarios",
+        title: "Usuarios",
         roles,
         user: req.session.user,
       });
@@ -94,7 +94,7 @@ module.exports = {
       }
 
       res.render("users/edit", {
-        title: "Exp-Tec Editar Usuario",
+        title: "Usuarios",
         uedit,
         roles,
         userRoles: userRoles.map((r) => r.rol_id),
@@ -134,7 +134,7 @@ module.exports = {
       const permmisions = await User.findAll();
       res.render("permissions/list", {
         permmisions,
-        title: "Exp-Tec Permisos",
+        title: "Usuarios",
         user: req.session.user,
       });
     } catch (error) {
@@ -148,7 +148,7 @@ module.exports = {
     try {
       const roles = await Role.findAll();
       res.render("roles/list", {
-        title: "Exp-Tec Roles",
+        title: "Usuarios",
         user: req.session.user,
         roles,
       });
@@ -170,7 +170,7 @@ module.exports = {
       }
 
       res.render("profile/view", {
-        title: "Exp-Tec Perfil",
+        title: "Usuarios",
         user: user,
         user_session: req.session.user,
       });

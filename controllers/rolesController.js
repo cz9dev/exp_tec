@@ -8,7 +8,7 @@ module.exports = {
     try {
       const roles = await Role.findAll();
       res.render("roles/list", {
-        title: "Exp-Tec Roles",
+        title: "Roles",
         user: req.session.user,
         roles,
       });

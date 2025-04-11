@@ -9,10 +9,13 @@
   </head>
   <body>
     <div class="login-container">
-      <h1>Iniciar Sesión</h1>
+      <div class="logo">
+        <img src="/images/logo.svg" width="100" height="100" />
+      </div>
+      <h1 style="text-align: center;">Iniciar Sesión</h1>
       <% if (error) { %>
       <div class="alert error"><%= error %></div>
-      <% } %>
+      <% } %>      
       <form action="/login" method="POST">
         <div class="form-group">
           <label for="email">Correo Electrónico</label>

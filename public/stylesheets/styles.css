@@ -4,6 +4,10 @@ body {
   margin: 0;
 }
 
+.logo{
+  text-align: center;
+}
+
 .register-container,
 .forgot-password-container,
 .login-container,

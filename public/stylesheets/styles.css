@@ -310,6 +310,7 @@ button:hover {
 
 /*Estilos adicionales para el contenido principal*/
 .main-content {
+  margin-top: 36px;
   padding: 20px;
   margin-left: 280px; /* Ajusta este valor al ancho del sidebar */
   flex-grow:1;
@@ -425,10 +426,6 @@ input {
 
   .sidebar.hide {
     left: -200px;
-  }
-
-  .main-content {
-    margin-left: 200px;
   }
 
   #sidebar-toggle {

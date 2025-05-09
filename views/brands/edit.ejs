@@ -1,0 +1,11 @@
+<div class="container mt-4 card border-secondary">
+    <h2>Editar Marca</h2>
+    <form action="/dashboard/brands/<%= brand.id %>/update" method="POST">
+        <div class="mb-3">            
+            <label for="marca" class="form-label">Marca</label>                        
+            <input type="text" id="marca" name="marca" class="form-control" value="<%= brand.marca %>" required>
+        </div>
+        <button class="btn btn-primary btn-sm" type="submit">Guardar Cambios</button>
+        <a href="/dashboard/brands" class="btn btn-secondary btn-sm">Cancelar</a>
+    </form>
+</div>

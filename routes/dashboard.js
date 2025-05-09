@@ -3,6 +3,8 @@ const router = express.Router();
 const userController = require("../controllers/userController");
 const rolesController = require("../controllers/rolesController");
 const permissionsController = require("../controllers/permissionsController");
+const brandController = require("../controllers/brandController");
+const modelsController = require("../controllers/modelsController");
 const { checkAuth } = require("../middleware/auth");
 
 /* GET home page. */
@@ -42,5 +44,24 @@ router.post("/permissions", checkAuth(["MANAGE_PERMISSIONS"]), permissionsContro
 router.get("/permissions/:id/edit", checkAuth(["MANAGE_PERMISSIONS"]), permissionsController.showEditForm);
 router.post("/permissions/:id/update", checkAuth(["MANAGE_PERMISSIONS"]), permissionsController.updatePermission);
 router.post("/permissions/:id/delete", checkAuth(["MANAGE_PERMISSIONS"]), permissionsController.deletePermission);
+
+// Gestionar marcas
+router.get("/brands", checkAuth(["VIEW_BRANDS"]), brandController.listBrands);
+router.get("/brands/new", checkAuth(["MANAGE_BRANDS"]), brandController.showCreateForm);
+router.post("/brands", checkAuth(["MANAGE_BRANDS"]), brandController.createBrand);
+router.get("/brands/:id/edit", checkAuth(["MANAGE_BRANDS"]), brandController.showEditForm);
+router.post("/brands/:id/update", checkAuth(["MANAGE_BRANDS"]), brandController.updateBrand);
+router.post("/brands/:id/delete", checkAuth(["MANAGE_BRANDS"]), brandController.deleteBrand);
+
+//Gestionar Modelos
+router.get("/models", checkAuth(["VIEW_MODELS"]), modelsController.list);
+router.get("/models/new", checkAuth(["MANAGE_MODELS"]), async (req, res) => {
+  const marcas = await modelsController.getMarcas();
+  res.render("models/create", { marcas, title: "Nuevo Modelo" });
+});
+router.post("/models", checkAuth(["MANAGE_MODELS"]), modelsController.create);
+router.get("/models/:id/edit", checkAuth(["MANAGE_MODELS"]), modelsController.edit);
+router.post("/models/:id/update", checkAuth(["MANAGE_MODELS"]), modelsController.update);
+router.post("/models/:id/delete", checkAuth(["MANAGE_MODELS"]), modelsController.delete);
 
 module.exports = router;

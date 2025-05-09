@@ -1,0 +1,27 @@
+<div class="container mt-4">
+  <h2>Gestión de Modelos</h2>
+  <a href="/dashboard/models/new" class="btn btn-success">Nuevo Modelo</a>
+  <table class="table table-bordered table-striped text-center mt-4">
+    <thead>
+      <tr>        
+        <th>Modelo</th>
+        <th>Marca</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% models.forEach(model => { %>
+        <tr>          
+          <td><%= model.modelo %></td>
+          <td><%= model.marca %></td>
+          <td>
+            <a href="/dashboard/models/<%= model.id %>/edit" class="btn btn-sm btn-primary">Editar</a>
+            <form action="/dashboard/models/<%= model.id %>/delete" method="POST" class="d-inline">
+              <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+            </form>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>

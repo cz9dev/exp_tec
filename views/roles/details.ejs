@@ -2,6 +2,7 @@
 
 <div class="container mt-4">
   <h2>Permisos de <%= role.nombre %></h2>
+  <a href="/dashboard/roles/<%= role.id %>/permisos/nuevo" class="btn btn-primary">Agregar Permiso</a>
   
   <div class="mb-4">
     <p><strong>Descripción:</strong> <%= role.descripcion %></p>
@@ -12,6 +13,7 @@
       <tr>
         <th>Nombre del Permiso</th>
         <th>Descripción del Permiso</th>
+        <th>Acción</th>
       </tr>
     </thead>
     <tbody>
@@ -20,6 +22,11 @@
           <tr>
             <td><%= permission.nombre %></td>
             <td><%= permission.descripcion %></td>
+            <td>
+              <form method="POST" action="/dashboard/roles/<%= role.id %>/permisos/<%= permission.id %>/eliminar">
+                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+              </form>
+            </td>
           </tr>
         <% }); %>
       <% } else { %>

@@ -34,8 +34,10 @@ router.post("/profile/update", checkAuth(["VIEW_DASHBOARD"]), userController.upd
 
 // Gestión de roles
 router.get("/roles", checkAuth(["VIEW_ROLES"]), rolesController.listRoles);
-// Ruta para ver permisos de un rol
-router.get("/roles/:id", checkAuth(["VIEW_ROLES"]), rolesController.roleDetails);
+router.get("/roles/:id", checkAuth(["VIEW_ROLES"]), rolesController.roleDetails); // Ruta para ver permisos de un rol
+router.get("/roles/:id/permisos/nuevo", checkAuth(["MANAGE_ROLES"]), rolesController.showAddPermissionForm);
+router.post("/roles/:id/permisos/agregar", checkAuth(["MANAGE_ROLES"]), rolesController.addPermission);
+router.post("/roles/:roleId/permisos/:permissionId/eliminar", checkAuth(["MANAGE_ROLES"]), rolesController.deletePermission);
 
 // Gestión de permisos
 router.get("/permissions", checkAuth(["VIEW_PERMISSIONS"]), permissionsController.listPermissions);

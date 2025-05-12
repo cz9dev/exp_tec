@@ -1,0 +1,18 @@
+<div class="container mt-4 card border-secondary">
+    <h2>Agregar Permiso a <%= role.nombre %>
+    </h2>
+    <form action="/dashboard/roles/<%= role.id %>/permisos/agregar" method="POST">
+        <div class="mb-3">
+            <label for="permissionId" class="form-label">Seleccione un permiso:</label>
+            <select class="form-select" id="permissionId" name="permissionId" required>
+                <% permissions.forEach(permission=> { %>
+                    <option value="<%= permission.id %>">
+                        <%= permission.nombre %>
+                    </option>
+                    <% }); %>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">Agregar Permiso</button>
+        <a href="/dashboard/roles/<%= role.id %>" class="btn btn-secondary btn-sm">Cancelar</a>
+    </form>
+</div>

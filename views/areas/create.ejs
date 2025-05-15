@@ -1,0 +1,12 @@
+<div class="container mt-4 card border-secondary">
+    <h2>Crear Area</h2>
+
+    <form action="/dashboard/areas" method="POST">
+        <div class="mb-3">
+            <label for="nombre">Area:</label>
+            <input type="text" id="nombre" name="nombre" class="form-control" required>
+        </div>
+        <button class="btn btn-primary btn-sm" type="submit">Guardar</button>
+        <a href="/dashboard/areas" class="btn btn-secondary btn-sm">Cancelar</a>
+    </form>
+</div>

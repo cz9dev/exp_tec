@@ -5,6 +5,7 @@ const rolesController = require("../controllers/rolesController");
 const permissionsController = require("../controllers/permissionsController");
 const brandController = require("../controllers/brandController");
 const modelsController = require("../controllers/modelsController");
+const areaController = require("../controllers/areaController");
 const { checkAuth } = require("../middleware/auth");
 
 /* GET home page. */
@@ -65,5 +66,13 @@ router.post("/models", checkAuth(["MANAGE_MODELS"]), modelsController.create);
 router.get("/models/:id/edit", checkAuth(["MANAGE_MODELS"]), modelsController.edit);
 router.post("/models/:id/update", checkAuth(["MANAGE_MODELS"]), modelsController.update);
 router.post("/models/:id/delete", checkAuth(["MANAGE_MODELS"]), modelsController.delete);
+
+// Gestionar areas
+router.get("/areas", checkAuth(["VIEW_AREAS"]), areaController.listAreas);
+router.get("/areas/new", checkAuth(["MANAGE_AREAS"]), areaController.showCreateForm);
+router.post("/areas", checkAuth(["MANAGE_AREAS"]), areaController.createArea);
+router.get("/areas/:id/edit", checkAuth(["MANAGE_AREAS"]), areaController.showEditForm);
+router.post("/areas/:id/update", checkAuth(["MANAGE_AREAS"]), areaController.updateArea);
+router.post("/areas/:id/delete", checkAuth(["MANAGE_AREAS"]), areaController.deleteArea);
 
 module.exports = router;

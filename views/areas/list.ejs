@@ -1,0 +1,27 @@
+<div class="container mt-4">
+    <h2>Listado de Areas</h2>
+    <a href="/dashboard/areas/new" class="btn btn-success">Crear Area</a>
+    <table class="table table-bordered table-striped text-center mt-4">
+        <thead>
+            <tr>                
+                <th>Area</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% areas.forEach(area=> { %>
+                <tr>                    
+                    <td>
+                        <%= area.nombre %>
+                    </td>
+                    <td>
+                        <a href="/dashboard/areas/<%= area.id %>/edit" class="btn btn-sm btn-primary">Editar</a>
+                        <form action="/dashboard/areas/<%= area.id %>/delete" method="POST" class="d-inline">                            
+                            <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                        </form>                        
+                    </td>
+                </tr>
+                <% }); %>
+        </tbody>
+    </table>
+</div>

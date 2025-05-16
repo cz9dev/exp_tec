@@ -1,0 +1,27 @@
+<div class="container mt-4 card border-secondary">
+  <h2>Editar Trabajador</h2>
+  <form action="/dashboard/trabajadores/<%= trabajador.id %>/update" method="POST">
+    <div class="mb-3">
+      <label for="ci" class="form-label">CI</label>
+      <input type="text" id="ci" name="ci" class="form-control" value="<%= trabajador.ci %>" required>
+    </div>
+    <div class="mb-3">
+      <label for="nombres" class="form-label">CI</label>
+      <input type="text" id="nombres" name="nombres" class="form-control" value="<%= trabajador.nombres %>" required>
+    </div>
+    <div class="mb-3">
+      <label for="apellidos" class="form-label">apellidos</label>
+      <input type="text" id="apellidos" name="apellidos" class="form-control" value="<%= trabajador.apellidos %>" required>
+    </div>
+    <div class="mb-3">
+      <label for="id_area" class="form-label">Area</label>      
+      <select id="id_area" name="id_area" class="form-select" required>
+        <% areas.forEach(area => { %>
+          <option value="<%= area.id %>" <%= area.id === trabajador.id_area ? 'selected' : '' %>><%= area.nombre %></option>
+        <% }); %>
+      </select>    
+    </div>    
+    <button class="btn btn-primary btn-sm" type="submit">Guardar Cambios</button>
+    <a href="/dashboard/trabajadores" class="btn btn-secondary btn-sm">Cancelar</a>
+  </form>
+</div>

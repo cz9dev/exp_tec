@@ -38,12 +38,12 @@ module.exports = {
         req.flash("error_msg", "Modelo no encontrado");
         return res.redirect("/dashboard/models");
       }
-      const marcas = await marcasModel.findAll(); 
+      const marcas = await marcasModel.findAll();
       res.render("models/edit", {
         modelo,
         marcas,
         title: "Editar Modelo",
-        user: req.session.user,        
+        user: req.session.user,
       });
     } catch (error) {
       console.error(error);
@@ -53,8 +53,8 @@ module.exports = {
   },
 
   update: async (req, res) => {
-    try {
-      const id = req.params.id;
+    const id = req.params.id;
+    try {      
       const { id_marca, modelo } = req.body;
       const updated = await modelos.update(id, id_marca, modelo);
       if (updated) {
@@ -87,4 +87,13 @@ module.exports = {
     }
   },
 
+  getMarcas: async () => {
+    try {
+      const marcasData = await marcasModel.findAll();
+      return marcasData;
+    } catch (error) {
+      console.error("Error getting marcas:", error);
+      throw error;
+    }
+  },
 };

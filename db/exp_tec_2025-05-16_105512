@@ -28,7 +28,7 @@ CREATE TABLE `area` (
   `nombre` varchar(250) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unic_nombre` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -216,7 +216,7 @@ CREATE TABLE `modelo` (
   PRIMARY KEY (`id`),
   KEY `FK_modelo_id_marca` (`id_marca`),
   CONSTRAINT `FK_modelo_id_marca` FOREIGN KEY (`id_marca`) REFERENCES `marca` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -273,7 +273,7 @@ CREATE TABLE `permisos` (
   `ruta` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -281,7 +281,7 @@ CREATE TABLE `permisos` (
 --
 
 /*!40000 ALTER TABLE `permisos` DISABLE KEYS */;
-INSERT INTO `permisos` VALUES (1,'VIEW_DASHBOARD','Ver panel principal','/dashboard'),(2,'MANAGE_USERS','Gestionar usuarios','/dashboard/users'),(3,'MANAGE_ROLES','Administrar roles','/dashboard/roles'),(4,'VIEW_REPORTS','Ver Reportes','/dasboard/reports'),(6,'VIEW_PERMISSIONS','Ver Permisos','/dasboard/permissions'),(8,'MANAGE_PERMISSIONS','Gestionar Permisos','/dasboard/permissions'),(9,'VIEW_USERS','Ver usuarios','/dashboard/users'),(10,'VIEW_ROLES','Ver roles','/dashboard/roles'),(12,'VIEW_BRANDS','Ver Marcas','/dashboard/brands'),(13,'MANAGE_BRANDS','Gestionar Marcas','/dashboard/brands '),(14,'VIEW_MODELS','Ver Modelos','/dashboard/models'),(15,'MANAGE_MODELS','Gestionar Modelos','/dashboard/models');
+INSERT INTO `permisos` VALUES (1,'VIEW_DASHBOARD','Ver panel principal','/dashboard'),(2,'MANAGE_USERS','Gestionar usuarios','/dashboard/users'),(3,'MANAGE_ROLES','Administrar roles','/dashboard/roles'),(4,'VIEW_REPORTS','Ver Reportes','/dasboard/reports'),(6,'VIEW_PERMISSIONS','Ver Permisos','/dasboard/permissions'),(8,'MANAGE_PERMISSIONS','Gestionar Permisos','/dasboard/permissions'),(9,'VIEW_USERS','Ver usuarios','/dashboard/users'),(10,'VIEW_ROLES','Ver roles','/dashboard/roles'),(12,'VIEW_BRANDS','Ver Marcas','/dashboard/brands'),(13,'MANAGE_BRANDS','Gestionar Marcas','/dashboard/brands '),(14,'VIEW_MODELS','Ver Modelos','/dashboard/models'),(15,'MANAGE_MODELS','Gestionar Modelos','/dashboard/models'),(16,'VIEW_AREAS','Ver Areas','/dashboard/areas'),(17,'MANAGE_AREAS','Gestionar areas','/dashboard/areas'),(18,'VIEW_TRABAJADORES','Ver trabajadores','/dashboard/trabajadores'),(19,'MANAGE_TRABAJADORES','Gestionar trabajadores','/dashboard/trabajadores');
 /*!40000 ALTER TABLE `permisos` ENABLE KEYS */;
 
 --
@@ -330,7 +330,7 @@ CREATE TABLE `roles_permisos` (
 --
 
 /*!40000 ALTER TABLE `roles_permisos` DISABLE KEYS */;
-INSERT INTO `roles_permisos` VALUES (1,1),(1,2),(1,3),(1,4),(1,6),(1,8),(1,9),(1,10),(1,12),(1,13),(1,14),(1,15),(2,1),(2,4),(2,12),(2,14);
+INSERT INTO `roles_permisos` VALUES (1,1),(1,2),(1,3),(1,4),(1,6),(1,8),(1,9),(1,10),(1,12),(1,13),(1,14),(1,15),(1,16),(1,17),(1,18),(1,19),(2,1),(2,4),(2,12),(2,14),(2,16);
 /*!40000 ALTER TABLE `roles_permisos` ENABLE KEYS */;
 
 --
@@ -396,7 +396,7 @@ CREATE TABLE `trabajadores` (
   UNIQUE KEY `ci` (`CI`),
   KEY `fk_id_area` (`id_area`),
   CONSTRAINT `fk_id_area` FOREIGN KEY (`id_area`) REFERENCES `area` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -404,7 +404,7 @@ CREATE TABLE `trabajadores` (
 --
 
 /*!40000 ALTER TABLE `trabajadores` DISABLE KEYS */;
-INSERT INTO `trabajadores` VALUES (1,'86092021147','Carlos Yixander','Zaldívar Puron',1);
+INSERT INTO `trabajadores` VALUES (1,'86092021147','Carlos Yixander','Zaldívar Puron',1),(3,'78965412302','Manuel Antonio','Federio Engel',2);
 /*!40000 ALTER TABLE `trabajadores` ENABLE KEYS */;
 
 --
@@ -479,4 +479,4 @@ INSERT INTO `usuarios_roles` VALUES (1,1),(11,2);
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-12 11:40:26
+-- Dump completed on 2025-05-16 10:55:22

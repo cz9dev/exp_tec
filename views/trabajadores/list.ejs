@@ -1,0 +1,31 @@
+<div class="container mt-4">
+  <h2>Gestión de trabajadores</h2>
+  <a href="/dashboard/trabajadores/new" class="btn btn-success">Nuevo Trabajador</a>
+  <table class="table table-bordered table-striped text-center mt-4">
+    <thead>
+      <tr>        
+        <th>CI</th>
+        <th>Nombre</th>
+        <th>Apellidos</th>
+        <th>Area</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% trabajadores.forEach(trabajador => { %>
+        <tr>          
+          <td><%= trabajador.ci %></td>
+          <td><%= trabajador.nombres %></td>
+          <td><%= trabajador.apellidos %></td>
+          <td><%= trabajador.area %></td>
+          <td>
+            <a href="/dashboard/trabajadores/<%= trabajador.id %>/edit" class="btn btn-sm btn-primary">Editar</a>
+            <form action="/dashboard/trabajadores/<%= trabajador.id %>/delete" method="POST" class="d-inline">
+              <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+            </form>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>

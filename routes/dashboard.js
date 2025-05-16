@@ -6,6 +6,7 @@ const permissionsController = require("../controllers/permissionsController");
 const brandController = require("../controllers/brandController");
 const modelsController = require("../controllers/modelsController");
 const areaController = require("../controllers/areaController");
+const trabajadoresController = require("../controllers/trabajadoresController");
 const { checkAuth } = require("../middleware/auth");
 
 /* GET home page. */
@@ -74,5 +75,16 @@ router.post("/areas", checkAuth(["MANAGE_AREAS"]), areaController.createArea);
 router.get("/areas/:id/edit", checkAuth(["MANAGE_AREAS"]), areaController.showEditForm);
 router.post("/areas/:id/update", checkAuth(["MANAGE_AREAS"]), areaController.updateArea);
 router.post("/areas/:id/delete", checkAuth(["MANAGE_AREAS"]), areaController.deleteArea);
+
+//Gestionar Trabajadores
+router.get("/trabajadores", checkAuth(["VIEW_TRABAJADORES"]), trabajadoresController.list);
+router.get("/trabajadores/new", checkAuth(["MANAGE_TRABAJADORES"]), async (req, res) => {
+  const areas = await trabajadoresController.getAreas();
+  res.render("trabajadores/create", { areas, title: "Nuevo Trabajador" });
+});
+router.post("/trabajadores", checkAuth(["MANAGE_TRABAJADORES"]), trabajadoresController.create);
+router.get("/trabajadores/:id/edit", checkAuth(["MANAGE_TRABAJADORES"]), trabajadoresController.edit);
+router.post("/trabajadores/:id/update", checkAuth(["MANAGE_TRABAJADORES"]), trabajadoresController.update);
+router.post("/trabajadores/:id/delete", checkAuth(["MANAGE_TRABAJADORES"]), trabajadoresController.delete);
 
 module.exports = router;

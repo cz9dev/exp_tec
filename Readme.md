@@ -20,25 +20,25 @@ Credenciales por defecto al restaurar la base de datos
 **password:exptec** 
 
 # Contribuir
-Para contribuir con el prollecto usted debe revizar como va el desarrollo de la aplicación, a continuación muestro los módulos que estan previstos, con una x seleccionado los que ya han sido implementado, seguido del desarrollador, si usted desea contribuir solo debe poner al final del módulo su usuario y una ves termanado una x.
+Para contribuir con el prollecto usted debe revizar quien esta encargado de cada parte del desarrollo de la aplicación, a continuación muestro los módulos que estan previstos, con una x seleccionado los que ya han sido implementado, seguido del desarrollador, si usted desea contribuir solo debe poner al final del módulo su usuario y una ves termanado una x.
 
 - [x] Login y Logout
-    - [x] Login - @cz9dev
-    - [x] Register - @cz9dev
-    - [x] Logout - @cz9dev
+    - [x] Login - [cz9dev](https://github.com/cz9dev)
+    - [x] Register - [cz9dev](https://github.com/cz9dev)
+    - [x] Logout - [cz9dev](https://github.com/cz9dev)
 - [ ] Dashboard
     - [ ] Dashboard
 - [ ] Seguridad
-    - [x] Usuario - @cz9dev
-    - [x] Roles - @cz9dev
-    - [ ] Permisos
+    - [x] Usuario - [cz9dev](https://github.com/cz9dev)
+    - [x] Roles - [cz9dev](https://github.com/cz9dev)
+    - [X] Permisos - [cz9dev](https://github.com/cz9dev)
 - [ ] Gestion
-    - [X] Marcas - @cz9dev
-    - [X] Modelos - @cz9dev
-    - [X] Áreas - @cz9dev
-    - [X] Trabajadores - @cz9dev
-    - [ ] Tipos de Componentes
-    - [ ] Componentes
+    - [X] Marcas - [cz9dev](https://github.com/cz9dev)
+    - [X] Modelos - [cz9dev](https://github.com/cz9dev)
+    - [X] Áreas - [cz9dev](https://github.com/cz9dev)
+    - [X] Trabajadores - [cz9dev](https://github.com/cz9dev)
+    - [ ] Tipos de Componentes - [cz9dev](https://github.com/cz9dev)
+    - [ ] Componentes - [cz9dev](https://github.com/cz9dev)
     - [ ] Tipos de Perifericos
     - [ ] Perifericos
     - [ ] Dispositivos
@@ -50,7 +50,7 @@ Para contribuir con el prollecto usted debe revizar como va el desarrollo de la 
     - [ ] Registro de partes y piezas
 
 - [x] Perfil de usuario
-    - [x] Gestionar perfil - @cz9dev
+    - [x] Gestionar perfil - [cz9dev](https://github.com/cz9dev)
 
 # Desarrolladores
 [cz9dev](https://github.com/cz9dev)

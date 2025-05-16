@@ -438,7 +438,7 @@ CREATE TABLE `usuarios` (
 --
 
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'czaldivarp','czaldivarp@nauta.cu','$2b$12$x0x72JYho1.wXQe8adHKlu1Lv4fsXUsC2cDgT/ZKHgQwJz.y7.FVi','Carlos Yixander','Zaldívar Purón',1,'2025-03-24 19:04:39',NULL,NULL,NULL,'profile_image-1.jpg'),(11,'cmaguilera','cmaguilera@nauta.cu','$2b$12$x0x72JYho1.wXQe8adHKlu1Lv4fsXUsC2cDgT/ZKHgQwJz.y7.FVi','Carlos Manuel','Aguilera Lopez',1,'2025-04-01 20:09:41',NULL,NULL,NULL,'profile_image-11.jpg');
+INSERT INTO `usuarios` VALUES (1,'admin','admin@localhost','$2b$12$7gjDHTrpWsOEv2ODDBnwJO02nao.DWIAO4pc1RlZ9B.AMJnpLLc1W','Administrador','de Sistemas',1,'2025-03-24 19:04:39',NULL,NULL,NULL,'profile_image-1.svg'),(11,'cmaguilera','cmaguilera@nauta.cu','$2b$12$x0x72JYho1.wXQe8adHKlu1Lv4fsXUsC2cDgT/ZKHgQwJz.y7.FVi','Carlos Manuel','Aguilera Lopez',1,'2025-04-01 20:09:41',NULL,NULL,NULL,'profile_image-11.jpg');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 
 --
@@ -479,4 +479,4 @@ INSERT INTO `usuarios_roles` VALUES (1,1),(11,2);
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-16 10:55:22
+-- Dump completed on 2025-05-16 11:21:00

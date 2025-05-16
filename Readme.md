@@ -10,7 +10,14 @@ Es una aplicación web para el registro y control de expedientes técnicos de di
 - Node.js
 
 # Instalación
-Proximamente se estará documentando como instalar la aplicación
+El proyecto esta en desarrollo por lo que por el momento si deceas probarlo debes desplegar un entorno de desarrollo para Nodejs y luego de clonar este repositorio debes poblar los datos iniciales de la base de datos ejecutando el archivo /config/seed.js (en desarrollo).
+
+Alternativamente solo debes restaurar la base de datos en mysql o mariadb
+
+## Uso
+Credenciales por defecto al restaurar la base de datos
+**usuario: admin**
+**password:exptec** 
 
 # Contribuir
 Para contribuir con el prollecto usted debe revizar como va el desarrollo de la aplicación, a continuación muestro los módulos que estan previstos, con una x seleccionado los que ya han sido implementado, seguido del desarrollador, si usted desea contribuir solo debe poner al final del módulo su usuario y una ves termanado una x.
@@ -26,10 +33,10 @@ Para contribuir con el prollecto usted debe revizar como va el desarrollo de la 
     - [x] Roles - @cz9dev
     - [ ] Permisos
 - [ ] Gestion
-    - [ ] Marcas
-    - [ ] Modelos
-    - [ ] Áreas
-    - [ ] Trabajadores
+    - [X] Marcas - @cz9dev
+    - [X] Modelos - @cz9dev
+    - [X] Áreas - @cz9dev
+    - [X] Trabajadores - @cz9dev
     - [ ] Tipos de Componentes
     - [ ] Componentes
     - [ ] Tipos de Perifericos
@@ -37,9 +44,10 @@ Para contribuir con el prollecto usted debe revizar como va el desarrollo de la 
     - [ ] Dispositivos
 
 - [ ] Reportes
-    - [ ] Expedientes Técnicos
-    - [ ] Registros de Incidencia
-    - [ ] Registro de partes y Piezas
+    - [ ] Expedientes técnicos
+    - [ ] Registros de incidencia    
+    - [ ] Registro de sellos
+    - [ ] Registro de partes y piezas
 
 - [x] Perfil de usuario
     - [x] Gestionar perfil - @cz9dev

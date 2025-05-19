@@ -1,0 +1,12 @@
+<div class="container mt-4 card border-secondary">
+    <h2><%= title %></h2>
+
+    <form action="/dashboard/componentTypes" method="POST">
+        <div class="mb-3">
+            <label for="nombre">Tipo de Componente:</label>
+            <input type="text" id="nombre" name="nombre" class="form-control" required>
+        </div>
+        <button class="btn btn-primary btn-sm" type="submit">Guardar</button>
+        <a href="/dashboard/componentTypes" class="btn btn-secondary btn-sm">Cancelar</a>
+    </form>
+</div>

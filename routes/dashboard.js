@@ -7,6 +7,7 @@ const brandController = require("../controllers/brandController");
 const modelsController = require("../controllers/modelsController");
 const areaController = require("../controllers/areaController");
 const trabajadoresController = require("../controllers/trabajadoresController");
+const componentTypeController = require("../controllers/componentTypeController");
 const { checkAuth } = require("../middleware/auth");
 
 /* GET home page. */
@@ -86,5 +87,13 @@ router.post("/trabajadores", checkAuth(["MANAGE_TRABAJADORES"]), trabajadoresCon
 router.get("/trabajadores/:id/edit", checkAuth(["MANAGE_TRABAJADORES"]), trabajadoresController.edit);
 router.post("/trabajadores/:id/update", checkAuth(["MANAGE_TRABAJADORES"]), trabajadoresController.update);
 router.post("/trabajadores/:id/delete", checkAuth(["MANAGE_TRABAJADORES"]), trabajadoresController.delete);
+
+// Gestionar Tipos de Componentes
+router.get("/componentTypes", checkAuth(["VIEW_COMPONENT_TYPES"]), componentTypeController.list);
+router.get("/componentTypes/new", checkAuth(["MANAGE_COMPONENT_TYPES"]), componentTypeController.showCreateForm);
+router.post("/componentTypes", checkAuth(["MANAGE_COMPONENT_TYPES"]), componentTypeController.create);
+router.get("/componentTypes/:id/edit", checkAuth(["MANAGE_COMPONENT_TYPES"]), componentTypeController.showEditForm);
+router.post("/componentTypes/:id/update", checkAuth(["MANAGE_COMPONENT_TYPES"]), componentTypeController.update);
+router.post("/componentTypes/:id/delete", checkAuth(["MANAGE_COMPONENT_TYPES"]), componentTypeController.delete);
 
 module.exports = router;

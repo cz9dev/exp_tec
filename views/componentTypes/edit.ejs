@@ -1,0 +1,11 @@
+<div class="container mt-4 card border-secondary">
+    <h2><%= title %></h2>
+    <form action="/dashboard/componentTypes/<%= componentType.id %>/update" method="POST">
+        <div class="mb-3">            
+            <label for="nombre" class="form-label">Tipo de Componente</label>                        
+            <input type="text" id="nombre" name="nombre" class="form-control" value="<%= componentType.nombre %>" required>
+        </div>
+        <button class="btn btn-primary btn-sm" type="submit">Guardar Cambios</button>
+        <a href="/dashboard/componentTypes" class="btn btn-secondary btn-sm">Cancelar</a>
+    </form>
+</div>

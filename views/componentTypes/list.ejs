@@ -1,0 +1,27 @@
+<div class="container mt-4">
+    <h2><%= title %></h2>
+    <a href="/dashboard/componentTypes/new" class="btn btn-success">Crear Tipo de Componente</a>
+    <table class="table table-bordered table-striped text-center mt-4">
+        <thead>
+            <tr>                
+                <th>Tipo de Componente</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% componentTypes.forEach(componentType=> { %>
+                <tr>                    
+                    <td>
+                        <%= componentType.nombre %>
+                    </td>
+                    <td>
+                        <a href="/dashboard/componentTypes/<%= componentType.id %>/edit" class="btn btn-sm btn-primary">Editar</a>
+                        <form action="/dashboard/componentTypes/<%= componentType.id %>/delete" method="POST" class="d-inline">                            
+                            <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                        </form>                        
+                    </td>
+                </tr>
+                <% }); %>
+        </tbody>
+    </table>
+</div>

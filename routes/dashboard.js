@@ -8,6 +8,7 @@ const modelsController = require("../controllers/modelsController");
 const areaController = require("../controllers/areaController");
 const trabajadoresController = require("../controllers/trabajadoresController");
 const componentTypeController = require("../controllers/componentTypeController");
+const componentController = require("../controllers/componentController");
 const { checkAuth } = require("../middleware/auth");
 
 /* GET home page. */
@@ -95,5 +96,14 @@ router.post("/componentTypes", checkAuth(["MANAGE_COMPONENT_TYPES"]), componentT
 router.get("/componentTypes/:id/edit", checkAuth(["MANAGE_COMPONENT_TYPES"]), componentTypeController.showEditForm);
 router.post("/componentTypes/:id/update", checkAuth(["MANAGE_COMPONENT_TYPES"]), componentTypeController.update);
 router.post("/componentTypes/:id/delete", checkAuth(["MANAGE_COMPONENT_TYPES"]), componentTypeController.delete);
+
+//Gestionar Componentes
+router.get('/component/modelos/:id', componentController.getModelosByMarca);
+router.get("/component", checkAuth(["VIEW_COMPONENT"]), componentController.list);
+router.get("/component/new", checkAuth(["MANAGE_COMPONENTS"]),componentController.showCreateForm);
+router.post("/component", checkAuth(["MANAGE_COMPONENTS"]), componentController.create);
+router.get("/component/:id/edit", checkAuth(["MANAGE_COMPONENTS"]), componentController.edit);
+router.post("/component/:id/update", checkAuth(["MANAGE_COMPONENTS"]), componentController.update);
+router.post("/component/:id/delete", checkAuth(["MANAGE_COMPONENTS"]), componentController.delete);
 
 module.exports = router;

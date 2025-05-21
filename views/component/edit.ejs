@@ -1,0 +1,57 @@
+<div class="container mt-4 card border-secondary">
+  <h2><%= title %></h2>
+  <form action="/dashboard/component/<%= component.id %>/update" method="POST">
+    <div class="mb-3">
+      <label for="id_marca" class="form-label">Marca</label>
+      <select id="id_marca" name="id_marca" class="form-select" required>        
+        <% marcas.forEach(marca=> { %>
+          <option value="<%= marca.id %>" <%=marca.id===component.id_marca ? 'selected' : '' %>><%= marca.marca %>
+          </option>
+          <% }); %>
+      </select>
+    </div>
+    <div class="mb-3">
+    <label for="id_modelo" class="form-label">Modelo</label>
+    <select id="id_modelo" name="id_modelo" class="form-select" required>          
+      <% modelos.forEach(modelo=> { %>
+        <option value="<%= modelo.id %>" <%=modelo.id===component.id_modelo ? 'selected' : '' %>><%= modelo.modelo %>
+        </option>
+        <% }); %>
+    </select>
+    </div>
+    <div class="mb-3">
+    <label for="id_tipo_componente" class="form-label">Tipo de componente</label>
+    <select id="id_tipo_componente" name="id_tipo_componente" class="form-select" required>      
+      <% tipos_componentes.forEach(tipo_componente=> { %>
+        <option value="<%= tipo_componente.id %>" <%=tipo_componente.id===component.id_tipo_componente ? 'selected' : '' %>><%= tipo_componente.nombre %>
+        </option>
+        <% }); %>
+    </select>
+    </div>
+    <div class="mb-3">
+      <label for="numero_serie" class="form-label">Núnero de serie</label>
+      <input type="text" id="numero_serie" name="numero_serie" class="form-control" value="<%= component.numero_serie %>" required>
+    </div>     
+    <button class="btn btn-primary btn-sm" type="submit">Guardar Cambios</button>
+    <a href="/dashboard/component" class="btn btn-secondary btn-sm">Cancelar</a>
+  </form>
+</div>
+
+<script>
+  const marcaSelect = document.querySelector('select[name="id_marca"]');
+  const modeloSelect = document.querySelector('select[name="id_modelo"]');
+
+  marcaSelect.addEventListener('change', async () => {
+    const marcaId = marcaSelect.value;
+    const response = await fetch(`/dashboard/component/modelos/${marcaId}`);
+    const modelos = await response.json();
+
+    modeloSelect.innerHTML = ''; // Clear existing options
+    modelos.forEach(modelo => {
+      const option = document.createElement('option');
+      option.value = modelo.id;
+      option.text = modelo.modelo;
+      modeloSelect.appendChild(option);
+    });
+  });
+</script>

@@ -1,0 +1,31 @@
+<div class="container mt-4">
+  <h2>Gestión de componentes</h2>
+  <a href="/dashboard/component/new" class="btn btn-success">Nuevo componente</a>
+  <table class="table table-bordered table-striped text-center mt-4">
+    <thead>
+      <tr>        
+        <th>Marca</th>
+        <th>Modelo</th>
+        <th>Tipo de componente</th>
+        <th>Número de serie</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% components.forEach(component => { %>
+        <tr>          
+          <td><%= component.marca %></td>
+          <td><%= component.modelo %></td>
+          <td><%= component.tipo_componente %></td>
+          <td><%= component.numero_serie %></td>
+          <td>
+            <a href="/dashboard/component/<%= component.id %>/edit" class="btn btn-sm btn-primary">Editar</a>
+            <form action="/dashboard/component/<%= component.id %>/delete" method="POST" class="d-inline">
+              <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+            </form>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>

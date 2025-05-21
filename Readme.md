@@ -28,7 +28,7 @@ Para contribuir con el prollecto usted debe revizar quien esta encargado de cada
     - [x] Logout - [cz9dev](https://github.com/cz9dev)
 - [ ] Dashboard
     - [ ] Dashboard
-- [ ] Seguridad
+- [X] Seguridad
     - [x] Usuario - [cz9dev](https://github.com/cz9dev)
     - [x] Roles - [cz9dev](https://github.com/cz9dev)
     - [X] Permisos - [cz9dev](https://github.com/cz9dev)
@@ -37,11 +37,13 @@ Para contribuir con el prollecto usted debe revizar quien esta encargado de cada
     - [X] Modelos - [cz9dev](https://github.com/cz9dev)
     - [X] Áreas - [cz9dev](https://github.com/cz9dev)
     - [X] Trabajadores - [cz9dev](https://github.com/cz9dev)
-    - [ ] Tipos de Componentes - [cz9dev](https://github.com/cz9dev)
-    - [ ] Componentes - [cz9dev](https://github.com/cz9dev)
-    - [ ] Tipos de Perifericos
-    - [ ] Perifericos
-    - [ ] Dispositivos
+    - [X] Tipos de Componentes - [cz9dev](https://github.com/cz9dev)
+    - [X] Componentes - [cz9dev](https://github.com/cz9dev)
+    - [ ] Tipos de Perifericos - [cz9dev](https://github.com/cz9dev)
+    - [ ] Perifericos - [cz9dev](https://github.com/cz9dev)
+    - [ ] Dispositivos - [cz9dev](https://github.com/cz9dev)
+    - [ ] Incidencias
+    - [ ] Sellos
 
 - [ ] Reportes
     - [ ] Expedientes técnicos

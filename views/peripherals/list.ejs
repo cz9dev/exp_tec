@@ -1,0 +1,31 @@
+<div class="container mt-4">
+  <h2>Gestión de perifericos</h2>
+  <a href="/dashboard/peripherals/new" class="btn btn-success">Nuevo periferico</a>
+  <table class="table table-bordered table-striped text-center mt-4">
+    <thead>
+      <tr>        
+        <th>Marca</th>
+        <th>Modelo</th>
+        <th>Tipo de periferico</th>
+        <th>Número de serie</th>        
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% perifericos.forEach(periferico => { %>
+        <tr>          
+          <td><%= periferico.marca %></td>
+          <td><%= periferico.modelo %></td>
+          <td><%= periferico.tipo_periferico %></td>
+          <td><%= periferico.numero_serie %></td>          
+          <td>
+            <a href="/dashboard/peripherals/<%= periferico.id %>/edit" class="btn btn-sm btn-primary">Editar</a>
+            <form action="/dashboard/peripherals/<%= periferico.id %>/delete" method="POST" class="d-inline">
+              <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+            </form>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>

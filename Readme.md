@@ -39,8 +39,8 @@ Para contribuir con el prollecto usted debe revizar quien esta encargado de cada
     - [X] Trabajadores - [cz9dev](https://github.com/cz9dev)
     - [X] Tipos de Componentes - [cz9dev](https://github.com/cz9dev)
     - [X] Componentes - [cz9dev](https://github.com/cz9dev)
-    - [ ] Tipos de Perifericos - [cz9dev](https://github.com/cz9dev)
-    - [ ] Perifericos - [cz9dev](https://github.com/cz9dev)
+    - [X] Tipos de Perifericos - [cz9dev](https://github.com/cz9dev)
+    - [X] Perifericos - [cz9dev](https://github.com/cz9dev)
     - [ ] Dispositivos - [cz9dev](https://github.com/cz9dev)
     - [ ] Incidencias
     - [ ] Sellos

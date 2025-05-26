@@ -120,7 +120,7 @@ router.post("/peripheralsTypes/:id/delete", checkAuth(["MANAGE_PERIPHERALS_TYPES
 router.get("/peripherals", checkAuth(["VIEW_PERIPHERALS"]), peripheralsController.list);
 router.get("/peripherals/new", checkAuth(["MANAGE_PERIPHERALS"]), peripheralsController.showCreateForm);
 router.post("/peripherals", checkAuth(["MANAGE_PERIPHERALS"]), peripheralsController.create);
-router.get("/peripherals/:id/edit", checkAuth(["MANAGE_PERIPHERALS"]), peripheralsController.showEditForm);
+router.get("/peripherals/:id/edit", checkAuth(["MANAGE_PERIPHERALS"]), peripheralsController.edit);
 router.post("/peripherals/:id/update", checkAuth(["MANAGE_PERIPHERALS"]), peripheralsController.update);
 router.post("/peripherals/:id/delete", checkAuth(["MANAGE_PERIPHERALS"]), peripheralsController.delete);
 

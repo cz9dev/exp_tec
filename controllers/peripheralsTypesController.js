@@ -5,7 +5,7 @@ module.exports = {
     try {
       const peripheralsTypes = await peripheralsTypesModel.findAll();
       res.render("peripheralsTypes/list", {
-        title: "Tipos de Perifericos",
+        title: "Tipos de perifericos",
         user: req.session.user,
         peripheralsTypes,
       });

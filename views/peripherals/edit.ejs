@@ -1,0 +1,35 @@
+<div class="container mt-4 card border-secondary">
+  <h2><%= title %></h2>
+  <form action="/dashboard/peripherals/<%= periferico.id %>/update" method="POST">
+    <div class="mb-3">
+      <label for="id_marca" class="form-label">Marca</label>
+      <select id="id_marca" name="id_marca" class="form-select" required>        
+        <% marcas.forEach(marca=> { %>
+          <option value="<%= marca.id %>" <%=marca.id===periferico.id_marca ? 'selected' : '' %>><%= marca.marca %>
+          </option>
+          <% }); %>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="modelo" class="form-label">Modelo</label>
+      <input type="text" id="modelo" name="modelo" class="form-control" value="<%= periferico.modelo %>"
+        required>
+    </div>
+
+    <div class="mb-3">
+    <label for="id_tipo_periferico" class="form-label">Tipo de periferico</label>
+    <select id="id_tipo_periferico" name="id_tipo_periferico" class="form-select" required>      
+      <% tipos_perifericos.forEach(tipo_periferico=> { %>
+        <option value="<%= tipo_periferico.id %>" <%=tipo_periferico.id===periferico.id_tipo_periferico ? 'selected' : '' %>><%= tipo_periferico.nombre %>
+        </option>
+        <% }); %>
+    </select>
+    </div>
+    <div class="mb-3">
+      <label for="numero_serie" class="form-label">Núnero de serie</label>
+      <input type="text" id="numero_serie" name="numero_serie" class="form-control" value="<%= periferico.numero_serie %>" required>
+    </div>     
+    <button class="btn btn-primary btn-sm" type="submit">Guardar Cambios</button>
+    <a href="/dashboard/peripherals" class="btn btn-secondary btn-sm">Cancelar</a>
+  </form>
+</div>

@@ -1,0 +1,27 @@
+<div class="container mt-4">
+    <h2><%= title %></h2>
+    <a href="/dashboard/peripheralsTypes/new" class="btn btn-success">Crear Tipo de Periferico</a>
+    <table class="table table-bordered table-striped text-center mt-4">
+        <thead>
+            <tr>                
+                <th>Tipo de Periferico</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% peripheralsTypes.forEach(peripheralType=> { %>
+                <tr>                    
+                    <td>
+                        <%= peripheralType.nombre %>
+                    </td>
+                    <td>
+                        <a href="/dashboard/peripheralsTypes/<%= peripheralType.id %>/edit" class="btn btn-sm btn-primary">Editar</a>
+                        <form action="/dashboard/peripheralsTypes/<%= peripheralType.id %>/delete" method="POST" class="d-inline">                            
+                            <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                        </form>                        
+                    </td>
+                </tr>
+                <% }); %>
+        </tbody>
+    </table>
+</div>

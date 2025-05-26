@@ -9,6 +9,8 @@ const areaController = require("../controllers/areaController");
 const trabajadoresController = require("../controllers/trabajadoresController");
 const componentTypeController = require("../controllers/componentTypeController");
 const componentController = require("../controllers/componentController");
+const peripheralsTypesController = require("../controllers/peripheralsTypesController");
+const peripheralsController = require("../controllers/peripheralsController");
 const { checkAuth } = require("../middleware/auth");
 
 /* GET home page. */
@@ -105,5 +107,21 @@ router.post("/component", checkAuth(["MANAGE_COMPONENTS"]), componentController.
 router.get("/component/:id/edit", checkAuth(["MANAGE_COMPONENTS"]), componentController.edit);
 router.post("/component/:id/update", checkAuth(["MANAGE_COMPONENTS"]), componentController.update);
 router.post("/component/:id/delete", checkAuth(["MANAGE_COMPONENTS"]), componentController.delete);
+
+// Gestionar Tipos de Perifericos
+router.get("/peripheralsTypes", checkAuth(["VIEW_PERIPHERALS_TYPES"]), peripheralsTypesController.list);
+router.get("/peripheralsTypes/new", checkAuth(["MANAGE_PERIPHERALS_TYPES"]), peripheralsTypesController.showCreateForm);
+router.post("/peripheralsTypes", checkAuth(["MANAGE_PERIPHERALS_TYPES"]), peripheralsTypesController.create);
+router.get("/peripheralsTypes/:id/edit", checkAuth(["MANAGE_PERIPHERALS_TYPES"]), peripheralsTypesController.showEditForm);
+router.post("/peripheralsTypes/:id/update", checkAuth(["MANAGE_PERIPHERALS_TYPES"]), peripheralsTypesController.update);
+router.post("/peripheralsTypes/:id/delete", checkAuth(["MANAGE_PERIPHERALS_TYPES"]), peripheralsTypesController.delete);
+
+// Gestionar Perifericos
+router.get("/peripherals", checkAuth(["VIEW_PERIPHERALS"]), peripheralsController.list);
+router.get("/peripherals/new", checkAuth(["MANAGE_PERIPHERALS"]), peripheralsController.showCreateForm);
+router.post("/peripherals", checkAuth(["MANAGE_PERIPHERALS"]), peripheralsController.create);
+router.get("/peripherals/:id/edit", checkAuth(["MANAGE_PERIPHERALS"]), peripheralsController.showEditForm);
+router.post("/peripherals/:id/update", checkAuth(["MANAGE_PERIPHERALS"]), peripheralsController.update);
+router.post("/peripherals/:id/delete", checkAuth(["MANAGE_PERIPHERALS"]), peripheralsController.delete);
 
 module.exports = router;

@@ -1,11 +1,11 @@
 const pool = require("../config/db");
 
 class ComponentModel {
-  static async create(id_marca, id_modelo, id_tipo_componente, numero_serie) {
+  static async create(id_marca, modelo, id_tipo_componente, numero_serie, url_image) {
     try {
       const [result] = await pool.execute(
-        "INSERT INTO componente (id_marca, id_modelo, id_tipo_componente, numero_serie) VALUES (?, ?, ?, ?)",
-        [id_marca, id_modelo, id_tipo_componente, numero_serie]
+        "INSERT INTO componente (id_marca, modelo, id_tipo_componente, numero_serie, url_image) VALUES (?, ?, ?, ?, ?)",
+        [id_marca, modelo, id_tipo_componente, numero_serie, url_image]
       );
       return result.insertId;
     } catch (error) {
@@ -17,7 +17,7 @@ class ComponentModel {
   static async findAll() {
     try {
       const [rows] = await pool.execute(
-        "SELECT c.id, c.id_marca, c.id_modelo, c.id_tipo_componente, c.numero_serie, ma.marca, mo.modelo, tc.nombre AS tipo_componente FROM componente c JOIN marca ma ON c.id_marca = ma.id JOIN modelo mo ON c.id_modelo = mo.id JOIN tipo_componente tc ON c.id_tipo_componente = tc.id"
+        "SELECT c.id, c.id_marca, c.modelo, c.id_tipo_componente, c.numero_serie , c.url_image, ma.marca, tc.nombre AS tipo_componente FROM componente c JOIN marca ma ON c.id_marca = ma.id JOIN tipo_componente tc ON c.id_tipo_componente = tc.id"
       );
       return rows;
     } catch (error) {
@@ -29,7 +29,7 @@ class ComponentModel {
   static async findById(id) {
     try {
       const [rows] = await pool.execute(
-        "SELECT c.id, c.id_marca, c.id_modelo, c.id_tipo_componente, c.numero_serie, ma.marca, mo.modelo, tc.nombre AS tipo_componente FROM componente c JOIN marca ma ON c.id_marca = ma.id JOIN modelo mo ON c.id_modelo = mo.id JOIN tipo_componente tc ON c.id_tipo_componente = tc.id WHERE c.id = ?",
+        "SELECT c.id, c.id_marca, c.modelo, c.id_tipo_componente, c.numero_serie, c.url_image, ma.marca, tc.nombre AS tipo_componente FROM componente c JOIN marca ma ON c.id_marca = ma.id JOIN tipo_componente tc ON c.id_tipo_componente = tc.id WHERE c.id = ?",
         [id]
       );
       return rows[0];
@@ -42,18 +42,28 @@ class ComponentModel {
   static async update(
     id,
     id_marca,
-    id_modelo,
+    modelo,
     id_tipo_componente,
-    numero_serie
+    numero_serie,
+    url_image,
   ) {
     try {
-      const [result] = await pool.execute(
-        "UPDATE componente SET id_marca = ?, id_modelo = ?, id_tipo_componente = ?, numero_serie = ? WHERE id = ?",
-        [id_marca, id_modelo, id_tipo_componente, numero_serie, id]
-      );
+      // Construir la consulta SQL dinámicamente
+      let sql = "UPDATE componente SET id_marca = ?, modelo = ?, id_tipo_componente = ?, numero_serie = ?";
+      let params = [id_marca, modelo, id_tipo_componente, numero_serie];
+
+      if (url_image !== null) {
+          sql += ", url_image = ?";
+          params.push(url_image);
+      }
+
+      sql += " WHERE id = ?";
+      params.push(id);
+
+      const [result] = await pool.execute(sql, params);
       return result.affectedRows > 0;
     } catch (error) {
-      console.error("Error actualizando trabajadores:", error);
+      console.error("Error actualizando componente:", error);
       throw error;
     }
   }

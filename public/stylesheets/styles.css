@@ -170,6 +170,25 @@ button:hover {
   font-size: 14px;
 }
 
+.component-icon {
+  display: flex;
+  align-items: center; /* Alinea verticalmente al centro */
+  justify-content: center; /* Alinea horizontalmente al centro */
+  cursor: pointer;
+}
+
+.component-icon img {
+  width: 80px;
+  height: 80px;
+  border-radius: 10%;  
+}
+
+.component-icon span {
+  color: white;
+  font-size: 14px;
+  margin-left: 10px;
+}
+
 /* Estilos para el menú desplegable */
 .dropdown-menu {
   display: none; /* Oculto por defecto */

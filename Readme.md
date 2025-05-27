@@ -33,8 +33,7 @@ Para contribuir con el prollecto usted debe revizar quien esta encargado de cada
     - [x] Roles - [cz9dev](https://github.com/cz9dev)
     - [X] Permisos - [cz9dev](https://github.com/cz9dev)
 - [ ] Gestion
-    - [X] Marcas - [cz9dev](https://github.com/cz9dev)
-    - [X] Modelos - [cz9dev](https://github.com/cz9dev)
+    - [X] Marcas - [cz9dev](https://github.com/cz9dev)    
     - [X] Áreas - [cz9dev](https://github.com/cz9dev)
     - [X] Trabajadores - [cz9dev](https://github.com/cz9dev)
     - [X] Tipos de Componentes - [cz9dev](https://github.com/cz9dev)
@@ -42,7 +41,7 @@ Para contribuir con el prollecto usted debe revizar quien esta encargado de cada
     - [X] Tipos de Perifericos - [cz9dev](https://github.com/cz9dev)
     - [X] Perifericos - [cz9dev](https://github.com/cz9dev)
     - [ ] Dispositivos - [cz9dev](https://github.com/cz9dev)
-    - [ ] Incidencias
+    - [ ] Actividades
     - [ ] Sellos
 
 - [ ] Reportes

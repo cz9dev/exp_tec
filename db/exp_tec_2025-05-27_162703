@@ -49,18 +49,17 @@ DROP TABLE IF EXISTS `componente`;
 CREATE TABLE `componente` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_marca` int(11) NOT NULL,
-  `id_modelo` int(11) NOT NULL,
+  `modelo` varchar(250) NOT NULL,
   `id_tipo_componente` int(11) NOT NULL,
   `numero_serie` varchar(250) NOT NULL,
+  `url_image` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UQ_componente_numero_serie` (`numero_serie`),
   KEY `FK_componente_id_marca` (`id_marca`),
-  KEY `FK_componente_id_modelo` (`id_modelo`),
   KEY `FK_componente_id_tipo_componente` (`id_tipo_componente`),
   CONSTRAINT `FK_componente_id_marca` FOREIGN KEY (`id_marca`) REFERENCES `marca` (`id`),
-  CONSTRAINT `FK_componente_id_modelo` FOREIGN KEY (`id_modelo`) REFERENCES `modelo` (`id`),
   CONSTRAINT `FK_componente_id_tipo_componente` FOREIGN KEY (`id_tipo_componente`) REFERENCES `tipo_componente` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,6 +67,7 @@ CREATE TABLE `componente` (
 --
 
 /*!40000 ALTER TABLE `componente` DISABLE KEYS */;
+INSERT INTO `componente` VALUES (11,1,'dfg4',14,'dsf34',NULL),(14,3,'dfg',14,'dfg','url_image-.jpg'),(15,3,'dfg',4,'dfgdfg3453','dfgdfg3453.jpg');
 /*!40000 ALTER TABLE `componente` ENABLE KEYS */;
 
 --
@@ -191,7 +191,7 @@ CREATE TABLE `marca` (
   `marca` char(20) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UQ_marca_marca` (`marca`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -199,33 +199,8 @@ CREATE TABLE `marca` (
 --
 
 /*!40000 ALTER TABLE `marca` DISABLE KEYS */;
-INSERT INTO `marca` VALUES (1,'Acer'),(4,'HP'),(3,'Logitech'),(17,'Maxell'),(18,'Motorola'),(16,'Panasonic'),(2,'ViewSonic');
+INSERT INTO `marca` VALUES (1,'Acer'),(4,'HP'),(20,'Intel'),(3,'Logitech'),(17,'Maxell'),(18,'Motorola'),(16,'Panasonic'),(21,'Seasonic'),(2,'ViewSonic');
 /*!40000 ALTER TABLE `marca` ENABLE KEYS */;
-
---
--- Table structure for table `modelo`
---
-
-DROP TABLE IF EXISTS `modelo`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8mb4 */;
-CREATE TABLE `modelo` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_marca` int(11) NOT NULL,
-  `modelo` varchar(250) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_modelo_id_marca` (`id_marca`),
-  CONSTRAINT `FK_modelo_id_marca` FOREIGN KEY (`id_marca`) REFERENCES `marca` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `modelo`
---
-
-/*!40000 ALTER TABLE `modelo` DISABLE KEYS */;
-INSERT INTO `modelo` VALUES (1,3,'K120'),(2,3,'M-U0026'),(3,16,'KX-TS500LX'),(7,4,'Modelo');
-/*!40000 ALTER TABLE `modelo` ENABLE KEYS */;
 
 --
 -- Table structure for table `periferico`
@@ -237,18 +212,16 @@ DROP TABLE IF EXISTS `periferico`;
 CREATE TABLE `periferico` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_marca` int(11) NOT NULL,
-  `id_modelo` int(11) NOT NULL,
+  `modelo` varchar(250) NOT NULL,
   `id_tipo_periferico` int(11) NOT NULL,
   `numero_serie` varchar(250) DEFAULT '---',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UQ_periferico_numero_serie` (`numero_serie`),
   KEY `FK_periferico_id_marca` (`id_marca`),
-  KEY `FK_periferico_id_modelo` (`id_modelo`),
   KEY `FK_periferico_id_tipo_periferico` (`id_tipo_periferico`),
   CONSTRAINT `FK_periferico_id_marca` FOREIGN KEY (`id_marca`) REFERENCES `marca` (`id`),
-  CONSTRAINT `FK_periferico_id_modelo` FOREIGN KEY (`id_modelo`) REFERENCES `modelo` (`id`),
   CONSTRAINT `FK_periferico_id_tipo_periferico` FOREIGN KEY (`id_tipo_periferico`) REFERENCES `tipo_periferico` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -256,7 +229,7 @@ CREATE TABLE `periferico` (
 --
 
 /*!40000 ALTER TABLE `periferico` DISABLE KEYS */;
-INSERT INTO `periferico` VALUES (2,3,1,4,'1647SC504KF8'),(3,3,2,2,'---');
+INSERT INTO `periferico` VALUES (2,3,'K120',4,'1647SC504KF8'),(3,3,'M-U0026',2,'---'),(4,1,'P206HL',1,'cambiar');
 /*!40000 ALTER TABLE `periferico` ENABLE KEYS */;
 
 --
@@ -273,7 +246,7 @@ CREATE TABLE `permisos` (
   `ruta` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -281,7 +254,7 @@ CREATE TABLE `permisos` (
 --
 
 /*!40000 ALTER TABLE `permisos` DISABLE KEYS */;
-INSERT INTO `permisos` VALUES (1,'VIEW_DASHBOARD','Ver panel principal','/dashboard'),(2,'MANAGE_USERS','Gestionar usuarios','/dashboard/users'),(3,'MANAGE_ROLES','Administrar roles','/dashboard/roles'),(4,'VIEW_REPORTS','Ver Reportes','/dasboard/reports'),(6,'VIEW_PERMISSIONS','Ver Permisos','/dasboard/permissions'),(8,'MANAGE_PERMISSIONS','Gestionar Permisos','/dasboard/permissions'),(9,'VIEW_USERS','Ver usuarios','/dashboard/users'),(10,'VIEW_ROLES','Ver roles','/dashboard/roles'),(12,'VIEW_BRANDS','Ver Marcas','/dashboard/brands'),(13,'MANAGE_BRANDS','Gestionar Marcas','/dashboard/brands '),(14,'VIEW_MODELS','Ver Modelos','/dashboard/models'),(15,'MANAGE_MODELS','Gestionar Modelos','/dashboard/models'),(16,'VIEW_AREAS','Ver Areas','/dashboard/areas'),(17,'MANAGE_AREAS','Gestionar areas','/dashboard/areas'),(18,'VIEW_TRABAJADORES','Ver trabajadores','/dashboard/trabajadores'),(19,'MANAGE_TRABAJADORES','Gestionar trabajadores','/dashboard/trabajadores');
+INSERT INTO `permisos` VALUES (1,'VIEW_DASHBOARD','Ver panel principal','/dashboard'),(2,'MANAGE_USERS','Gestionar usuarios','/dashboard/users'),(3,'MANAGE_ROLES','Administrar roles','/dashboard/roles'),(4,'VIEW_REPORTS','Ver Reportes','/dasboard/reports'),(6,'VIEW_PERMISSIONS','Ver Permisos','/dasboard/permissions'),(8,'MANAGE_PERMISSIONS','Gestionar Permisos','/dasboard/permissions'),(9,'VIEW_USERS','Ver usuarios','/dashboard/users'),(10,'VIEW_ROLES','Ver roles','/dashboard/roles'),(12,'VIEW_BRANDS','Ver Marcas','/dashboard/brands'),(13,'MANAGE_BRANDS','Gestionar Marcas','/dashboard/brands '),(16,'VIEW_AREAS','Ver Areas','/dashboard/areas'),(17,'MANAGE_AREAS','Gestionar areas','/dashboard/areas'),(18,'VIEW_TRABAJADORES','Ver trabajadores','/dashboard/trabajadores'),(19,'MANAGE_TRABAJADORES','Gestionar trabajadores','/dashboard/trabajadores'),(20,'VIEW_COMPONENT_TYPES','Ver tipos de componentes','/dashboard/componentTypes'),(21,'MANAGE_COMPONENT_TYPES','Gestionar tipos de componentes','/dashboard/componentTypes'),(22,'VIEW_COMPONENT','Ver Componentes','/dashboard/component'),(23,'MANAGE_COMPONENTS','Gestionar componentes','/dashboard/component'),(24,'VIEW_PERIPHERALS_TYPES','Ver tipos de perifericos','/dashboard/'),(25,'MANAGE_PERIPHERALS_TYPES','Gestionar tipos de perifericos','/ashboard'),(26,'VIEW_PERIPHERALS','Ver perifericos','/dashboard/peripherals'),(27,'MANAGE_PERIPHERALS','Gestionar perifericos','/dashboard/peripherals');
 /*!40000 ALTER TABLE `permisos` ENABLE KEYS */;
 
 --
@@ -330,7 +303,7 @@ CREATE TABLE `roles_permisos` (
 --
 
 /*!40000 ALTER TABLE `roles_permisos` DISABLE KEYS */;
-INSERT INTO `roles_permisos` VALUES (1,1),(1,2),(1,3),(1,4),(1,6),(1,8),(1,9),(1,10),(1,12),(1,13),(1,14),(1,15),(1,16),(1,17),(1,18),(1,19),(2,1),(2,4),(2,12),(2,14),(2,16);
+INSERT INTO `roles_permisos` VALUES (1,1),(1,2),(1,3),(1,4),(1,6),(1,8),(1,9),(1,10),(1,12),(1,13),(1,16),(1,17),(1,18),(1,19),(1,20),(1,21),(1,22),(1,23),(1,24),(1,25),(1,26),(1,27),(2,1),(2,4),(2,12),(2,16),(2,20),(2,22),(2,26);
 /*!40000 ALTER TABLE `roles_permisos` ENABLE KEYS */;
 
 --
@@ -345,7 +318,7 @@ CREATE TABLE `tipo_componente` (
   `nombre` varchar(250) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unic_nombre_componente` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -353,7 +326,7 @@ CREATE TABLE `tipo_componente` (
 --
 
 /*!40000 ALTER TABLE `tipo_componente` DISABLE KEYS */;
-INSERT INTO `tipo_componente` VALUES (4,'Disco Duro'),(2,'Memoria Ram DDR3'),(3,'Memoria Ram DDR4'),(1,'Mother Board');
+INSERT INTO `tipo_componente` VALUES (4,'Disco Duro'),(14,'Fuente'),(10,'Lector CD'),(12,'Lector CD/DVD'),(2,'Memoria Ram DDR3'),(3,'Memoria Ram DDR4'),(1,'Mother Board'),(13,'Procesador'),(16,'Tarjeta de Red'),(15,'Tarjeta de Video');
 /*!40000 ALTER TABLE `tipo_componente` ENABLE KEYS */;
 
 --
@@ -368,7 +341,7 @@ CREATE TABLE `tipo_periferico` (
   `nombre` varchar(250) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unic_nombre_periferico` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -376,7 +349,7 @@ CREATE TABLE `tipo_periferico` (
 --
 
 /*!40000 ALTER TABLE `tipo_periferico` DISABLE KEYS */;
-INSERT INTO `tipo_periferico` VALUES (3,'Impresora'),(1,'Minitor (Display)'),(2,'Raton (Mouse)'),(4,'Teclado (Keyboard)');
+INSERT INTO `tipo_periferico` VALUES (3,'Impresora'),(1,'Monitor (Display)'),(2,'Raton (Mouse)'),(4,'Teclado (Keyboard)');
 /*!40000 ALTER TABLE `tipo_periferico` ENABLE KEYS */;
 
 --
@@ -479,4 +452,4 @@ INSERT INTO `usuarios_roles` VALUES (1,1),(11,2);
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-16 11:21:00
+-- Dump completed on 2025-05-27 16:27:06

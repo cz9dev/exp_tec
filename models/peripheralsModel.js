@@ -1,11 +1,11 @@
 const pool = require("../config/db");
 
 class PeripheralsModel {
-  static async create(id_marca, modelo, id_tipo_periferico, numero_serie) {
+  static async create(id_marca, modelo, id_tipo_periferico, numero_serie, numero_inventario, url_image) {
     try {
       const [result] = await pool.execute(
-        "INSERT INTO periferico (id_marca, modelo, id_tipo_periferico, numero_serie) VALUES (?, ?, ?, ?)",
-        [id_marca, modelo, id_tipo_periferico, numero_serie]
+        "INSERT INTO periferico (id_marca, modelo, id_tipo_periferico, numero_serie, numero_inventario, url_image) VALUES (?, ?, ?, ?, ?, ?)",
+        [id_marca, modelo, id_tipo_periferico, numero_serie, numero_inventario, url_image]
       );
       return result.insertId;
     } catch (error) {
@@ -17,7 +17,7 @@ class PeripheralsModel {
   static async findAll() {
     try {
       const [rows] = await pool.execute(
-        "SELECT p.id, p.id_marca, p.modelo, p.id_tipo_periferico, p.numero_serie, ma.marca, tp.nombre AS tipo_periferico FROM periferico p JOIN marca ma ON p.id_marca = ma.id JOIN tipo_periferico tp ON p.id_tipo_periferico = tp.id"
+        "SELECT p.id, p.id_marca, p.modelo, p.id_tipo_periferico, p.numero_serie, p.numero_inventario, p.url_image, ma.marca, tp.nombre AS tipo_periferico FROM periferico p JOIN marca ma ON p.id_marca = ma.id JOIN tipo_periferico tp ON p.id_tipo_periferico = tp.id"
       );
       return rows;
     } catch (error) {
@@ -29,7 +29,7 @@ class PeripheralsModel {
   static async findById(id) {
     try {
       const [rows] = await pool.execute(
-        "SELECT p.id, p.id_marca, p.modelo, p.id_tipo_periferico, p.numero_serie, ma.marca, tp.nombre AS tipo_periferico FROM periferico p JOIN marca ma ON p.id_marca = ma.id JOIN tipo_periferico tp ON p.id_tipo_periferico = tp.id WHERE p.id = ?",
+        "SELECT p.id, p.id_marca, p.modelo, p.id_tipo_periferico, p.numero_serie, p.numero_inventario, p.url_image, ma.marca, tp.nombre AS tipo_periferico FROM periferico p JOIN marca ma ON p.id_marca = ma.id JOIN tipo_periferico tp ON p.id_tipo_periferico = tp.id WHERE p.id = ?",
         [id]
       );
       return rows[0];
@@ -44,14 +44,25 @@ class PeripheralsModel {
     id_marca,
     modelo,
     id_tipo_periferico,
-    numero_serie,    
+    numero_serie,
+    numero_inventario,
+    url_image,    
   ) {
     try {
-      const [result] = await pool.execute(
-        "UPDATE periferico SET id_marca = ?, modelo = ?, id_tipo_periferico = ?, numero_serie = ? WHERE id = ?",
-        [id_marca, modelo, id_tipo_periferico, numero_serie, id]
-      );
+      let sql = "UPDATE periferico SET id_marca = ?, modelo = ?, id_tipo_periferico = ?, numero_serie = ? , numero_inventario = ?";
+      let params = [id_marca, modelo, id_tipo_periferico, numero_serie, numero_inventario];
+
+      if (url_image !== null) {
+        sql += ", url_image = ?";
+        params.push(url_image);
+      }
+
+      sql += " WHERE id = ?";
+      params.push(id);
+
+      const [result] = await pool.execute(sql, params);    
       return result.affectedRows > 0;
+
     } catch (error) {
       console.error("Error actualizando periferico:", error);
       throw error;

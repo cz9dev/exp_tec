@@ -28,7 +28,7 @@ CREATE TABLE `area` (
   `nombre` varchar(250) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unic_nombre` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,7 +36,7 @@ CREATE TABLE `area` (
 --
 
 /*!40000 ALTER TABLE `area` DISABLE KEYS */;
-INSERT INTO `area` VALUES (2,'Dep. Dirección'),(6,'Dep. Económico'),(1,'Dep. Informático'),(5,'Dep. Inversiones AT-Comercial Antilla'),(4,'Dep. Inversiones Vivienda'),(8,'Dep. Jurídico'),(3,'Dep. Secretaria'),(7,'Dep. Viales');
+INSERT INTO `area` VALUES (2,'Dep. Dirección'),(6,'Dep. Económico'),(1,'Dep. Informático'),(10,'Dep. Jurídico');
 /*!40000 ALTER TABLE `area` ENABLE KEYS */;
 
 --
@@ -59,7 +59,7 @@ CREATE TABLE `componente` (
   KEY `FK_componente_id_tipo_componente` (`id_tipo_componente`),
   CONSTRAINT `FK_componente_id_marca` FOREIGN KEY (`id_marca`) REFERENCES `marca` (`id`),
   CONSTRAINT `FK_componente_id_tipo_componente` FOREIGN KEY (`id_tipo_componente`) REFERENCES `tipo_componente` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +67,7 @@ CREATE TABLE `componente` (
 --
 
 /*!40000 ALTER TABLE `componente` DISABLE KEYS */;
-INSERT INTO `componente` VALUES (11,1,'dfg4',14,'dsf34',NULL),(14,3,'dfg',14,'dfg','url_image-.jpg'),(15,3,'dfg',4,'dfgdfg3453','dfgdfg3453.jpg');
+INSERT INTO `componente` VALUES (16,20,'Core i7',13,'123','123.jpeg'),(17,24,'DDR4-8GB',3,'DS11703453','fgdf.jpg'),(18,23,'1 TB',4,'WD10EALX','WD10EALX.jpg');
 /*!40000 ALTER TABLE `componente` ENABLE KEYS */;
 
 --
@@ -191,7 +191,7 @@ CREATE TABLE `marca` (
   `marca` char(20) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UQ_marca_marca` (`marca`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -199,7 +199,7 @@ CREATE TABLE `marca` (
 --
 
 /*!40000 ALTER TABLE `marca` DISABLE KEYS */;
-INSERT INTO `marca` VALUES (1,'Acer'),(4,'HP'),(20,'Intel'),(3,'Logitech'),(17,'Maxell'),(18,'Motorola'),(16,'Panasonic'),(21,'Seasonic'),(2,'ViewSonic');
+INSERT INTO `marca` VALUES (1,'Acer'),(22,'Adata'),(24,'Crucial'),(4,'HP'),(20,'Intel'),(3,'Logitech'),(17,'Maxell'),(18,'Motorola'),(16,'Panasonic'),(21,'Seasonic'),(2,'ViewSonic'),(23,'Western Digital');
 /*!40000 ALTER TABLE `marca` ENABLE KEYS */;
 
 --
@@ -341,7 +341,7 @@ CREATE TABLE `tipo_periferico` (
   `nombre` varchar(250) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unic_nombre_periferico` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -349,7 +349,7 @@ CREATE TABLE `tipo_periferico` (
 --
 
 /*!40000 ALTER TABLE `tipo_periferico` DISABLE KEYS */;
-INSERT INTO `tipo_periferico` VALUES (3,'Impresora'),(1,'Monitor (Display)'),(2,'Raton (Mouse)'),(4,'Teclado (Keyboard)');
+INSERT INTO `tipo_periferico` VALUES (9,'Fotocopiadora'),(3,'Impresora'),(1,'Monitor (Display)'),(2,'Raton (Mouse)'),(8,'Speaker (bosinas)'),(4,'Teclado (Keyboard)');
 /*!40000 ALTER TABLE `tipo_periferico` ENABLE KEYS */;
 
 --
@@ -377,7 +377,7 @@ CREATE TABLE `trabajadores` (
 --
 
 /*!40000 ALTER TABLE `trabajadores` DISABLE KEYS */;
-INSERT INTO `trabajadores` VALUES (1,'86092021147','Carlos Yixander','Zaldívar Puron',1),(3,'78965412302','Manuel Antonio','Federio Engel',2);
+INSERT INTO `trabajadores` VALUES (1,'78569452154','Manuel Angulo','Desdin Portelle',1),(3,'78965412302','Antonio','Federio Engel',2);
 /*!40000 ALTER TABLE `trabajadores` ENABLE KEYS */;
 
 --
@@ -411,7 +411,7 @@ CREATE TABLE `usuarios` (
 --
 
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'admin','admin@localhost','$2b$12$7gjDHTrpWsOEv2ODDBnwJO02nao.DWIAO4pc1RlZ9B.AMJnpLLc1W','Administrador','de Sistemas',1,'2025-03-24 19:04:39',NULL,NULL,NULL,'profile_image-1.svg'),(11,'cmaguilera','cmaguilera@nauta.cu','$2b$12$x0x72JYho1.wXQe8adHKlu1Lv4fsXUsC2cDgT/ZKHgQwJz.y7.FVi','Carlos Manuel','Aguilera Lopez',1,'2025-04-01 20:09:41',NULL,NULL,NULL,'profile_image-11.jpg');
+INSERT INTO `usuarios` VALUES (1,'admin','admin@localhost','$2b$12$7gjDHTrpWsOEv2ODDBnwJO02nao.DWIAO4pc1RlZ9B.AMJnpLLc1W','Administrador','de Sistemas',1,'2025-03-24 19:04:39',NULL,NULL,NULL,'profile_image-1.svg');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 
 --
@@ -436,7 +436,7 @@ CREATE TABLE `usuarios_roles` (
 --
 
 /*!40000 ALTER TABLE `usuarios_roles` DISABLE KEYS */;
-INSERT INTO `usuarios_roles` VALUES (1,1),(11,2);
+INSERT INTO `usuarios_roles` VALUES (1,1);
 /*!40000 ALTER TABLE `usuarios_roles` ENABLE KEYS */;
 
 --
@@ -452,4 +452,4 @@ INSERT INTO `usuarios_roles` VALUES (1,1),(11,2);
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-27 16:27:06
+-- Dump completed on 2025-05-29 12:18:59

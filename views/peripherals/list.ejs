@@ -3,21 +3,31 @@
   <a href="/dashboard/peripherals/new" class="btn btn-success">Nuevo periferico</a>
   <table class="table table-bordered table-striped text-center mt-4">
     <thead>
-      <tr>        
+      <tr>      
+        <th>Foto</th>
         <th>Marca</th>
         <th>Modelo</th>
         <th>Tipo de periferico</th>
-        <th>Número de serie</th>        
+        <th>Número de serie</th>
+        <th>Número de inventario</th>        
         <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
       <% perifericos.forEach(periferico => { %>
-        <tr>          
+        <tr>    
+          <td>
+            <div class="component-icon">
+              <img class="component-icon"
+                src="<%= periferico.url_image ? '/perifericos/' +periferico.url_image : '/images/question.png' %>"
+                alt="Componente" />
+            </div>
+          </td>
           <td><%= periferico.marca %></td>
           <td><%= periferico.modelo %></td>
           <td><%= periferico.tipo_periferico %></td>
           <td><%= periferico.numero_serie %></td>          
+          <td><%= periferico.numero_inventario %></td> 
           <td>
             <a href="/dashboard/peripherals/<%= periferico.id %>/edit" class="btn btn-sm btn-primary">Editar</a>
             <form action="/dashboard/peripherals/<%= periferico.id %>/delete" method="POST" class="d-inline">

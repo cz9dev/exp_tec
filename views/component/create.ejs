@@ -1,0 +1,43 @@
+<div class="container mt-4 card border-secondary">
+  <h2>
+    <%= title%>
+  </h2>
+  <form action="/dashboard/component" method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label class="form-label">Marca</label>
+      <select name="id_marca" class="form-control" required>
+        <option value="" selected>Seleccionar</option>
+        <% marcas.forEach(marca=> { %>
+          <option value="<%= marca.id %>">
+            <%= marca.marca %>
+          </option>
+          <% }); %>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Modelo</label>
+      <input type="text" name="modelo" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Tipo Componente</label>
+      <select name="id_tipo_componente" class="form-control" required>
+        <option value="" selected>Seleccionar</option>
+        <% tipos_componentes.forEach(tipo_componente=> { %>
+          <option value="<%= tipo_componente.id %>">
+            <%= tipo_componente.nombre %>
+          </option>
+          <% }); %>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Numero de serie</label>
+      <input type="text" name="numero_serie" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label for="url_image" class="form-label">Foto del componente</label>
+      <input type="file" class="form-control" id="url_image" name="url_image">
+    </div>
+    <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+    <a href="/dashboard/component" class="btn btn-secondary btn-sm">Cancelar</a>
+  </form>
+</div>

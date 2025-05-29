@@ -5,7 +5,7 @@ Es una aplicación web para el registro y control de expedientes técnicos de di
 ![GitHub License](https://img.shields.io/github/license/cz9dev/exp_tec)
 ![GitHub repo size](https://img.shields.io/github/repo-size/cz9dev/exp_tec)
 ![GitHub Tag](https://img.shields.io/github/v/tag/cz9dev/exp_tec)
-[![All Contributors](https://img.shields.io/github/all-contributors/projectOwner/projectName?color=ee8449&style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/github/all-contributors/cz9dev/exp_tec?color=ee8449&style=flat-square)](#contributors)
 
 # Requerimientos
 - MySQL o MariaDB

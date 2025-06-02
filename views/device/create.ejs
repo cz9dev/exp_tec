@@ -1,0 +1,52 @@
+<div class="container mt-4 card border-secondary">
+    <h2>
+        <%= title %>
+    </h2>
+    <form action="/dashboard/device" method="POST">
+        <div class="mb-3">
+            <label class="form-label">Tipo de dispositivo</label>
+            <select name="tipo" class="form-control" required>
+                <option value="" selected>Seleccionar</option>
+                <option value="Computadora">Computadora</option>
+                <option value="Laptop">Laptop</option>
+                <option value="Servidor">Servidor</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Número de inventario</label>
+            <input type="text" name="inventario" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" name="nombre" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Dirección IP</label>
+            <input type="text" name="ip" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Área</label>
+            <select name="id_area" class="form-control" required>
+                <option value="" selected>Seleccionar</option>
+                <% areas.forEach(area=> { %>
+                    <option value="<%= area.id %>">
+                        <%= area.nombre %>
+                    </option>
+                    <% }); %>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Trabajador asignado</label>
+            <select name="id_trabajador" class="form-control">
+                <option value="" selected>Sin asignar</option>
+                <% trabajadores.forEach(trabajador=> { %>
+                    <option value="<%= trabajador.id %>">
+                        <%= trabajador.nombres %>
+                    </option>
+                    <% }); %>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+        <a href="/dashboard/device" class="btn btn-secondary btn-sm">Cancelar</a>
+    </form>
+    </div>

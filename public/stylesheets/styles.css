@@ -456,4 +456,16 @@ input {
     left: 10px;
     /* Ajusta la posición del botón */
   }
+
+  .tab-pane {
+    padding: 20px;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0 0 5px 5px;
+  }
+  
+  .nav-tabs {
+    margin-bottom: 0; 
+  }
 }

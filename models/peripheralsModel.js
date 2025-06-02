@@ -1,11 +1,25 @@
 const pool = require("../config/db");
 
 class PeripheralsModel {
-  static async create(id_marca, modelo, id_tipo_periferico, numero_serie, numero_inventario, url_image) {
+  static async create(
+    id_marca,
+    modelo,
+    id_tipo_periferico,
+    numero_serie,
+    numero_inventario,
+    url_image
+  ) {
     try {
       const [result] = await pool.execute(
         "INSERT INTO periferico (id_marca, modelo, id_tipo_periferico, numero_serie, numero_inventario, url_image) VALUES (?, ?, ?, ?, ?, ?)",
-        [id_marca, modelo, id_tipo_periferico, numero_serie, numero_inventario, url_image]
+        [
+          id_marca,
+          modelo,
+          id_tipo_periferico,
+          numero_serie,
+          numero_inventario,
+          url_image,
+        ]
       );
       return result.insertId;
     } catch (error) {
@@ -46,11 +60,18 @@ class PeripheralsModel {
     id_tipo_periferico,
     numero_serie,
     numero_inventario,
-    url_image,    
+    url_image
   ) {
     try {
-      let sql = "UPDATE periferico SET id_marca = ?, modelo = ?, id_tipo_periferico = ?, numero_serie = ? , numero_inventario = ?";
-      let params = [id_marca, modelo, id_tipo_periferico, numero_serie, numero_inventario];
+      let sql =
+        "UPDATE periferico SET id_marca = ?, modelo = ?, id_tipo_periferico = ?, numero_serie = ? , numero_inventario = ?";
+      let params = [
+        id_marca,
+        modelo,
+        id_tipo_periferico,
+        numero_serie,
+        numero_inventario,
+      ];
 
       if (url_image !== null) {
         sql += ", url_image = ?";
@@ -60,9 +81,8 @@ class PeripheralsModel {
       sql += " WHERE id = ?";
       params.push(id);
 
-      const [result] = await pool.execute(sql, params);    
+      const [result] = await pool.execute(sql, params);
       return result.affectedRows > 0;
-
     } catch (error) {
       console.error("Error actualizando periferico:", error);
       throw error;
@@ -81,6 +101,24 @@ class PeripheralsModel {
       throw error;
     }
   }
+
+  static async findByDeviceId(deviceId) {
+    try {
+      const [rows] = await pool.execute(
+        `SELECT p.id, p.modelo, p.numero_serie, tp.nombre AS tipo_periferico
+         FROM periferico p
+         JOIN tipo_periferico tp ON p.id_tipo_periferico = tp.id
+         JOIN dispositivo_periferico dp ON p.id = dp.id_periferico
+         WHERE dp.id_dispositivo = ?`,
+        [deviceId]
+      );
+      return rows;
+    } catch (error) {
+      console.error("Error buscando periféricos:", error);
+      throw error;
+    }
+  }
+
 }
 
 module.exports = PeripheralsModel;

@@ -10,6 +10,8 @@ const componentTypeController = require("../controllers/componentTypeController"
 const componentController = require("../controllers/componentController");
 const peripheralsTypesController = require("../controllers/peripheralsTypesController");
 const peripheralsController = require("../controllers/peripheralsController");
+const deviceController = require("../controllers/deviceController");
+
 const { checkAuth } = require("../middleware/auth");
 
 /* GET home page. */
@@ -110,5 +112,20 @@ router.post("/peripherals", checkAuth(["MANAGE_PERIPHERALS"]), peripheralsContro
 router.get("/peripherals/:id/edit", checkAuth(["MANAGE_PERIPHERALS"]), peripheralsController.edit);
 router.post("/peripherals/:id/update", checkAuth(["MANAGE_PERIPHERALS"]), peripheralsController.update);
 router.post("/peripherals/:id/delete", checkAuth(["MANAGE_PERIPHERALS"]), peripheralsController.delete);
+
+// Gestionar dispositivos
+router.get("/device", checkAuth(["VIEW_DEVICES"]), deviceController.list);
+router.get("/device/new", checkAuth(["MANAGE_DEVICES"]), deviceController.showCreateForm);
+router.post("/device", checkAuth(["MANAGE_DEVICES"]), deviceController.create);
+router.get("/device/:id/edit", checkAuth(["MANAGE_DEVICES"]), deviceController.edit);
+router.post("/device/:id/update", checkAuth(["MANAGE_DEVICES"]), deviceController.update);
+router.post("/device/:id/delete", checkAuth(["MANAGE_DEVICES"]), deviceController.delete);
+router.get("/device/:id", checkAuth(["VIEW_DEVICES"]), deviceController.showDetails);
+// Asignación
+router.post("/device/:id/assign/component", checkAuth(["MANAGE_DEVICES"]), deviceController.assignComponent);
+router.post("/device/:id/assign/peripheral", checkAuth(["MANAGE_DEVICES"]), deviceController.assignPeripheral);
+// Desasignación
+router.post("/device/:id/unassign/component/:id", checkAuth(["MANAGE_DEVICES"]), deviceController.unassignComponent);
+router.post("/device/:id/unassign/peripheral/:id", checkAuth(["MANAGE_DEVICES"]), deviceController.unassignPeripheral);
 
 module.exports = router;

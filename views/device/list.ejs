@@ -1,0 +1,50 @@
+<div class="container mt-4">
+    <h2>Dispositivos</h2>
+    <a href="/dashboard/device/new" class="btn btn-primary mb-3">➕ Nuevo</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Inventario</th>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>IP</th>
+                <th>Área</th>
+                <th>Responsable</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% devices.forEach(device=> { %>
+                <tr>
+                    <td>
+                        <%= device.inventario %>
+                    </td>
+                    <td>
+                        <%= device.nombre %>
+                    </td>
+                    <td>
+                        <%= device.tipo %>
+                    </td>
+                    <td>
+                        <%= device.ip || 'Sin IP' %>
+                    </td>
+                    <td>
+                        <%= device.area || 'Sin asignar' %>
+                    </td>
+                    <td>
+                        <%= device.trabajador || 'Sin asignar' %>
+                    </td>
+                    <td>
+                        <a href="/dashboard/device/<%= device.id %>" class="btn btn-sm btn-info"><i class="fas fa-search"></i></a>
+                        <a href="/dashboard/device/<%= device.id %>/edit" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                        <form action="/dashboard/device/<%= device.id %>/delete" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                <% }); %>
+        </tbody>
+    </table>
+</div>

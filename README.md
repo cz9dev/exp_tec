@@ -3,7 +3,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/cz9dev/exp_tec)
 ![GitHub Tag](https://img.shields.io/github/v/tag/cz9dev/exp_tec)
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/github/all-contributors/cz9dev/exp_tec?color=ee8449&style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Exp-tec es una aplicación web para el registro y control de expedientes técnicos de dispositivos, controlando marcas, modelos y números de series, componentes y perifericos. Además un control de sellos de estos dispositivos, acciones y tareas realizadas sobre los dispositivos.
@@ -32,6 +32,13 @@ Si usted decea constribuir con Exp-tec por favor lea el fichero [CONTRIBUTING.md
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://cz9dev.github.io/"><img src="https://avatars.githubusercontent.com/u/97544746?v=4?s=100" width="100px;" alt="Carlos Zaldívar"/><br /><sub><b>Carlos Zaldívar</b></sub></a><br /><a href="#code-cz9dev" title="Code">💻</a> <a href="#doc-cz9dev" title="Documentation">📖</a> <a href="#design-cz9dev" title="Design">🎨</a> <a href="#test-cz9dev" title="Tests">⚠️</a> <a href="#maintenance-cz9dev" title="Maintenance">🚧</a></td>
+    </tr>
+  </tbody>
+</table>
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->

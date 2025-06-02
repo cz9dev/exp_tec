@@ -1,0 +1,27 @@
+# .gitignore para Node.js en VSCode Linux Mint
+
+# Configuraciones de build y pruebas
+*.json
+node_modules/
+package.json
+
+# Archivos de configuración
+.vscode/config.json
+airbrake.yaml  # Si estás usando Airbrake
+npm.config.js
+yarn.config
+
+# Directorios de cache
+.nvmcache/
+Cache/
+
+# directorio de cache de herramientas
+@types-cache
+
+# Directorios de cache de Node.js
+bin/npx ESM cache
+bin/cdnjs_cache
+bin/esm cache
+
+# Directorio de logs
+logs/*

@@ -12,7 +12,12 @@ Exp-tec es una aplicación web para el registro y control de expedientes técnic
 
 # Requerimientos
 - MySQL o MariaDB
-- Node.js
+## Node.js
+Instalaremos las dependencias de nuestro proyecto con:
+
+  ```bash
+    npm install
+  ```
 
 # Instalación
 El proyecto esta en desarrollo por lo que por el momento si deceas probarlo debes desplegar un entorno de desarrollo para Nodejs y luego de clonar este repositorio debes poblar los datos iniciales de la base de datos ejecutando el archivo ```/config/seed.js``` (en desarrollo).

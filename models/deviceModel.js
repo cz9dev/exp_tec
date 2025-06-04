@@ -15,13 +15,14 @@ class DeviceModel {
       FROM dispositivo d
       LEFT JOIN area a ON d.id_area = a.id
       LEFT JOIN trabajadores t ON d.id_trabajador = t.id
+      WHERE d.deleted_at IS NULL
     `);
     return rows;
   }
 
   static async findById(id) {
     const [rows] = await pool.execute(
-      "SELECT * FROM dispositivo WHERE id = ?",
+      "SELECT * FROM dispositivo WHERE id = ? AND deleted_at IS NULL",
       [id]
     );
     return rows[0];
@@ -36,9 +37,10 @@ class DeviceModel {
     id_area,
     id_trabajador
   ) {
+    const updated_at = new Date();
     const [result] = await pool.execute(
-      "UPDATE dispositivo SET tipo = ?, inventario = ?, nombre = ?, ip = ?, id_area = ?, id_trabajador = ? WHERE id = ?",
-      [tipo, inventario, nombre, ip, id_area, id_trabajador, id]
+      "UPDATE dispositivo SET tipo = ?, inventario = ?, nombre = ?, ip = ?, id_area = ?, id_trabajador = ?, updated_at = ? WHERE id = ?",
+      [tipo, inventario, nombre, ip, id_area, id_trabajador, updated_at, id]
     );
     return result.affectedRows > 0;
   }
@@ -51,30 +53,30 @@ class DeviceModel {
     return result.affectedRows > 0;
   }
 
-  static async addComponent(deviceId, componentId) {
-    try {
-      const [result] = await pool.execute(
-        "INSERT INTO dispositivo_componente (inventario_dispositivo, id_componente) VALUES (?, ?)",
-        [deviceId, componentId]
-      );
-      return result.affectedRows > 0;
-    } catch (error) {
-      console.error("Error asignando componente:", error);
-      throw error;
-    }
+  static async deleteAt(id) {
+    const deleted_at = new Date();
+    const [result] = await pool.execute(
+      "UPDATE dispositivo SET deleted_at = ? WHERE id = ?",
+      [deleted_at, id]
+    );
+    return result.affectedRows > 0;
   }
 
-  static async addPeripheral(deviceId, peripheralId) {
-    try {
-      const [result] = await pool.execute(
-        "INSERT INTO dispositivo_periferico (inventario_dispositivo, id_periferico) VALUES (?, ?)",
-        [deviceId, peripheralId]
-      );
-      return result.affectedRows > 0;
-    } catch (error) {
-      console.error("Error asignando periférico:", error);
-      throw error;
-    }
+  static async hasComponent(id) {
+    // Verificar si tiene componentes/periféricos asignados primero
+    const [components] = await pool.execute(
+      "SELECT COUNT(*) AS count FROM dispositivo_componente WHERE id_dispositivo = ?",
+      [id]
+    );
+    return components;
+  }
+
+  static async hasPeripheral(id) {
+    const [peripherals] = await pool.execute(
+      "SELECT COUNT(*) AS count FROM dispositivo_periferico WHERE id_dispositivo = ?",
+      [id]
+    );
+    return peripherals;
   }
 
   static async getAvailableComponents() {
@@ -91,11 +93,37 @@ class DeviceModel {
     return rows;
   }
 
-  static async assignPeripheral(deviceInventory, peripheralId) {
+  static async assignComponent(deviceId, componentId) {
+    try {
+      const [result] = await pool.execute(
+        "INSERT INTO dispositivo_componente (id_dispositivo, id_componente) VALUES (?, ?)",
+        [deviceId, componentId]
+      );
+      return result.affectedRows > 0;
+    } catch (error) {
+      console.error("Error asignando componente:", error);
+      throw error;
+    }
+  }
+
+  static async unassignComponent(id, componentId) {
+    try {
+      const [result] = await pool.execute(
+        "DELETE FROM dispositivo_componente WHERE id_dispositivo = ? AND id_componente = ?",
+        [id, componentId]
+      );
+      return result.affectedRows > 0;
+    } catch (error) {
+      console.error("Error desasignando componente:", error);
+      throw error;
+    }
+  }
+
+  static async assignPeripheral(id, peripheralId) {
     try {
       const [result] = await pool.execute(
         "INSERT INTO dispositivo_periferico (id_dispositivo, id_periferico) VALUES (?, ?)",
-        [deviceInventory, peripheralId]
+        [id, peripheralId]
       );
       return result.affectedRows > 0;
     } catch (error) {
@@ -104,11 +132,11 @@ class DeviceModel {
     }
   }
 
-  static async unassignPeripheral(deviceInventory, peripheralId) {
+  static async unassignPeripheral(id, peripheralId) {
     try {
       const [result] = await pool.execute(
         "DELETE FROM dispositivo_periferico WHERE id_dispositivo = ? AND id_periferico = ?",
-        [deviceInventory, peripheralId]
+        [id, peripheralId]
       );
       return result.affectedRows > 0;
     } catch (error) {

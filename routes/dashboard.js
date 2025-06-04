@@ -125,7 +125,7 @@ router.get("/device/:id", checkAuth(["VIEW_DEVICES"]), deviceController.showDeta
 router.post("/device/:id/assign/component", checkAuth(["MANAGE_DEVICES"]), deviceController.assignComponent);
 router.post("/device/:id/assign/peripheral", checkAuth(["MANAGE_DEVICES"]), deviceController.assignPeripheral);
 // Desasignación
-router.post("/device/:id/unassign/component/:id", checkAuth(["MANAGE_DEVICES"]), deviceController.unassignComponent);
-router.post("/device/:id/unassign/peripheral/:id", checkAuth(["MANAGE_DEVICES"]), deviceController.unassignPeripheral);
+router.post("/device/:id/unassign/component/:componentId", checkAuth(["MANAGE_DEVICES"]), deviceController.unassignComponent);
+router.post("/device/:id/unassign/peripheral/:peripheralId", checkAuth(["MANAGE_DEVICES"]), deviceController.unassignPeripheral);
 
 module.exports = router;

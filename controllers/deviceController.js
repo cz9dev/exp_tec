@@ -53,6 +53,7 @@ module.exports = {
   showDetails: async (req, res) => {
     try {
       const id = req.params.id;
+      const activeTab = req.query.tab ? req.query.tab : "components";      
       const device = await DeviceModel.findById(id);
       const assignedComponents = await ComponentModel.findByDeviceId(id);
       const assignedPeripherals = await PeripheralsModel.findByDeviceId(id);
@@ -67,6 +68,7 @@ module.exports = {
         availablePeripherals,
         title: "Gestión de Dispositivo",
         user: req.session.user,
+        activeTab,
       });
     } catch (error) {
       console.error(error);
@@ -132,15 +134,9 @@ module.exports = {
     const { id } = req.params;
     try {
       // Verificar si tiene componentes/periféricos asignados primero
-      const [components] = await pool.execute(
-        "SELECT COUNT(*) AS count FROM dispositivo_componente WHERE id = ?",
-        [id]
-      );
+      const components = await DeviceModel.hasComponent(id);
 
-      const [peripherals] = await pool.execute(
-        "SELECT COUNT(*) AS count FROM dispositivo_periferico WHERE id = ?",
-        [id]
-      );
+      const peripherals = await DeviceModel.hasPeripheral(id);
 
       if (components[0].count > 0 || peripherals[0].count > 0) {
         req.flash(
@@ -150,7 +146,7 @@ module.exports = {
         return res.redirect("/dashboard/device");
       }
 
-      const deleted = await DeviceModel.delete(id);
+      const deleted = await DeviceModel.deleteAt(id);
 
       if (deleted) {
         req.flash("success_msg", "Dispositivo eliminado correctamente");
@@ -168,40 +164,40 @@ module.exports = {
 
   // Asignar componente
   assignComponent: async (req, res) => {
-    try {
-      const { id } = req.params;
+    const { id } = req.params;
+    try {      
       const { componentId } = req.body;
-      await DeviceModel.addComponent(id, componentId);
+      await DeviceModel.assignComponent(id, componentId);
       req.flash("success_msg", "Componente asignado correctamente");
     } catch (error) {
       console.error(error);
       req.flash("error_msg", "Error al asignar componente");
     }
-    res.redirect(`/dashboard/device/${id}`);
+    res.redirect(`/dashboard/device/${id}?tab=components`);
   },
 
   // Desasignar componente
   unassignComponent: async (req, res) => {
-    try {
-      const { id, componentId } = req.params;
-      await pool.execute(
-        "DELETE FROM dispositivo_componente WHERE id_dispositivo = ? AND id_componente = ?",
-        [id, componentId]
-      );
-      req.flash("success_msg", "Componente desasignado");
+    const { id, componentId } = req.params;
+    try {      
+      const success = await DeviceModel.unassignComponent(id, componentId);      
+      if (success) {
+        req.flash("success_msg", "Componente desasignado");
+      } else {
+        req.flash("error_msg", "Error al desasignar componente");
+      }
     } catch (error) {
       console.error(error);
       req.flash("error_msg", "Error al desasignar");
     }
-    res.redirect(`/dashboard/device/${id}`);
+    res.redirect(`/dashboard/device/${id}?tab=components`);    
   },
 
   // Asignar periférico
   assignPeripheral: async (req, res) => {
-    try {
-      const { id } = req.params;
+    const { id } = req.params;
+    try {      
       const { peripheralId } = req.body;
-
       const success = await DeviceModel.assignPeripheral(
         id,
         peripheralId
@@ -215,15 +211,14 @@ module.exports = {
       console.error(error);
       req.flash("error_msg", "Error en el servidor");
     }
-    res.redirect(`/dashboard/device/${id}`);
+    res.redirect(`/dashboard/device/${id}?tab=peripherals`);
   },
 
   // Desasignar periférico
   unassignPeripheral: async (req, res) => {
+    const { id, peripheralId } = req.params;
     try {
-      const { id, idPeriferico } = req.params;
-
-      const success = await DeviceModel.unassignPeripheral(id, idPeriferico);
+      const success = await DeviceModel.unassignPeripheral(id, peripheralId);
       if (success) {
         req.flash("success_msg", "Periférico desasignado");
       } else {
@@ -233,6 +228,6 @@ module.exports = {
       console.error(error);
       req.flash("error_msg", "Error en el servidor");
     }
-    res.redirect(`/dashboard/device/${id}`);
+    res.redirect(`/dashboard/device/${id}?tab=peripherals`);    
   },
 };

@@ -11,6 +11,7 @@ const componentController = require("../controllers/componentController");
 const peripheralsTypesController = require("../controllers/peripheralsTypesController");
 const peripheralsController = require("../controllers/peripheralsController");
 const deviceController = require("../controllers/deviceController");
+const incidenciasController = require("../controllers/incidenciasController");
 
 const { checkAuth } = require("../middleware/auth");
 
@@ -121,11 +122,17 @@ router.get("/device/:id/edit", checkAuth(["MANAGE_DEVICES"]), deviceController.e
 router.post("/device/:id/update", checkAuth(["MANAGE_DEVICES"]), deviceController.update);
 router.post("/device/:id/delete", checkAuth(["MANAGE_DEVICES"]), deviceController.delete);
 router.get("/device/:id", checkAuth(["VIEW_DEVICES"]), deviceController.showDetails);
+router.get("/device/:id/incidencia", checkAuth(["MANAGE_DEVICES"]), deviceController.showIncidenciaForm);
+router.post("/device/:id/incidencia", checkAuth(["MANAGE_DEVICES"]), deviceController.createIncidencia);
 // Asignación
 router.post("/device/:id/assign/component", checkAuth(["MANAGE_DEVICES"]), deviceController.assignComponent);
 router.post("/device/:id/assign/peripheral", checkAuth(["MANAGE_DEVICES"]), deviceController.assignPeripheral);
 // Desasignación
 router.post("/device/:id/unassign/component/:componentId", checkAuth(["MANAGE_DEVICES"]), deviceController.unassignComponent);
 router.post("/device/:id/unassign/peripheral/:peripheralId", checkAuth(["MANAGE_DEVICES"]), deviceController.unassignPeripheral);
+// Gestión de incidencias
+router.get("/incidencias", checkAuth(["VIEW_INCIDENCES"]), incidenciasController.list); // Agrega la ruta para listar incidencias
+router.post("/incidencias/:id/delete", checkAuth(["MANAGE_INCIDENCES"]), incidenciasController.delete); //Ruta para eliminar
+
 
 module.exports = router;

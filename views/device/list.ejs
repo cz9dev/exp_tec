@@ -35,13 +35,17 @@
                         <%= device.trabajador || 'Sin asignar' %>
                     </td>
                     <td>
-                        <a href="/dashboard/device/<%= device.id %>" class="btn btn-sm btn-info"><i class="fas fa-search"></i></a>
-                        <a href="/dashboard/device/<%= device.id %>/edit" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                        <a href="/dashboard/device/<%= device.id %>" class="btn btn-sm btn-info"><i
+                                class="fas fa-search"></i></a>
+                        <a href="/dashboard/device/<%= device.id %>/edit" class="btn btn-sm btn-warning"><i
+                                class="fas fa-edit"></i></a>
                         <form action="/dashboard/device/<%= device.id %>/delete" method="POST" class="d-inline">
                             <button type="submit" class="btn btn-sm btn-danger">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </form>
+                        <a href="/dashboard/device/<%= device.id %>/incidencia" class="btn btn-sm btn-secondary"><i
+                                class="fas fa-exclamation-circle"></i> Incidencia</a>
                     </td>
                 </tr>
                 <% }); %>

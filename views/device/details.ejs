@@ -1,0 +1,138 @@
+<div class="container mt-4">
+    <h2>Gestión de: <%= device.nombre %> <small>(<%= device.id %>)</small></h2>
+
+    <!-- Pestañas -->
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <button class="nav-link <%= activeTab === 'components' ? 'active' : '' %>" id="components-tab"
+                data-bs-toggle="tab" data-bs-target="#components" type="button" role="tab" aria-controls="components"
+                aria-selected="true">Componentes</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link <%= activeTab === 'peripherals' ? 'active' : '' %>" id="peripherals-tab"
+                data-bs-toggle="tab" data-bs-target="#peripherals" type="button" role="tab" aria-controls="peripherals"
+                aria-selected="false">Periféricos</button>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <!-- COMPONENTES -->
+        <div class="tab-pane <%= activeTab === 'components' ? 'active show' : '' %>" id="components" role="tabpanel"
+            aria-labelledby="components-tab">
+            <div class="row">
+                <!-- Componentes asignados -->
+                <div class="col-md-6">
+                    <h4>Componentes asignados</h4>
+                    <% if (assignedComponents.length> 0) { %>
+                        <table class="table table-sm">
+                            <% assignedComponents.forEach(comp=> { %>
+                                <tr>
+                                    <td>
+                                        <%= comp.tipo_componente %>
+                                    </td>
+                                    <td>
+                                        <%= comp.modelo %>
+                                    </td>
+                                    <td>
+                                        <form
+                                            action="/dashboard/device/<%= device.id %>/unassign/component/<%= comp.id %>"
+                                            method="POST" class="d-inline">
+                                            <button type="submit" class="btn btn-danger btn-sm">✕</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                        </table>
+                        <% } else { %>
+                            <div class="alert alert-info">No hay componentes asignados</div>
+                            <% } %>
+                </div>
+
+                <!-- Componentes disponibles -->
+                <div class="col-md-6">
+                    <h4>Asignar nuevo componente</h4>
+                    <% if (availableComponents.length> 0) { %>
+                        <form action="/dashboard/device/<%= device.id %>/assign/component" method="POST">
+                            <div>
+                                <select name="componentId" class="form-select" required>
+                                    <% availableComponents.forEach(comp=> { %>
+                                        <option value="<%= comp.id %>">
+                                            <%= comp.modelo %> (<%= comp.numero_serie %>)
+                                        </option>
+                                        <% }); %>
+                                </select>
+                                <div style="height: 20px;"></div> <!-- Espacio de 20px -->
+                                <div class="d-flex justify-content-center gap-3">
+                                    <button type="submit" class="btn btn-success w-50">Asignar</button>
+                                    <a href="/dashboard/device" class="btn btn-secondary w-50">Cancelar</a>
+                                </div>
+                            </div>
+                        </form>
+                        <% } else { %>
+                            <div class="alert alert-warning">Todos los componentes están asignados</div>
+                            <% } %>
+                </div>
+            </div>
+        </div>
+
+        <!-- PERIFÉRICOS -->
+        <div class="tab-pane <%= activeTab === 'peripherals' ? 'active show' : '' %>" id="peripherals" role="tabpanel"
+            aria-labelledby="peripherals-tab">
+            <div class="row">
+                <!-- Periféricos asignados -->
+                <div class="col-md-6">
+                    <h4>Periféricos asignados</h4>
+                    <% if (assignedPeripherals.length> 0) { %>
+                        <table class="table table-sm">
+                            <% assignedPeripherals.forEach(perif=> { %>
+                                <tr>
+                                    <td>
+                                        <%= perif.tipo_periferico %>
+                                    </td>
+                                    <td>
+                                        <%= perif.modelo %>
+                                    </td>
+                                    <td>
+                                        <form
+                                            action="/dashboard/device/<%= device.id %>/unassign/peripheral/<%= perif.id %>"
+                                            method="POST" class="d-inline">
+                                            <button type="submit" class="btn btn-danger btn-sm">✕</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                        </table>
+                        <% } else { %>
+                            <div class="alert alert-info">No hay periféricos asignados</div>
+                            <% } %>
+                </div>
+
+                <!-- Periféricos disponibles -->
+                <div class="col-md-6">
+                    <h4>Asignar nuevo periférico</h4>
+                    <% if (availablePeripherals.length> 0) { %>
+                        <form action="/dashboard/device/<%= device.id %>/assign/peripheral" method="POST">
+                            <div>
+                                <select name="peripheralId" class="form-select" required>
+                                    <% availablePeripherals.forEach(perif=> { %>
+                                        <option value="<%= perif.id %>">
+                                            <%= perif.modelo %> (<%= perif.numero_serie %>)
+                                        </option>
+                                        <% }); %>
+                                </select>
+                                <div style="height: 20px;"></div>
+                                <div class="d-flex justify-content-center gap-3">
+                                    <button type="submit" class="btn btn-success w-50">Asignar</button>
+                                    <a href="/dashboard/device" class="btn btn-secondary w-50">Cancelar</a>
+                                </div>
+                            </div>
+                </div>
+                </form>
+                <% } else { %>
+                    <div class="alert alert-warning">Todos los periféricos están asignados</div>
+                    <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

@@ -1,0 +1,67 @@
+<div class="container mt-4 card border-secundary">
+    <h2>Registrar Incidencia para Dispositivo: <%= device.nombre %>
+    </h2>
+    <form action="/dashboard/device/<%= device.id %>/incidencia" method="POST">
+        <div class="mb-3">
+            <label>Tipo de Incidencia:</label><br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="hardware" name="tipo_incidencia" value="hardware">
+                <label class="form-check-label" for="hardware">Hardware</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="software" name="tipo_incidencia" value="software">
+                <label class="form-check-label" for="software">Software</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="mantenimiento" name="tipo_incidencia"
+                    value="mantenimiento" checked>
+                <label class="form-check-label" for="mantenimiento">Mantenimiento</label>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción:</label>
+            <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
+        </div>
+
+        <div class="mb-3 form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="resuelto" name="resuelto">
+            <label class="form-check-label" for="resuelto">Resuelto</label>
+        </div>
+
+        <div class="mb-3 form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="conforme" name="conforme">
+            <label class="form-check-label" for="conforme">Conforme</label>
+        </div>
+
+        <div class="mb-3">
+            <label for="id_trabajador" class="form-label">Trabajador Responsable (opcional):</label>
+            <select class="form-select" id="id_trabajador" name="id_trabajador">
+                <option value="">Seleccionar</option>
+                <% trabajadores.forEach(trabajador=> { %>
+                    <option value="<%= trabajador.id %>">
+                        <%= trabajador.nombres %>
+                    </option>
+                    <% }); %>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="fecha_incidencia">Fecha de Incidencia:</label>
+            <input type="date" name="fecha_incidencia" id="fecha_incidencia" value="" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="sello">Sello:</label>
+            <input type="text" class="form-control" name="sello" id="sello" required>
+        </div>
+
+        <input type="hidden" name="id_dispositivo" value="<%= device.id %>">
+        <input type="hidden" name="id_usuario" value="<%= user.id %>">
+        <div style="height: 20px;"></div>
+        <div class="d-flex justify-content-center gap-3">
+            <button type="submit" class="btn btn-primary w-50">Registrar Incidencia</button> 
+            <a href="/dashboard/device" class="btn btn-secondary w-50">Cancelar</a>
+        </div>
+    </form>
+</div>

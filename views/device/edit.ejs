@@ -1,0 +1,50 @@
+<div class="container mt-4 card border-secondary">
+    <h2>
+        <%= title %>
+    </h2>
+    <form action="/dashboard/device/<%= device.id %>/update" method="POST">
+        <div class="mb-3">
+            <label class="form-label">Tipo de dispositivo</label>
+            <select name="tipo" class="form-control" required>
+                <option value="Computadora" <%=device.tipo==='Computadora' ? 'selected' : '' %>>Computadora</option>
+                <option value="Laptop" <%=device.tipo==='Laptop' ? 'selected' : '' %>>Laptop</option>
+                <option value="Servidor" <%=device.tipo==='Servidor' ? 'selected' : '' %>>Servidor</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Número de inventario</label>
+            <input type="text" name="inventario" class="form-control" value="<%= device.inventario %>" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" name="nombre" class="form-control" value="<%= device.nombre %>" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Dirección IP</label>
+            <input type="text" name="ip" class="form-control" value="<%= device.ip || '' %>">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Área</label>
+            <select name="id_area" class="form-control" required>
+                <% areas.forEach(area=> { %>
+                    <option value="<%= area.id %>" <%=area.id===device.id_area ? 'selected' : '' %>>
+                        <%= area.nombre %>
+                    </option>
+                    <% }); %>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Trabajador responsable</label>
+            <select name="id_trabajador" class="form-control">
+                <option value="">Sin asignar</option>
+                <% trabajadores.forEach(trabajador=> { %>
+                    <option value="<%= trabajador.id %>" <%=trabajador.id===device.id_trabajador ? 'selected' : '' %>>
+                        <%= trabajador.nombres %>
+                    </option>
+                    <% }); %>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">Guardar Cambios</button>
+        <a href="/dashboard/device" class="btn btn-secondary btn-sm">Cancelar</a>
+    </form>
+    </div>

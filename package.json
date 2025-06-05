@@ -19,8 +19,11 @@
     "express-session": "^1.18.1",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
-    "multer": ">=2.0.0",
+    "multer": ">=2.0.1",
     "mysql2": "^3.14.0",
     "sequelize": "^6.37.7"
+  },
+  "devDependencies": {
+    "multer": ">=2.0.1"
   }
 }

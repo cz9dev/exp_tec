@@ -348,7 +348,7 @@ module.exports = {
         sello,
       } = req.body;
 
-      const id_usuario = req.session.user.id; // Obtén el ID del usuario de la sesión      
+      const id_usuario = req.session.user.id; // Obtén el ID del usuario de la sesión
 
       // Convertir a booleanos
       const resueltoBool = resuelto === "on";
@@ -364,20 +364,27 @@ module.exports = {
         id_trabajador === "" ? null : parseInt(id_trabajador, 10),
         conformeBool
       );
-
-      const success_sello = await DispositivoSelloModel.create(
-        sello,
-        id_dispositivo,
-        fecha_incidencia,
-        id_trabajador === "" ? null : parseInt(id_trabajador, 10),
-        id_usuario
-      );
-
       
-      if (success_sello && success_incidencia) {
-        req.flash("success_msg", "Registro de sello e incidencia correctamente");
+      if (
+        sello &&
+        (tipo_incidencia === "hardware" || tipo_incidencia === "mantenimiento")
+      ) {
+        const success_sello = await DispositivoSelloModel.create(
+          sello,
+          id_dispositivo,
+          fecha_incidencia,
+          id_trabajador === "" ? null : parseInt(id_trabajador, 10),
+          id_usuario
+        );
+        if (!success_sello) {          
+          req.flash("error_msg", "Error al registrar el sello");
+        }
+      }
+
+      if (success_incidencia) {
+        req.flash("success_msg", "Registro de incidencia correctamente");
       } else {
-        req.flash("error_msg", "Error al registrar sello e incidencia");
+        req.flash("error_msg", "Error al registrar la incidencia");
       }
 
       res.redirect(`/dashboard/device`);

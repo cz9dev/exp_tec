@@ -51,7 +51,7 @@
             <input type="date" name="fecha_incidencia" id="fecha_incidencia" value="" required>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" id="sello-field">
             <label for="sello">Sello:</label>
             <input type="text" class="form-control" name="sello" id="sello" required>
         </div>
@@ -65,3 +65,23 @@
         </div>
     </form>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () { // Asegurarse que el DOM está cargado
+        const tipoIncidenciaRadios = document.querySelectorAll('input[name="tipo_incidencia"]');
+        const selloField = document.getElementById('sello-field');
+        const selloInput = selloField.querySelector('input'); // Obtener el input directamente
+
+        tipoIncidenciaRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                if (radio.value === 'hardware' || radio.value === 'mantenimiento') {
+                    selloField.style.display = 'block'; // Mostrar el campo
+                    selloInput.required = true;
+                } else {
+                    selloField.style.display = 'none'; // Ocultar el campo
+                    selloInput.required = false;
+                }
+            });
+        });
+    });
+</script>

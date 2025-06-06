@@ -12,6 +12,7 @@ const peripheralsTypesController = require("../controllers/peripheralsTypesContr
 const peripheralsController = require("../controllers/peripheralsController");
 const deviceController = require("../controllers/deviceController");
 const incidenciasController = require("../controllers/incidenciasController");
+const sellosController = require("../controllers/sellosController");
 
 const { checkAuth } = require("../middleware/auth");
 
@@ -131,8 +132,10 @@ router.post("/device/:id/assign/peripheral", checkAuth(["MANAGE_DEVICES"]), devi
 router.post("/device/:id/unassign/component/:componentId", checkAuth(["MANAGE_DEVICES"]), deviceController.unassignComponent);
 router.post("/device/:id/unassign/peripheral/:peripheralId", checkAuth(["MANAGE_DEVICES"]), deviceController.unassignPeripheral);
 // Gestión de incidencias
-router.get("/incidencias", checkAuth(["VIEW_INCIDENCES"]), incidenciasController.list); // Agrega la ruta para listar incidencias
-router.post("/incidencias/:id/delete", checkAuth(["MANAGE_INCIDENCES"]), incidenciasController.delete); //Ruta para eliminar
-
+router.get("/incidencias", checkAuth(["VIEW_INCIDENCES"]), incidenciasController.list);
+router.post("/incidencias/:id/delete", checkAuth(["MANAGE_INCIDENCES"]), incidenciasController.delete);
+// Gestión de sellos
+router.get("/sellos", checkAuth(["VIEW_SELLOS"]), sellosController.list);
+router.post("/sellos/:id/delete", checkAuth(["MANAGE_SELLOS"]), sellosController.delete);
 
 module.exports = router;

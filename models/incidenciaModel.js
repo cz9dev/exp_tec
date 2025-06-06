@@ -1,6 +1,6 @@
 const pool = require("../config/db");
 const moment = require('moment');
-const { param } = require("../routes/dashboard");
+//const { param } = require("../routes/dashboard");
 
 
 class IncidenciaModel {

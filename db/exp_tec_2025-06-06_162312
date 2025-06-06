@@ -28,7 +28,7 @@ CREATE TABLE `area` (
   `nombre` varchar(250) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unic_nombre` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,7 +36,7 @@ CREATE TABLE `area` (
 --
 
 /*!40000 ALTER TABLE `area` DISABLE KEYS */;
-INSERT INTO `area` VALUES (2,'Dep. Dirección'),(6,'Dep. Económico'),(1,'Dep. Informático'),(10,'Dep. Jurídico');
+INSERT INTO `area` VALUES (12,'AyB'),(2,'Dep. Dirección'),(6,'Dep. Económico'),(1,'Dep. Informático'),(10,'Dep. Jurídico'),(11,'PISO'),(14,'RRHH'),(15,'RRPP'),(13,'SEGIROIDAD');
 /*!40000 ALTER TABLE `area` ENABLE KEYS */;
 
 --
@@ -202,6 +202,7 @@ CREATE TABLE `dispositivo_sello` (
   `fecha_cambio` datetime NOT NULL,
   `id_testigo` int(11) DEFAULT NULL,
   `id_usuario` int(11) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `id_dispositivo` (`id_dispositivo`),
   KEY `id_testigo` (`id_testigo`),
@@ -209,7 +210,7 @@ CREATE TABLE `dispositivo_sello` (
   CONSTRAINT `dispositivo_sello_ibfk_1` FOREIGN KEY (`id_dispositivo`) REFERENCES `dispositivo` (`id`),
   CONSTRAINT `dispositivo_sello_ibfk_2` FOREIGN KEY (`id_testigo`) REFERENCES `trabajadores` (`id`),
   CONSTRAINT `dispositivo_sello_ibfk_3` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -217,7 +218,7 @@ CREATE TABLE `dispositivo_sello` (
 --
 
 /*!40000 ALTER TABLE `dispositivo_sello` DISABLE KEYS */;
-INSERT INTO `dispositivo_sello` VALUES (1,'dfgdf43 ',2,'2025-06-04 00:00:00',1,1),(2,'fghfg',1,'2025-06-04 00:00:00',NULL,1);
+INSERT INTO `dispositivo_sello` VALUES (3,'ssf',2,'2025-06-06 00:00:00',1,1,'2025-06-06 13:36:13'),(4,'fgh544',1,'2025-06-06 00:00:00',NULL,1,'2025-06-06 13:57:28'),(5,'dsfg546',1,'2025-06-04 00:00:00',NULL,1,'2025-06-06 14:18:44');
 /*!40000 ALTER TABLE `dispositivo_sello` ENABLE KEYS */;
 
 --
@@ -244,7 +245,7 @@ CREATE TABLE `incidencia` (
   CONSTRAINT `incidencia_ibfk_1` FOREIGN KEY (`id_dispositivo`) REFERENCES `dispositivo` (`id`),
   CONSTRAINT `incidencia_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `incidencia_ibfk_3` FOREIGN KEY (`id_trabajador`) REFERENCES `trabajadores` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -252,7 +253,7 @@ CREATE TABLE `incidencia` (
 --
 
 /*!40000 ALTER TABLE `incidencia` DISABLE KEYS */;
-INSERT INTO `incidencia` VALUES (1,2,'mantenimiento','2025-06-04 14:11:10','dfsgd',1,1,1,0),(2,2,'mantenimiento','2025-06-04 14:14:31','dfgdgf',1,1,NULL,1),(3,2,'mantenimiento','2025-06-04 14:28:38','ghj',1,0,NULL,0),(4,1,'mantenimiento','2025-06-04 14:29:00','tyu',1,0,NULL,0),(5,2,'mantenimiento','2025-05-27 00:00:00','dfg',1,0,NULL,0),(6,2,'mantenimiento','2025-06-04 00:00:00','dfg',1,0,1,0),(7,2,'mantenimiento','2025-06-04 00:00:00','sdf',1,0,NULL,0),(8,1,'mantenimiento','2025-06-04 00:00:00','fghf',1,0,NULL,0);
+INSERT INTO `incidencia` VALUES (9,2,'software','2025-06-06 00:00:00','Se instalo driver pack',1,1,1,1),(10,2,'mantenimiento','2025-06-06 00:00:00','sdf',1,0,NULL,0),(11,2,'mantenimiento','2025-06-06 00:00:00','gf',1,0,NULL,0),(12,2,'software','2025-06-06 00:00:00','fgh',1,0,NULL,0),(13,1,'mantenimiento','2025-06-06 00:00:00','fgh',1,0,NULL,0),(14,1,'mantenimiento','2025-06-04 00:00:00','sdgfdfg',1,1,NULL,1);
 /*!40000 ALTER TABLE `incidencia` ENABLE KEYS */;
 
 --
@@ -352,7 +353,7 @@ CREATE TABLE `permisos` (
   `ruta` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -360,7 +361,7 @@ CREATE TABLE `permisos` (
 --
 
 /*!40000 ALTER TABLE `permisos` DISABLE KEYS */;
-INSERT INTO `permisos` VALUES (1,'VIEW_DASHBOARD','Ver panel principal','/dashboard'),(2,'MANAGE_USERS','Gestionar usuarios','/dashboard/users'),(3,'MANAGE_ROLES','Administrar roles','/dashboard/roles'),(4,'VIEW_REPORTS','Ver Reportes','/dasboard/reports'),(6,'VIEW_PERMISSIONS','Ver Permisos','/dasboard/permissions'),(8,'MANAGE_PERMISSIONS','Gestionar Permisos','/dasboard/permissions'),(9,'VIEW_USERS','Ver usuarios','/dashboard/users'),(10,'VIEW_ROLES','Ver roles','/dashboard/roles'),(12,'VIEW_BRANDS','Ver Marcas','/dashboard/brands'),(13,'MANAGE_BRANDS','Gestionar Marcas','/dashboard/brands '),(16,'VIEW_AREAS','Ver Areas','/dashboard/areas'),(17,'MANAGE_AREAS','Gestionar areas','/dashboard/areas'),(18,'VIEW_TRABAJADORES','Ver trabajadores','/dashboard/trabajadores'),(19,'MANAGE_TRABAJADORES','Gestionar trabajadores','/dashboard/trabajadores'),(20,'VIEW_COMPONENT_TYPES','Ver tipos de componentes','/dashboard/componentTypes'),(21,'MANAGE_COMPONENT_TYPES','Gestionar tipos de componentes','/dashboard/componentTypes'),(22,'VIEW_COMPONENT','Ver Componentes','/dashboard/component'),(23,'MANAGE_COMPONENTS','Gestionar componentes','/dashboard/component'),(24,'VIEW_PERIPHERALS_TYPES','Ver tipos de perifericos','/dashboard/'),(25,'MANAGE_PERIPHERALS_TYPES','Gestionar tipos de perifericos','/ashboard'),(26,'VIEW_PERIPHERALS','Ver perifericos','/dashboard/peripherals'),(27,'MANAGE_PERIPHERALS','Gestionar perifericos','/dashboard/peripherals'),(28,'VIEW_DEVICES','Ver dispositivos','/dashboard/device'),(29,'MANAGE_DEVICES','Gestionar dispositivos','/dashboard/device'),(30,'VIEW_INCIDENCES','Ver Incidencias','/dashboard/incidencias'),(31,'MANAGE_INCIDENCES','Gestionar Incidencias','/dashboard/incidencias');
+INSERT INTO `permisos` VALUES (1,'VIEW_DASHBOARD','Ver panel principal','/dashboard'),(2,'MANAGE_USERS','Gestionar usuarios','/dashboard/users'),(3,'MANAGE_ROLES','Administrar roles','/dashboard/roles'),(4,'VIEW_REPORTS','Ver Reportes','/dasboard/reports'),(6,'VIEW_PERMISSIONS','Ver Permisos','/dasboard/permissions'),(8,'MANAGE_PERMISSIONS','Gestionar Permisos','/dasboard/permissions'),(9,'VIEW_USERS','Ver usuarios','/dashboard/users'),(10,'VIEW_ROLES','Ver roles','/dashboard/roles'),(12,'VIEW_BRANDS','Ver Marcas','/dashboard/brands'),(13,'MANAGE_BRANDS','Gestionar Marcas','/dashboard/brands '),(16,'VIEW_AREAS','Ver Areas','/dashboard/areas'),(17,'MANAGE_AREAS','Gestionar areas','/dashboard/areas'),(18,'VIEW_TRABAJADORES','Ver trabajadores','/dashboard/trabajadores'),(19,'MANAGE_TRABAJADORES','Gestionar trabajadores','/dashboard/trabajadores'),(20,'VIEW_COMPONENT_TYPES','Ver tipos de componentes','/dashboard/componentTypes'),(21,'MANAGE_COMPONENT_TYPES','Gestionar tipos de componentes','/dashboard/componentTypes'),(22,'VIEW_COMPONENT','Ver Componentes','/dashboard/component'),(23,'MANAGE_COMPONENTS','Gestionar componentes','/dashboard/component'),(24,'VIEW_PERIPHERALS_TYPES','Ver tipos de perifericos','/dashboard/'),(25,'MANAGE_PERIPHERALS_TYPES','Gestionar tipos de perifericos','/ashboard'),(26,'VIEW_PERIPHERALS','Ver perifericos','/dashboard/peripherals'),(27,'MANAGE_PERIPHERALS','Gestionar perifericos','/dashboard/peripherals'),(28,'VIEW_DEVICES','Ver dispositivos','/dashboard/device'),(29,'MANAGE_DEVICES','Gestionar dispositivos','/dashboard/device'),(30,'VIEW_INCIDENCES','Ver Incidencias','/dashboard/incidencias'),(31,'MANAGE_INCIDENCES','Gestionar Incidencias','/dashboard/incidencias'),(32,'VIEW_SELLOS','Ver Sellos','/dashboard/sellos'),(33,'MANAGE_SELLOS','Gestionar Sellos','/dashboard/sellos');
 /*!40000 ALTER TABLE `permisos` ENABLE KEYS */;
 
 --
@@ -409,7 +410,7 @@ CREATE TABLE `roles_permisos` (
 --
 
 /*!40000 ALTER TABLE `roles_permisos` DISABLE KEYS */;
-INSERT INTO `roles_permisos` VALUES (1,1),(1,2),(1,3),(1,4),(1,6),(1,8),(1,9),(1,10),(1,12),(1,13),(1,16),(1,17),(1,18),(1,19),(1,20),(1,21),(1,22),(1,23),(1,24),(1,25),(1,26),(1,27),(1,28),(1,29),(1,30),(1,31),(2,1),(2,4),(2,16),(2,22),(2,26),(2,28);
+INSERT INTO `roles_permisos` VALUES (1,1),(1,2),(1,3),(1,4),(1,6),(1,8),(1,9),(1,10),(1,12),(1,13),(1,16),(1,17),(1,18),(1,19),(1,20),(1,21),(1,22),(1,23),(1,24),(1,25),(1,26),(1,27),(1,28),(1,29),(1,30),(1,31),(1,32),(1,33),(2,1),(2,4),(2,16),(2,22),(2,26),(2,28),(2,32);
 /*!40000 ALTER TABLE `roles_permisos` ENABLE KEYS */;
 
 --
@@ -558,4 +559,4 @@ INSERT INTO `usuarios_roles` VALUES (1,1),(17,2);
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-05  8:46:13
+-- Dump completed on 2025-06-06 16:23:15

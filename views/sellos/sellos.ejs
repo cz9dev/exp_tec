@@ -1,0 +1,67 @@
+<div class="container mt-4">
+    <h1>Sellos</h1>
+
+    <form id="search-form" method="GET" action="/dashboard/sellos">
+        <input type="text" name="search" id="search" placeholder="Buscar sello..." value="<%= search %>">
+        <label for="fecha_inicio">Fecha Inicio:</label>
+        <input type="date" name="fecha_inicio" id="fecha_inicio" value="<%= fecha_inicio %>">
+        <label for="fecha_fin">Fecha Fin:</label>
+        <input type="date" name="fecha_fin" id="fecha_fin" value="<%= fecha_fin %>">
+
+        <button type="submit" class="btn btn-sm btn-success mt-2"><i class="fas fa-search"></i> Buscar</button>
+    </form>
+
+    <table class="table table-bordered table-striped text-center mt-4">
+        <thead>
+            <tr>
+                <th>Sello</th>
+                <th>Dispositivo</th>
+                <th>Fecha</th>
+                <th>Testigo</th>
+                <th>Informático</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% sellos.forEach(sello=> { %>
+                <tr>
+                    <td>
+                        <%= sello.sello %>
+                    </td>
+                    <td>
+                        <%= sello.dispositivo_nombre %>
+                    </td>
+                    <td>
+                        <%= sello.fecha_cambio %>
+                    </td>
+                    <td>
+                        <%= sello.trabajador_nombre %>
+                    </td>
+                    <td>
+                        <%= sello.usuario_nombre %>
+                    </td>
+                    <td>
+                        <form action="/dashboard/sellos/<%= sello.id %>/delete" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                <% }); %>
+        </tbody>
+    </table>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <% for (let i=1; i <=Math.ceil(count / limit); i++) { %>
+                <li class="page-item <%= i == page ? 'active' : '' %>">
+                    <a class="page-link"
+                        href="?page=<%= i %>&search=<%= search %>&fecha_inicio=<%= fecha_inicio %>&fecha_fin=<%= fecha_fin %>">
+                        <%= i %>
+                    </a>
+                </li>
+                <% } %>
+        </ul>
+    </nav>
+</div>

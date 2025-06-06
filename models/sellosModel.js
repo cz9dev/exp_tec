@@ -13,7 +13,7 @@ class SellosModel {
     const [result] = await pool.execute(
       "INSERT INTO dispositivo_sello (sello, id_dispositivo, fecha_cambio, id_testigo, id_usuario) VALUES (?, ?, ?, ?, ?)",
       [sello, id_dispositivo, fecha_cambio, id_testigo, id_usuario]
-    );    
+    );
     return result.affectedRows > 0;
   }
 
@@ -56,26 +56,55 @@ class SellosModel {
     return rows[0];
   }
 
-  static async countQuery(search) {
+  static async countQuery(search, fecha_inicio, fecha_fin) {
     let whereClause = "";
     let params = [];
-    if (search) {
-      whereClause = `WHERE sello LIKE ?`; // Ajusta los campos según tu tabla
-      params = [`%${search}%`];
-    }
-    const countQuery = `SELECT COUNT(*) AS total FROM dispositivo_sello ${whereClause}`; // Corregido: incidencia (singular)
 
+    const conditions = [];
+    if (search) {
+      conditions.push("sello LIKE ?");
+      params.push(`%${search}%`);
+    }
+    if (fecha_inicio) {
+      conditions.push("DATE(fecha_cambio) >= ?");
+      params.push(fecha_inicio);
+    }
+    if (fecha_fin) {
+      conditions.push("DATE(fecha_cambio) <= ?");
+      params.push(fecha_fin);
+    }
+
+    if (conditions.length > 0) {
+      whereClause = "WHERE " + conditions.join(" AND ");
+    }
+
+    const countQuery = `SELECT COUNT(*) AS total FROM dispositivo_sello ${whereClause}`;
+
+    console.log("countParams:", params); // imprimir parametros
     const [countResult] = await pool.execute(countQuery, params);
     return countResult;
   }
 
-  static async dataQuery(search, limit, offset) {
+  static async dataQuery(search, fecha_inicio, fecha_fin, limit, offset) {
     let whereClause = "";
     let params = [];
 
+    const conditions = [];
     if (search) {
-      whereClause = `WHERE sello LIKE ?`; // Ajusta los campos según tu tabla
-      params = [`%${search}%`];
+      conditions.push("sello LIKE ?");
+      params.push(`%${search}%`);
+    }
+    if (fecha_inicio) {
+      conditions.push("DATE(fecha_cambio) >= ?");
+      params.push(fecha_inicio);
+    }
+    if (fecha_fin) {
+      conditions.push("DATE(fecha_cambio) <= ?");
+      params.push(fecha_fin);
+    }
+
+    if (conditions.length > 0) {
+      whereClause = "WHERE " + conditions.join(" AND ");
     }
 
     const dataQuery = `
@@ -100,18 +129,19 @@ class SellosModel {
     // Mapeamos los resultados y formateamos las fechas
     const formattedData = dataResult.map((sello) => ({
       ...sello,
-      fecha_cambio: moment(sello.fecha_cambio).format(
-        "MM/DD/YYYY hh:mm:ss A"
-      ),
+      fecha_cambio: moment(sello.fecha_cambio).format("MM/DD/YYYY hh:mm:ss A"),
     }));
+
+    console.log("countParams:", params); // imprimir parametros
 
     return formattedData;
   }
 
   static async delete(id) {
-    const [result] = await pool.execute("DELETE FROM dispositivo_sello WHERE id = ?", [
-      id,
-    ]);
+    const [result] = await pool.execute(
+      "DELETE FROM dispositivo_sello WHERE id = ?",
+      [id]
+    );
     return result.affectedRows > 0;
   }
 }

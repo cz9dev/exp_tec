@@ -2,12 +2,15 @@ const pool = require('../config/db'); // Asegúrate de tener configurado tu pool
 const sellosModel = require('../models/sellosModel');
 
 exports.list = async (req, res) => {
-  const { search, page = 1, limit = 10 } = req.query;
+  //const { search, page = 1, limit = 10 } = req.query;
+  const { search, page = 1, limit = 10, fecha_inicio, fecha_fin } = req.query;
   const offset = (page - 1) * limit;
 
   try {
-    const countResult = await sellosModel.countQuery(search);
-    const dataResult = await sellosModel.dataQuery(search, limit, offset);
+    //const countResult = await sellosModel.countQuery(search);
+    //const dataResult = await sellosModel.dataQuery(search, limit, offset);
+    const countResult = await sellosModel.countQuery(search, fecha_inicio, fecha_fin);
+    const dataResult = await sellosModel.dataQuery(search, fecha_inicio, fecha_fin, limit, offset);
 
     const total = countResult[0].total;
     res.render("sellos/sellos", {
@@ -16,6 +19,8 @@ exports.list = async (req, res) => {
       limit,
       page,
       search,
+      fecha_inicio,
+      fecha_fin,
       title: "Sellos",
       user: req.session.user,
     });

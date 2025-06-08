@@ -71,26 +71,54 @@ class IncidenciaModel {
     return rows[0];
   }
 
-  static async countQuery(search) {
+  static async countQuery(search, fecha_inicio, fecha_fin) {
     let whereClause = "";
     let params = [];
+
+    const conditions = [];
     if (search) {
-      whereClause = `WHERE tipo_incidencia LIKE ? OR descripcion LIKE ?`; // Ajusta los campos según tu tabla
-      params = [`%${search}%`, `%${search}%`];
+      conditions.push("tipo_incidencia LIKE ? OR descripcion LIKE ?");
+      params.push(`%${search}%`, `%${search}%`);
     }
+    if (fecha_inicio) {
+      conditions.push("DATE(fecha_incidencia) >= ?");
+      params.push(fecha_inicio);
+    }
+    if (fecha_fin) {
+      conditions.push("DATE(fecha_incidencia) <= ?");
+      params.push(fecha_fin);
+    }
+
+    if (conditions.length > 0) {
+      whereClause = "WHERE " + conditions.join(" AND ");
+    }
+
     const countQuery = `SELECT COUNT(*) AS total FROM incidencia ${whereClause}`; // Corregido: incidencia (singular)
-    
+
     const [countResult] = await pool.execute(countQuery, params);
     return countResult;
   }
 
-  static async dataQuery(search, limit, offset) {    
+  static async dataQuery(search, fecha_inicio, fecha_fin, limit, offset) {
     let whereClause = "";
     let params = [];
 
-    if (search) {      
-      whereClause = `WHERE tipo_incidencia LIKE ? OR descripcion LIKE ?`; // Ajusta los campos según tu tabla
-      params = [`%${search}%`, `%${search}%`];
+    const conditions = [];
+    if (search) {
+      conditions.push("(tipo_incidencia LIKE ? OR descripcion LIKE ?)");
+      params.push(`%${search}%`, `%${search}%`);
+    }
+    if (fecha_inicio) {
+      conditions.push("DATE(fecha_incidencia) >= ?");
+      params.push(fecha_inicio);
+    }
+    if (fecha_fin) {
+      conditions.push("DATE(fecha_incidencia) <= ?");
+      params.push(fecha_fin);
+    }
+
+    if (conditions.length > 0) {
+      whereClause = "WHERE " + conditions.join(" AND ");
     }
 
     const dataQuery = `
@@ -117,7 +145,7 @@ class IncidenciaModel {
     const formattedData = dataResult.map((incidencia) => ({
       ...incidencia,
       fecha_incidencia: moment(incidencia.fecha_incidencia).format(
-        "MM/DD/YYYY hh:mm:ss A"
+        "DD/MM/YYYY hh:mm:ss A"
       ),
     }));
 

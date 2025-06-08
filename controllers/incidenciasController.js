@@ -2,12 +2,14 @@ const pool = require('../config/db'); // Asegúrate de tener configurado tu pool
 const IncidenciaModel = require('../models/incidenciaModel');
 
 exports.list = async (req, res) => {
-  const { search, page = 1, limit = 10 } = req.query;
+  const { search, fecha_inicio, fecha_fin, page = 1, limit = 10 } = req.query;
   const offset = (page - 1) * limit;
 
   try {
-    const countResult = await IncidenciaModel.countQuery(search);
-    const dataResult = await IncidenciaModel.dataQuery(search, limit, offset);
+    //const countResult = await IncidenciaModel.countQuery(search);
+    //const dataResult = await IncidenciaModel.dataQuery(search, limit, offset);
+    const countResult = await IncidenciaModel.countQuery(search, fecha_inicio, fecha_fin);
+    const dataResult = await IncidenciaModel.dataQuery(search, fecha_inicio, fecha_fin, limit, offset);
 
     const total = countResult[0].total;
     res.render("incidencia/incidencias", {
@@ -16,6 +18,8 @@ exports.list = async (req, res) => {
       limit,
       page,
       search,
+      fecha_inicio,
+      fecha_fin,
       title: "Incidencias",
       user: req.session.user,
     });

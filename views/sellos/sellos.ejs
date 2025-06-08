@@ -34,8 +34,8 @@
                     <td>
                         <%= sello.fecha_cambio %>
                     </td>
-                    <td>
-                        <%= sello.trabajador_nombre %>
+                    <td>                        
+                        <%= sello.trabajador_nombre ? sello.trabajador_nombre : 'N/A' %>
                     </td>
                     <td>
                         <%= sello.usuario_nombre %>

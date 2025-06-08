@@ -1,8 +1,13 @@
 <div class="container mt-4">
     <h1>Incidencias</h1>
 
-    <form id="search-form">
+    <form id="search-form" method="GET" action="/dashboard/incidencias">
         <input type="text" name="search" id="search" placeholder="Buscar incidencia..." value="<%= search %>">
+        <label for="fecha_inicio">Fecha Inicio:</label>
+        <input type="date" name="fecha_inicio" id="fecha_inicio" value="<%= fecha_inicio %>">
+        <label for="fecha_fin">Fecha Fin:</label>
+        <input type="date" name="fecha_fin" id="fecha_fin" value="<%= fecha_fin %>">
+
         <button type="submit" class="btn btn-sm btn-success"><i class="fas fa-search"></i> Buscar</button>
     </form>
 
@@ -80,12 +85,3 @@
         </ul>
     </nav>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $('#search-form').submit(function (event) {
-        event.preventDefault();
-        const search = $('#search').val();
-        window.location.href = `?search=${search}`;
-    });
-</script>

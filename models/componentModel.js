@@ -91,10 +91,11 @@ class ComponentModel {
   static async findByDeviceId(deviceId) {
     try {
       const [rows] = await pool.execute(
-        `SELECT c.id, c.modelo, c.numero_serie, tc.nombre AS tipo_componente
+        `SELECT c.id, c.modelo, c.numero_serie, tc.nombre AS tipo_componente, m.marca
          FROM componente c
          JOIN tipo_componente tc ON c.id_tipo_componente = tc.id
          JOIN dispositivo_componente dc ON c.id = dc.id_componente
+         JOIN marca m ON c.id_marca = m.id
          WHERE dc.id_dispositivo = ?`,
         [deviceId]
       );

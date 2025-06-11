@@ -1,3 +1,7 @@
+const PDFDocument = require("pdfkit");
+const fs = require("node:fs");
+const path = require("node:path");
+
 const DeviceModel = require("../models/deviceModel");
 const ComponentModel = require("../models/componentModel");
 const PeripheralsModel = require("../models/peripheralsModel");
@@ -6,6 +10,8 @@ const TrabajadorModel = require("../models/trabajadorModel");
 const DispositivoAuditoriaModel = require("../models/dispositivoAuditoriaModel");
 const IncidenciaModel = require("../models/incidenciaModel");
 const DispositivoSelloModel = require("../models/dispositivoSelloModel");
+const UserModel = require("../models/userModel");
+const { default: test } = require("node:test");
 
 module.exports = {
   list: async (req, res) => {
@@ -364,7 +370,7 @@ module.exports = {
         id_trabajador === "" ? null : parseInt(id_trabajador, 10),
         conformeBool
       );
-      
+
       if (
         sello &&
         (tipo_incidencia === "hardware" || tipo_incidencia === "mantenimiento")
@@ -376,7 +382,7 @@ module.exports = {
           id_trabajador === "" ? null : parseInt(id_trabajador, 10),
           id_usuario
         );
-        if (!success_sello) {          
+        if (!success_sello) {
           req.flash("error_msg", "Error al registrar el sello");
         }
       }
@@ -392,6 +398,154 @@ module.exports = {
       console.error("Error en createIncidencia:", error);
       req.flash("error_msg", "Error al crear la incidencia");
       res.redirect(`/dashboard/device/${req.body.id_dispositivo}/incidencia`);
+    }
+  },
+
+  generateExpTecnicoPdf: async (req, res) => {
+    try {
+      const deviceId = req.params.id;
+      const device = await DeviceModel.findById(deviceId);
+      const component = await ComponentModel.findByDeviceId(deviceId);
+      const periferico = await PeripheralsModel.findByDeviceId(deviceId);
+
+      if (!device) {
+        return res.status(404).send("Dispositivo no encontrado");
+      }
+
+      const doc = new PDFDocument();
+      const stream = doc.pipe(
+        fs.createWriteStream("public/download/exp_tecnico.pdf")
+      );
+
+      doc.fontSize(28).text("Expediente Técnico", { align: "center" }); //Poner titulo de portada
+      doc.moveDown(4); //mover abajo      
+      // Poner imagen de portada de la caratula      
+      doc.image("public/images/pc.png", {
+        fit: [250, 300],
+        align: "center",
+        valign: "center",
+      });
+      doc.moveDown(6); //mover abajo
+      doc
+        .fontSize(18)
+        .text(`Dispositivo: ${device.nombre}`, { align: "center" }); // Poner el nombre del dispositivo
+
+      doc.addPage({
+        layout: "landscape",
+        margin: 20,
+      }); // Agregar nueva página
+
+      doc.fontSize(12);
+
+      let tableData = [
+        [
+          "",
+          {
+            colSpan: 5,
+            align: { x: "center", y: "center" },
+            text: "EXPEDIENTE TÉCNICO DE DISPOSITIVO",
+          },
+        ],
+        [
+          "Empresa:",
+          "",
+          "Responsable:",
+          device.trabajador,
+          "Área:",
+          device.area,
+        ],
+        [
+          "IP de dispositivo:",
+          device.ip,
+          "Nombre del dispositivo:",
+          device.nombre,
+          "Inventario:",
+          device.inventario,
+        ],
+        ["Tipo:", { colSpan: 5, text: device.tipo }],
+        [
+          {
+            colSpan: 4,
+            backgroundColor: "#ccc",
+            align: { x: "center", y: "center" },
+            text: "DETALLES DE COMPONENTES",
+          },
+        ],
+        ["Componente", "Marca", "Modelo", "Número de serie"],
+      ];
+
+      // Agregar filas para componentes
+      component.forEach((comp) => {
+        tableData.push([
+          comp.tipo_componente,
+          comp.marca,
+          comp.modelo,
+          comp.numero_serie,
+        ]);
+      });
+
+      tableData.push([
+        {
+          colSpan: 5,
+          backgroundColor: "#ccc",
+          align: {x:'center',y:'center'},
+          text: "DETALLES DE PERIFÉRICOS",
+        },
+      ]);
+      tableData.push([
+        "Periférico",        
+        "Marca",
+        "Modelo",
+        "Número de serie",
+        "Inventario",
+      ]);
+
+      // Agregar filas para periféricos
+      periferico.forEach((perif) => {
+        tableData.push([
+          perif.tipo_periferico,          
+          perif.marca,
+          perif.modelo,
+          perif.numero_serie,
+          perif.inventario,
+        ]);
+      });
+
+      doc.table({
+        data: tableData,
+      });
+
+      doc.moveDown(); //mover abajo
+
+      const userLogin = await UserModel.findById(req.session.user.id);
+      const informatico = userLogin.nombre + " " + userLogin.apellido;
+      doc.table({
+        defaultStyle: {border: false},
+        columnStyles: [54, "*", 46, 54, 10, 54, "*", 46, 54],        
+        data: [
+          [{ colSpan: 4, backgroundColor: "#ccc", text: "Responsable" },"", { colSpan: 4, backgroundColor: "#ccc", text: "Informático" }],
+          ["Nombre:", device.trabajador, "Firma:","_______","", "Nombre:", informatico, "Firma:","_______"],
+          ["Cargo:", "_______________________", "fecha:","_______","", "Cargo:", "_______________________", "fecha:","_______"],
+          [{ colSpan: 4, backgroundColor: "#ccc", text: "Jefe inmediato"}],
+          ["Nombre:", "_______________________", "Firma:","_______"],
+          ["Cargo:", "_______________________", "fecha:","_______"],
+        ],
+      });
+
+      doc.end();
+
+      stream.on("finish", () => {
+        const file = fs.createReadStream("public/download/exp_tecnico.pdf");
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader(
+          "Content-Disposition",
+          "attachment; filename=exp_tecnico.pdf"
+        );
+        file.pipe(res);
+      });
+    } catch (error) {
+      console.error("Error generando PDF:", error);
+      res.status(500).send("Error al generar el PDF");
     }
   },
 };

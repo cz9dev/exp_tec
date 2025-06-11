@@ -105,26 +105,17 @@
     >
       <span>Reportes</span>
     </h6>
-    <ul class="nav flex-column mb-2">
-      <li class="nav-item">
-        <a class="nav-link text-white <%= title === 'Expedientes Tecnicos' ? 'active' : '' %>" href="/dashboard/tecnical_expedient">
-          <i class="fas fa-file-alt me-2"></i> Expedientes técnicos
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white <%= title === 'Registro de incidencia' ? 'active' : '' %>" href="/dashboard/registro_incidencia">
-          <i class="fas fa-file-alt me-2"></i> Registro de Incidencia
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white <%= title === 'Registro de Sellos' ? 'active' : '' %>" href="/dashboard/registro_sellos">
-          <i class="fas fa-file-alt me-2"></i> Registro de Sellos
-        </a>
-      </li>
+    <ul class="nav flex-column mb-2">      
       <li class="nav-item">
         <a class="nav-link text-white <%= title === 'Registro de partes y piezas' ? 'active' : '' %>" href="/dashboard/partes_piezas">
           <i class="fas fa-file-alt me-2"></i> Registro Partes y Piezas
         </a>        
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white <%= title === 'Registro de auditoría' ? 'active' : '' %>"
+          href="/dashboard/auditoria">
+          <i class="fas fa-file-alt me-2"></i> Registro de auditoría
+        </a>
       </li>
     </ul>
   </div>

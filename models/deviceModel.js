@@ -22,7 +22,12 @@ class DeviceModel {
 
   static async findById(id) {
     const [rows] = await pool.execute(
-      "SELECT * FROM dispositivo WHERE id = ? AND deleted_at IS NULL",
+      `SELECT d.*, a.nombre AS area, t.nombres AS trabajador 
+      FROM dispositivo d
+      LEFT JOIN area a ON d.id_area = a.id
+      LEFT JOIN trabajadores t ON d.id_trabajador = t.id
+      WHERE d.deleted_at IS NULL
+      AND d.id = ? AND d.deleted_at IS NULL`,
       [id]
     );
     return rows[0];

@@ -8,7 +8,9 @@
         <label for="fecha_fin">Fecha Fin:</label>
         <input type="date" name="fecha_fin" id="fecha_fin" value="<%= fecha_fin %>">
 
-        <button type="submit" class="btn btn-sm btn-success"><i class="fas fa-search"></i> Buscar</button>
+        <button type="submit" class="btn-sm btn-success"><i class="fas fa-search"></i> Buscar</button>
+        <a href="/dashboard/incidencias/registro_incidencia_pdf" class="btn-sm btn-info">
+            <i class="fa fa-file-pdf" aria-hidden="true"></i></a>
     </form>
 
     <table class="table table-bordered table-striped text-center mt-4">
@@ -66,7 +68,7 @@
                             <button type="submit" class="btn btn-sm btn-danger">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
-                        </form>
+                        </form>                        
                     </td>
                 </tr>
                 <% }); %>

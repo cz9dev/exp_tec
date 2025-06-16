@@ -412,20 +412,30 @@ module.exports = {
         return res.status(404).send("Dispositivo no encontrado");
       }
 
-      const doc = new PDFDocument();
+      const doc = new PDFDocument({ size: "LETTER" });
       const stream = doc.pipe(
         fs.createWriteStream("public/download/exp_tecnico.pdf")
       );
 
-      doc.fontSize(28).text("Expediente Técnico", { align: "center" }); //Poner titulo de portada
-      doc.moveDown(4); //mover abajo      
-      // Poner imagen de portada de la caratula      
-      doc.image("public/images/pc.png", {
-        fit: [250, 300],
-        align: "center",
-        valign: "center",
+      doc.rect(30, 30, doc.page.width - 60, doc.page.height - 60).stroke();
+
+      doc.moveDown(2);
+      doc
+        .font("Helvetica-Bold")
+        .fontSize(28)
+        .text("Expediente Técnico", { align: "center" }); //Poner titulo de portada
+      //doc.moveDown(4); //mover abajo
+      // Poner imagen de portada de la caratula
+      const imageWidth = 300;
+      const imageHeight = 300;
+      const centerX = (doc.page.width - imageWidth) / 2; // Cálculo para centrar
+      const imageY = 250; // Ajusta según necesidad
+      doc.image("public/images/pc.png", centerX, imageY, {
+        width: imageWidth,
+        height: imageHeight,
       });
-      doc.moveDown(6); //mover abajo
+
+      doc.moveDown(16); //mover abajo
       doc
         .fontSize(18)
         .text(`Dispositivo: ${device.nombre}`, { align: "center" }); // Poner el nombre del dispositivo
@@ -435,20 +445,22 @@ module.exports = {
         margin: 20,
       }); // Agregar nueva página
 
-      doc.fontSize(12);
+      doc.font("Helvetica").fontSize(12);
 
       let tableData = [
         [
           "",
           {
             colSpan: 5,
+            font: "Helvetica-Bold",
             align: { x: "center", y: "center" },
             text: "EXPEDIENTE TÉCNICO DE DISPOSITIVO",
           },
         ],
+        // Fila de información general
         [
           "Empresa:",
-          "",
+          { test: "", colSpan: 1 },
           "Responsable:",
           device.trabajador,
           "Área:",
@@ -456,79 +468,219 @@ module.exports = {
         ],
         [
           "IP de dispositivo:",
-          device.ip,
+          { text: device.ip, colSpan: 1 },
           "Nombre del dispositivo:",
           device.nombre,
           "Inventario:",
           device.inventario,
         ],
-        ["Tipo:", { colSpan: 5, text: device.tipo }],
+        ["Tipo:", { text: device.tipo, colSpan: 5 }],
+        // Encabezado de componentes (4 columnas pero ocupa 6 con colSpan)
         [
           {
-            colSpan: 4,
+            colSpan: 6,
             backgroundColor: "#ccc",
+            font: "Helvetica-Bold",
             align: { x: "center", y: "center" },
             text: "DETALLES DE COMPONENTES",
           },
         ],
-        ["Componente", "Marca", "Modelo", "Número de serie"],
+        // Fila de encabezado para componentes (4 columnas distribuidas en 6)
+        [
+          { text: "Componente", colSpan: 1, width: 120 },
+          { text: "Marca", colSpan: 1, width: 100 },
+          { text: "Modelo", colSpan: 2, width: 150 },
+          { text: "Número de serie", colSpan: 2, width: 150 },
+        ],
       ];
 
       // Agregar filas para componentes
       component.forEach((comp) => {
         tableData.push([
-          comp.tipo_componente,
-          comp.marca,
-          comp.modelo,
-          comp.numero_serie,
+          { text: comp.tipo_componente, colSpan: 1 },
+          { text: comp.marca, colSpan: 1 },
+          { text: comp.modelo, colSpan: 2 },
+          { text: comp.numero_serie, colSpan: 2 },
         ]);
       });
 
+      // Encabezado de perifericos (5 columnas distribuidas en 6)
       tableData.push([
         {
-          colSpan: 5,
+          colSpan: 6,
+          font: "Helvetica-Bold",
           backgroundColor: "#ccc",
-          align: {x:'center',y:'center'},
+          align: { x: "center", y: "center" },
           text: "DETALLES DE PERIFÉRICOS",
         },
       ]);
+
+      // Fila de encazado para perifericos (5 columnas distribuidas en 6)
       tableData.push([
-        "Periférico",        
-        "Marca",
-        "Modelo",
-        "Número de serie",
-        "Inventario",
+        { text: "Periférico", colSpan: 1 },
+        { text: "Marca", colSpan: 1 },
+        { text: "Modelo", colSpan: 1 },
+        { text: "Número de serie", colSpan: 2 },
+        { text: "Inventario", colSpan: 1 },
       ]);
 
       // Agregar filas para periféricos
       periferico.forEach((perif) => {
         tableData.push([
-          perif.tipo_periferico,          
-          perif.marca,
-          perif.modelo,
-          perif.numero_serie,
-          perif.inventario,
+          { text: perif.tipo_periferico, colSpan: 1 },
+          { text: perif.marca, colSpan: 1 },
+          { text: perif.modelo, colSpan: 1 },
+          { text: perif.numero_serie, colSpan: 2 },
+          { text: perif.inventario, colSpan: 1 },
         ]);
       });
 
+      // Configuración de la tabla con anchos personalizados
       doc.table({
         data: tableData,
+        columnStyles: {
+          0: { width: 100 }, // Ancho columna 1
+          1: { width: 80 }, // Ancho columna 2
+          2: { width: 80 }, // Ancho columna 3
+          3: { width: 100 }, // Ancho columna 4
+          4: { width: 120 }, // Ancho columna 5
+          5: { width: 80 }, // Ancho columna 6
+        },
+        padding: 5,
       });
 
       doc.moveDown(); //mover abajo
 
+      // Verificar si hay espacio suficiente para el footer
+      const footerHeight = 200; // Altura estimada de tu sección de firmas
+      if (!checkSpaceForFooter(doc, footerHeight)) {
+        doc.addPage({ layout: "landscape" });
+      }
+
+      // Terminos y condiciones para firmante
+      doc.font("Helvetica-Bold").fontSize(14).text("TÉRMINOS Y CONDICIONES", {
+        align: "left",
+        underline: true,
+      });
+
+      doc.moveDown(0.5);
+      doc
+        .font("Helvetica")
+        .fontSize(11)
+        .text("El responsable declara aceptar los siguientes términos:", {
+          align: "left",
+        });
+
+      doc.moveDown(0.5);
+      doc.fontSize(11).text("1. Custodia y Uso Adecuado:", {
+        align: "left",
+        indent: 20,
+      });
+      doc.text(
+        "   • Se compromete a utilizar los materiales exclusivamente para fines laborales autorizados.",
+        {
+          indent: 40,
+        }
+      );
+      doc.text(
+        "   • Mantendrá los bienes en condiciones óptimas, evitando daños por mal uso o negligencia.",
+        {
+          indent: 40,
+        }
+      );
+
+      doc.moveDown(0.5);
+      doc.text("2. Prohibiciones:", {
+        indent: 20,
+      });
+      doc.text(
+        "   • No transferir los materiales a terceros sin autorización escrita.",
+        {
+          indent: 40,
+        }
+      );
+      doc.text("   • No desarmar, modificar o reparar los componentes.", {
+        indent: 40,
+      });
+
+      doc.moveDown(0.5);
+      doc.text("3. Devolución:", {
+        indent: 20,
+      });
+      doc.text(
+        "   • En caso de reubicación, terminación laboral o solicitud expresa, devolverá los materiales en el mismo estado (considerando desgaste normal).",
+        {
+          indent: 40,
+        }
+      );
+
+      doc.moveDown(0.5);
+      doc.text("4. Pérdida o Daño:", {
+        indent: 20,
+      });
+      doc.text(
+        "   • Reportar inmediatamente cualquier anomalía. Los costos por pérdida o daño atribuible a negligencia serán asumidos por el responsable.",
+        {
+          indent: 40,
+        }
+      );
+
+      // --- SECCIÓN CONFORMIDAD ---
+      doc.moveDown(1.5);
+      doc.font("Helvetica-Bold").fontSize(14).text("CONFORMIDAD", {
+        align: "left",
+        underline: true,
+      });
+
+      doc.moveDown(0.5);
+      doc
+        .font("Helvetica")
+        .fontSize(11)
+        .text(
+          "El abajo responsable firmante acepta los términos y reconoce haber recibido los materiales descritos:",
+          {
+            align: "left",
+          }
+        );
+
+      doc.moveDown(4); // Espacio antes de firmas
+
       const userLogin = await UserModel.findById(req.session.user.id);
       const informatico = userLogin.nombre + " " + userLogin.apellido;
       doc.table({
-        defaultStyle: {border: false},
-        columnStyles: [54, "*", 46, 54, 10, 54, "*", 46, 54],        
+        defaultStyle: { border: false },
+        columnStyles: [54, "*", 46, 54, 10, 54, "*", 46, 54],
         data: [
-          [{ colSpan: 4, backgroundColor: "#ccc", text: "Responsable" },"", { colSpan: 4, backgroundColor: "#ccc", text: "Informático" }],
-          ["Nombre:", device.trabajador, "Firma:","_______","", "Nombre:", informatico, "Firma:","_______"],
-          ["Cargo:", "_______________________", "fecha:","_______","", "Cargo:", "_______________________", "fecha:","_______"],
-          [{ colSpan: 4, backgroundColor: "#ccc", text: "Jefe inmediato"}],
-          ["Nombre:", "_______________________", "Firma:","_______"],
-          ["Cargo:", "_______________________", "fecha:","_______"],
+          [
+            { colSpan: 4, backgroundColor: "#ccc", text: "Responsable" },
+            "",
+            { colSpan: 4, backgroundColor: "#ccc", text: "Informático" },
+          ],
+          [
+            "Nombre:",
+            device.trabajador,
+            "Firma:",
+            "_______",
+            "",
+            "Nombre:",
+            informatico,
+            "Firma:",
+            "_______",
+          ],
+          [
+            "Cargo:",
+            "_______________________",
+            "fecha:",
+            "_______",
+            "",
+            "Cargo:",
+            "_______________________",
+            "fecha:",
+            "_______",
+          ],
+          [{ colSpan: 4, backgroundColor: "#ccc", text: "Jefe inmediato" }],
+          ["Nombre:", "_______________________", "Firma:", "_______"],
+          ["Cargo:", "_______________________", "fecha:", "_______"],
         ],
       });
 
@@ -549,3 +701,14 @@ module.exports = {
     }
   },
 };
+
+/**
+ * Función para verificar el espacio disponible para agregar el pie
+ * @param {*} doc
+ * @param {*} requiredHeight
+ * @returns
+ */
+function checkSpaceForFooter(doc, requiredHeight) {
+  const bottomMargin = 100; // Espacio reservado para el footer
+  return doc.y + requiredHeight < doc.page.height - bottomMargin;
+}

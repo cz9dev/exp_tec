@@ -9,6 +9,28 @@ class DeviceModel {
     return result.insertId;
   }
 
+  static async findAllWithPagination(limit, offset, whereClause = "") {
+    const [rows] = await pool.execute(
+      `
+      SELECT d.*, a.nombre AS area, t.nombres AS trabajador 
+      FROM dispositivo d
+      LEFT JOIN area a ON d.id_area = a.id
+      LEFT JOIN trabajadores t ON d.id_trabajador = t.id
+      ${whereClause}
+      LIMIT ? OFFSET ?
+    `,
+      [limit, offset]
+    );
+    return rows;
+  }
+
+  static async count(whereClause = "") {
+    const [[{ count }]] = await pool.execute(
+      `SELECT COUNT(*) AS count FROM dispositivo d ${whereClause}`
+    );
+    return count;
+  }
+
   static async findAll() {
     const [rows] = await pool.execute(`
       SELECT d.*, a.nombre AS area, t.nombres AS trabajador 

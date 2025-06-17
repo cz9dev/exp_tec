@@ -14,11 +14,31 @@ const UserModel = require("../models/userModel");
 const { default: test } = require("node:test");
 
 module.exports = {
+
   list: async (req, res) => {
+    
+    const { page = 1, limit = 10, search = "" } = req.query;
+    const offset = (page - 1) * limit;
+
+    let whereClause = "";
+    if (search) {
+      whereClause = `WHERE d.nombre LIKE '%${search}%'`;
+    }
+
     try {
-      const devices = await DeviceModel.findAll();
+      //const devices = await DeviceModel.findAll();
+      const [devices, count] = await Promise.all([
+        DeviceModel.findAllWithPagination(limit, offset, whereClause), // Nueva función del modelo
+        DeviceModel.count(whereClause), // Nueva función para el conteo total
+      ]);
+
       res.render("device/list", {
         devices,
+        count,
+        limit,
+        page,
+        search,
+        currentPage: parseInt(page),
         title: "Dispositivos",
         user: req.session.user,
       });

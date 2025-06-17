@@ -1,0 +1,58 @@
+<div class="container mt-4">
+    <h1>Partes y Piezas</h1>
+
+    <form id="search-form" method="GET" action="/dashboard/partespiesas">
+        <input type="text" name="search" id="search" placeholder="Buscar parte o pieza..." value="<%= search %>">
+        <button type="submit" class="btn-sm btn-success mt-2"><i class="fas fa-search"></i> Buscar</button>
+        <a href="/dashboard/partespiezas/registro_partes_piezas_pdf" class="btn-sm btn-info">
+            <i class="fa fa-file-pdf" aria-hidden="true"></i></a>
+    </form>
+
+    <% if (partespiesas.length> 0) { %>
+        <table class="table table-bordered table-striped text-center mt-4">
+            <thead>
+                <tr>
+                    <th>Tipo de componente</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Número de Serie</th>
+                    <!-- Agrega más columnas según sea necesario -->
+                </tr>
+            </thead>
+            <tbody>
+                <% partespiesas.forEach(parte=> { %>
+                    <tr>
+                        <td>
+                            <%= parte.tipo_componente_nombre %>
+                        </td>
+                        <td>
+                            <%= parte.marca_nombre %>
+                        </td>
+                        <td>
+                            <%= parte.modelo %>
+                        </td>
+                        <td>
+                            <%= parte.numero_serie %>
+                        </td>
+                        <!-- Agrega más celdas según sea necesario -->
+                    </tr>
+                    <% }); %>
+            </tbody>
+        </table>
+        <% } else { %>
+            </br>
+            <div class="alert alert-warning">No existen partes y piezas</div>
+            <% } %>
+
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <% for (let i=1; i <=Math.ceil(count / limit); i++) { %>
+                            <li class="page-item <%= i == page ? 'active' : '' %>">
+                                <a class="page-link" href="?page=<%= i %>&search=<%= search %>">
+                                    <%= i %>
+                                </a>
+                            </li>
+                            <% } %>
+                    </ul>
+                </nav>
+</div>

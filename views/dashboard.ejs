@@ -1,15 +1,460 @@
+<div class="container-fluid">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Dashboard</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group me-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
+          data-bs-target="#widgetsModal">
+          <i class="fas fa-cog"></i> Personalizar Widgets
+        </button>
+      </div>
+    </div>
+  </div>
 
-<div class="container mt-4">
-  <h2>Bienvenido al Dashboard</h2>
-  <p>
-  Dentro de muy pronto pordrá ver en esta pantalla información resumen de la
-  aplicación. En estos momentos aún estamos desarrollando otros módulos,
-  impresindibles para el correcto funcionamiento de la aplicación.
-  </p>
-  <p>Saludos grupo de desarrollo.</p>
-  <p>
-  Puede encontrarnos siguiendo nuestros enlaces a
-  <a href="https://tiaris-cu.github.io">Tiaris</a> by
-  <a href="https://cz9dev.github.io">cz9dev</a>
-  </p>
+  <div>
+    <p>
+      ¡Hola <%= user.username %>!, ¿que tiene en mente para hoy?, usted puede mantener actualizado
+        sus registros con nuetra ayuda. A continuación le mostramos información resumida mediante
+        witgets. Esperemos le sea útil.
+    </p>
+  </div>
+
+  <!-- Widgets Container -->
+  <div class="row" id="widgetsContainer">
+    <% if (widgets.incidencias.enabled) { %>
+      <div class="col-md-6 mb-3 widget" data-widget-type="incidencias">
+        <div class="card h-100">
+          <div class="card-header py-2 d-flex justify-content-between">
+            <span><i class="fas fa-exclamation-circle me-2"></i>Incidencias (últimos 7 días)</span>
+            <button class="btn btn-sm btn-outline-danger widget-remove"><i class="fas fa-times"></i></button>
+          </div>
+          <div class="card-body p-2">
+            <% if (widgets.incidencias.data && widgets.incidencias.data.length> 0) { %>
+              <canvas id="incidenciasChart" height="250" style="width: 100%"></canvas>
+              <% } else { %>
+                <div class="alert alert-info">No hay datos de incidencias para mostrar</div>
+                <% } %>
+          </div>
+        </div>
+      </div>
+      <% } %>
+
+        <% if (widgets.dispositivos.enabled) { %>
+          <div class="col-md-3 mb-4 widget" data-widget-type="dispositivos">
+            <div class="card h-100">
+              <div class="card-header d-flex justify-content-between">
+                <span><i class="fas fa-desktop me-2"></i>Dispositivos Activos</span>
+                <button class="btn btn-sm btn-outline-danger widget-remove"><i class="fas fa-times"></i></button>
+              </div>
+              <div class="card-body text-center">
+                <h2 class="display-4">
+                  <%= widgets.dispositivos.total %>
+                </h2>
+                <p class="text-muted">Dispositivos en total</p>
+              </div>
+            </div>
+          </div>
+          <% } %>
+
+            <% if (widgets.trabajadores.enabled) { %>
+              <div class="col-md-3 mb-4 widget" data-widget-type="trabajadores">
+                <div class="card h-100">
+                  <div class="card-header d-flex justify-content-between">
+                    <span><i class="fas fa-user-tie me-2"></i>Trabajadores</span>
+                    <button class="btn btn-sm btn-outline-danger widget-remove"><i class="fas fa-times"></i></button>
+                  </div>
+                  <div class="card-body text-center">
+                    <h2 class="display-4">
+                      <%= widgets.trabajadores.total %>
+                    </h2>
+                    <p class="text-muted">Trabajadores registrados</p>
+                  </div>
+                </div>
+              </div>
+              <% } %>
+
+                <% if (widgets.perifericos.enabled) { %>
+                  <div class="col-md-6 mb-3 widget" data-widget-type="perifericos">
+                    <div class="card h-100">
+                      <div class="card-header py-2 d-flex justify-content-between">
+                        <span><i class="fas fa-keyboard me-2"></i>Periféricos por Tipo</span>
+                        <button class="btn btn-sm btn-outline-danger widget-remove"><i
+                            class="fas fa-times"></i></button>
+                      </div>
+                      <div class="card-body p-2">
+                        <% if (widgets.perifericos.data && widgets.perifericos.data.length> 0) { %>
+                          <canvas id="perifericosChart" height="250" style="width: 100%"></canvas>
+                          <% } else { %>
+                            <div class="alert alert-info">No hay datos de perifericos para mostrar</div>
+                            <% } %>
+                      </div>
+                    </div>
+                  </div>
+                  <% } %>
+
+                  <% if (widgets.dispositivosPorTipo.enabled) { %>
+                    <div class="col-md-6 mb-3 widget" data-widget-type="dispositivosPorTipo">
+                      <div class="card h-100">
+                        <div class="card-header py-2 d-flex justify-content-between">
+                          <span><i class="fas fa-keyboard me-2"></i>Dispositivos por Tipo</span>
+                          <button class="btn btn-sm btn-outline-danger widget-remove"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div class="card-body p-2">
+                          <% if (widgets.dispositivosPorTipo.data && widgets.dispositivosPorTipo.data.length> 0) { %>
+                            <canvas id="dispositivosPorTipoChart" height="250" style="width: 100%"></canvas>
+                            <% } else { %>
+                              <div class="alert alert-info">No hay datos de dispositivos por tipo para mostrar</div>
+                              <% } %>
+                        </div>
+                      </div>
+                    </div>
+                    <% }%>
+  </div>
+
+  <!-- Modal para personalizar widgets -->
+  <div class="modal fade" id="widgetsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Personalizar Widgets</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="widgetsForm">
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="checkbox" id="widgetIncidences" <%=widgets.incidencias.enabled
+                ? 'checked' : '' %>>
+              <label class="form-check-label" for="widgetIncidences">
+                Gráfico de Incidencias
+              </label>
+            </div>
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="checkbox" id="widgetDevices" <%=widgets.dispositivos.enabled
+                ? 'checked' : '' %>>
+              <label class="form-check-label" for="widgetDevices">
+                Contador de Dispositivos
+              </label>
+            </div>
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="checkbox" id="widgetWorkers" <%=widgets.trabajadores.enabled
+                ? 'checked' : '' %>>
+              <label class="form-check-label" for="widgetWorkers">
+                Contador de Trabajadores
+              </label>
+            </div>
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="checkbox" id="widgetPerifericos" <%=widgets.perifericos.enabled
+                ? 'checked' : '' %>>
+              <label class="form-check-label" for="widgetPerifericos">
+                Perifericos por tipo
+              </label>
+            </div>
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="checkbox" id="widgetDispositivosPorTipo" <%=widgets.dispositivosPorTipo.enabled ? 'checked' : ''
+                %>>
+              <label class="form-check-label" for="widgetDispositivosPorTipo">
+                Dispositivos por tipo
+              </label>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" id="saveWidgets">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<% if (widgets.dispositivosPorTipo.enabled) { %>
+  <script>
+
+    function generarEscalaDeColores(cantidad) {
+      const hueStep = 360 / cantidad; // Distribuye colores equitativamente en el círculo cromático
+      const colores = [];
+
+      for (let i = 0; i < cantidad; i++) {
+        const hue = Math.floor(i * hueStep);
+        colores.push(`hsla(${hue}, 70%, 60%, 0.7)`);
+      }
+
+      return colores;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const ctx = document.getElementById('dispositivosPorTipoChart');
+      if (!ctx) return;
+
+      const dispositivosData = <%- JSON.stringify(widgets.dispositivosPorTipo.data) %>;
+
+      const labels = dispositivosData.map(item => item.tipo);
+      const data = dispositivosData.map(item => item.cantidad);
+
+      // Colores para cada tipo
+      const backgroundColors = generarEscalaDeColores(dispositivosData.length);
+
+      new Chart(ctx, {
+        type: 'doughnut', // Puedes cambiar a 'doughnut' 'pie' o 'bar'
+        data: {
+          labels: labels,
+          datasets: [{
+            data: data,
+            backgroundColor: backgroundColors,
+            borderColor: backgroundColors.map(color => color.replace('0.7', '1')),
+            borderWidth: 1
+          }]
+        },
+        options: {
+          maintainAspectRatio: false,
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'right',
+            },
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  const label = context.label || '';
+                  const value = context.raw || 0;
+                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                  const percentage = Math.round((value / total) * 100);
+                  return `${label}: ${value} (${percentage}%)`;
+                }
+              }
+            }
+          }
+        }
+      });
+    });
+  </script>
+  <% }%>
+
+<% if (widgets.perifericos.enabled) { %>
+  <script>
+
+  function generarEscalaDeColores(cantidad) {
+    const hueStep = 360 / cantidad; // Distribuye colores equitativamente en el círculo cromático
+    const colores = [];
+
+    for (let i = 0; i < cantidad; i++) {
+      const hue = Math.floor(i * hueStep);
+      colores.push(`hsla(${hue}, 70%, 60%, 0.7)`);
+    }
+
+    return colores;
+  }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const ctx = document.getElementById('perifericosChart');
+      if (!ctx) return;
+
+      const perifericosData = <%- JSON.stringify(widgets.perifericos.data) %>;
+
+      const labels = perifericosData.map(item => item.tipo);
+      const data = perifericosData.map(item => item.cantidad);
+
+      // Colores para cada tipo
+      const backgroundColors = generarEscalaDeColores(perifericosData.length);
+
+      new Chart(ctx, {
+        type: 'doughnut', // Puedes cambiar a 'doughnut' 'pie' o 'bar'
+        data: {
+          labels: labels,
+          datasets: [{
+            data: data,
+            backgroundColor: backgroundColors,
+            borderColor: backgroundColors.map(color => color.replace('0.7', '1')),
+            borderWidth: 1
+          }]
+        },
+        options: {
+          maintainAspectRatio: false,
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'right',
+            },
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  const label = context.label || '';
+                  const value = context.raw || 0;
+                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                  const percentage = Math.round((value / total) * 100);
+                  return `${label}: ${value} (${percentage}%)`;
+                }
+              }
+            }
+          }
+        }
+      });
+    });
+  </script>
+  <% }%>
+
+    <% if (widgets.incidencias.enabled) { %>
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const ctx = document.getElementById('incidenciasChart');
+          if (!ctx) return;
+
+          // Datos pasados desde el controlador
+          const incidenciasData = <%- JSON.stringify(widgets.incidencias.data) %>;
+
+          console.log('Datos de incidencias:', incidenciasData);
+
+          // Preparar etiquetas (días) y valores
+          const labels = incidenciasData.map(item => {
+            const fecha = new Date(item.dia);
+            return fecha.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' });
+          });
+
+          const data = incidenciasData.map(item => item.total);
+
+          // Crear el gráfico
+          new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Número de Incidencias',
+                data: data,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 2,
+                tension: 0.1,
+                fill: true
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: {
+                  display: false
+                },
+                tooltip: {
+                  callbacks: {
+                    title: function (context) {
+                      const fecha = new Date(incidenciasData[context[0].dataIndex].dia);
+                      return fecha.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
+                    },
+                    label: function (context) {
+                      return context.parsed.y + ' incidencia(s)';
+                    }
+                  }
+                }
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    stepSize: 1,
+                    precision: 0
+                  }
+                }
+              }
+            }
+          });
+        });
+      </script>
+      <% } %>
+
+        <script>
+          // Manejo de widgets
+          document.addEventListener('DOMContentLoaded', function () {
+            // Eliminar widget
+            document.querySelectorAll('.widget-remove').forEach(btn => {
+              btn.addEventListener('click', function () {
+                const widgetType = this.closest('.widget').dataset.widgetType;
+                this.closest('.widget').remove();
+
+                // Enviar preferencias actualizadas al servidor
+                const widgets = {
+                  incidencias: document.getElementById('widgetIncidences').checked,
+                  dispositivos: document.getElementById('widgetDevices').checked,
+                  trabajadores: document.getElementById('widgetWorkers').checked,
+                  perifericos: document.getElementById('widgetPerifericos').checked,
+                  dispositivosPorTipo: document.getElementById('widgetDispositivosPorTipo').checked,
+                };
+
+                if (!document.querySelector(`.widget[data-widget-type="incidencias"]`)) {
+                  widgets.incidencias = false;
+                }
+                if (!document.querySelector(`.widget[data-widget-type="dispositivos"]`)) {
+                  widgets.dispositivos = false;
+                }
+                if (!document.querySelector(`.widget[data-widget-type="trabajadores"]`)) {
+                  widgets.trabajadores = false;
+                }
+                if (!document.querySelector(`.widget[data-widget-type="perifericos"]`)) {
+                  widgets.perifericos = false;
+                }
+                if (!document.querySelector(`.widget[data-widget-type="dispositivosPorTipo"]`)) {
+                  widgets.dispositivosPorTipo = false;
+                }
+
+                fetch('/dashboard/save-widgets', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ widgets })
+                })
+                  .then(response => {
+                    if (!response.ok) {
+                      throw new Error(`Error HTTP! estado: ${response.status}`);
+                    }
+                    return response.json();
+                  })
+                  .then(data => {
+                    if (data.success) {
+                      console.log('Preferencias guardadas correctamente.');
+                    } else {
+                      console.error('Error al guardar preferencias:', data.message);
+                      // Opcionalmente, muestra un mensaje de error al usuario
+                      alert('Error al guardar las preferencias.');
+                    }
+                  })
+                  .catch(error => {
+                    console.error('Error al guardar preferencias:', error);
+                    // Opcionalmente, muestra un mensaje de error al usuario
+                    alert('Error al guardar las preferencias.');
+                  });
+              });
+            });
+
+            // Guardar preferencias
+            document.getElementById('saveWidgets').addEventListener('click', function () {
+              const widgets = {
+                incidencias: document.getElementById('widgetIncidences').checked,
+                dispositivos: document.getElementById('widgetDevices').checked,
+                trabajadores: document.getElementById('widgetWorkers').checked,
+                perifericos: document.getElementById('widgetPerifericos').checked,
+                dispositivosPorTipo: document.getElementById('widgetDispositivosPorTipo').checked,
+              };
+
+              fetch('/dashboard/save-widgets', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ widgets })
+              }).then(response => {
+                if (response.ok) {
+                  return response.json();
+                }
+                throw new Error('Error en la respuesta del servidor');
+              }).then(data => {
+                if (data.success) {
+                  location.reload();
+                } else {
+                  alert('Error al guardar preferencias: ' + (data.message || ''));
+                }
+              }).catch(error => {
+                console.error('Error:', error);
+                alert('Error al guardar preferencias');
+              });
+            });
+          });
+        </script>

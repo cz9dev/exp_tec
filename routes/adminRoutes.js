@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+
+const dashboardController = require("../controllers/dashboardController");
 const userController = require("../controllers/userController");
 const rolesController = require("../controllers/rolesController");
 const permissionsController = require("../controllers/permissionsController");
@@ -18,18 +20,13 @@ const auditoriaController = require("../controllers/auditoriaController");
 
 const { checkAuth } = require("../middleware/auth");
 
-/* GET home page. */
-router.get("/", checkAuth(["VIEW_DASHBOARD"]), (req, res) => {
-  try {
-    res.render("dashboard", {
-      title: "Dashboard",
-      user: req.session.user,
-    });
-  } catch (error) {
-    console.error(error);
-    res.redirect("/login");
-  }
-});
+// Dashboard
+router.get("/", 
+  checkAuth(["VIEW_DASHBOARD"]),
+  dashboardController.loadWidgetPreferences,
+  dashboardController.showDashboard
+);
+router.post("/save-widgets", checkAuth(["VIEW_DASHBOARD"]), dashboardController.saveWidgetPreferences);
 
 // Gestión de usuarios
 router.get("/users", checkAuth(["VIEW_USERS"]), userController.listUsers);

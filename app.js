@@ -79,7 +79,7 @@ app.use(express.static(path.join(__dirname, "public")));
 const loginRouter = require("./routes/login");
 const registerRouter = require("./routes/register");
 const forgotPasswordRouter = require("./routes/forgot-password");
-const dashboardRouter = require("./routes/dashboard");
+const adminRouter = require("./routes/adminRoutes");
 
 // Ruta de logout para cerrar sessión
 app.get("/logout", (req, res) => {
@@ -103,7 +103,7 @@ app.get("/", (req, res) => {
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
 app.use("/forgot-password", forgotPasswordRouter);
-app.use("/dashboard", dashboardRouter);
+app.use("/dashboard", adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

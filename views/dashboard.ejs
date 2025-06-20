@@ -76,14 +76,16 @@
                 <% if (widgets.perifericos.enabled) { %>
                   <div class="col-md-6 mb-3 widget" data-widget-type="perifericos">
                     <div class="card h-100">
-                      <div class="card-header py-2 d-flex justify-content-between">
+                      <div class="card-header py-2 d-flex justify-content-between align-items-center">
                         <span><i class="fas fa-keyboard me-2"></i>Periféricos por Tipo</span>
                         <button class="btn btn-sm btn-outline-danger widget-remove"><i
                             class="fas fa-times"></i></button>
                       </div>
-                      <div class="card-body p-2">
+                      <div class="card-body p-2 d-flex flex-column" style="min-height: 300px;">
                         <% if (widgets.perifericos.data && widgets.perifericos.data.length> 0) { %>
-                          <canvas id="perifericosChart" height="250" style="width: 100%"></canvas>
+                          <div class="chart-container" style="position: relative; height: 250px; width: 100%;">
+                            <canvas id="perifericosChart"></canvas>
+                          </div>
                           <% } else { %>
                             <div class="alert alert-info">No hay datos de perifericos para mostrar</div>
                             <% } %>
@@ -95,18 +97,20 @@
                   <% if (widgets.dispositivosPorTipo.enabled) { %>
                     <div class="col-md-6 mb-3 widget" data-widget-type="dispositivosPorTipo">
                       <div class="card h-100">
-                        <div class="card-header py-2 d-flex justify-content-between">
+                        <div class="card-header py-2 d-flex justify-content-between align-items-center">
                           <span><i class="fas fa-keyboard me-2"></i>Dispositivos por Tipo</span>
                           <button class="btn btn-sm btn-outline-danger widget-remove"><i class="fas fa-times"></i></button>
                         </div>
-                        <div class="card-body p-2">
+                        <div class="card-body p-2 d-flex flex-column" style="min-height: 300px;">
                           <% if (widgets.dispositivosPorTipo.data && widgets.dispositivosPorTipo.data.length> 0) { %>
-                            <canvas id="dispositivosPorTipoChart" height="250" style="width: 100%"></canvas>
+                            <div class="chart-container" style="position: relative; height: 250px; width: 100%;">
+                              <canvas id="dispositivosPorTipoChart"></canvas>
+                            </div>
                             <% } else { %>
-                              <div class="alert alert-info">No hay datos de dispositivos por tipo para mostrar</div>
+                              <div class="alert alert-info m-0">No hay datos de dispositivos por tipo para mostrar</div>
                               <% } %>
                         </div>
-                      </div>
+                      </div>             
                     </div>
                     <% }%>
   </div>

@@ -390,7 +390,6 @@ module.exports = {
         id_trabajador === "" ? null : parseInt(id_trabajador, 10),
         conformeBool
       );
-
       if (
         sello &&
         (tipo_incidencia === "hardware" || tipo_incidencia === "mantenimiento")

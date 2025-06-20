@@ -1,6 +1,21 @@
 const pool = require("../config/db");
 const User = require("../models/userModel");
-//const { checkAuth } = require("../middleware/auth");
+
+async function getUserPermissions(userId) {
+  try {
+    const [permissions] = await pool.execute(
+      `SELECT p.nombre FROM permisos p
+       JOIN roles_permisos rp ON p.id = rp.permiso_id
+       JOIN usuarios_roles ur ON rp.rol_id = ur.rol_id
+       WHERE ur.usuario_id = ?`,
+      [userId]
+    );
+    return permissions.map((p) => p.nombre);
+  } catch (error) {
+    console.error("Error al obtener permisos:", error);
+    return [];
+  }
+}
 
 function checkAuth(
   requiredPermissions = [],
@@ -22,18 +37,15 @@ function checkAuth(
         return res.redirect("/login");
       }
 
-      // Obtener permisos del usuario desde la base de datos
-      const [permissions] = await pool.execute(
-        `
-        SELECT p.nombre FROM permisos p
-        JOIN roles_permisos rp ON p.id = rp.permiso_id
-        JOIN usuarios_roles ur ON rp.rol_id = ur.rol_id
-        WHERE ur.usuario_id = ?
-      `,
-        [req.session.user.id]
-      );
+      // Obtener permisos del usuario
+      const userPermissions = await getUserPermissions(req.session.user.id);
 
-      const userPermissions = permissions.map((p) => p.nombre) || []; // Manejo de caso donde no hay permisos
+      // Almacenar permisos en la sesión para usar en las vistas
+      req.session.user.permissions = userPermissions;
+      res.locals.user = {
+        ...req.session.user,
+        permissions: userPermissions,
+      };
 
       // Verificar permisos necesarios
       const hasPermission = requiredPermissions.every((p) =>
@@ -42,7 +54,7 @@ function checkAuth(
 
       if (!hasPermission) {
         req.flash("error_msg", flashMessage);
-        return res.redirect("/dashboard"); // Redirigir a una página segura
+        return res.redirect("/dashboard");
       }
 
       req.user = user;
@@ -53,9 +65,12 @@ function checkAuth(
         "error",
         "Error al verificar permisos. Por favor, contacta al administrador."
       );
-      return res.redirect("/dashboard"); // Redirigir a una página segura
+      return res.redirect("/dashboard");
     }
   };
 }
 
-module.exports = { checkAuth };
+module.exports = {
+  checkAuth,
+  getUserPermissions, // Exportamos también para usarlo en el login
+};

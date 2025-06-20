@@ -1,131 +1,166 @@
 <aside class="sidebar bg-dark text-white">
   <div class="sidebar-sticky pt-3 sticky-margin">
-    <ul class="nav flex-column">
+    <!-- Menú Dashboard -->
+    <ul class="nav flex-column">      
       <li class="nav-item">
-        <a
-          class="nav-link text-white <%= title === 'Dashboard' ? 'active' : '' %>"
-          href="/dashboard"
-        >
+        <a class="nav-link text-white <%= title === 'Dashboard' ? 'active' : '' %>" href="/dashboard">
           <i class="fas fa-tachometer-alt me-2"></i> Dashboard
         </a>
-      </li>
+      </li>      
+    </ul>
 
-      <h6
-        class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted"
-      >
+    <!-- Menú Seguridad -->
+    <% if (hasPermission('VIEW_SECUQURITYS')) { %>
+    <ul class="nav flex-column">
+      <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
         <span>Seguridad</span>
       </h6>
 
+      <% if (hasPermission('VIEW_AUDITORIA')) { %>
       <li class="nav-item">
-        <a
-          class="nav-link text-white <%= title === 'Usuarios' ? 'active' : '' %>"
-          href="/dashboard/users"
-        >
+        <a class="nav-link text-white <%= title === 'Usuarios' ? 'active' : '' %>" href="/dashboard/users">
           <i class="fas fa-users me-2"></i> Usuarios
         </a>
       </li>
+      <% } %>
 
+      <% if (hasPermission('VIEW_ROLES')) { %>
       <li class="nav-item">
-        <a
-          class="nav-link text-white <%= title === 'Roles' ? 'active' : '' %>"
-          href="/dashboard/roles"
-        >
+        <a class="nav-link text-white <%= title === 'Roles' ? 'active' : '' %>" href="/dashboard/roles">
           <i class="fas fa-user-tag me-2"></i> Roles
         </a>
       </li>
+      <% } %>
 
+      <% if (hasPermission('VIEW_PERMISSIONS')) { %>
       <li class="nav-item">
-        <a
-          class="nav-link text-white <%= title === 'Permisos' ? 'active' : '' %>"
-          href="/dashboard/permissions"
-        >
+        <a class="nav-link text-white <%= title === 'Permisos' ? 'active' : '' %>" href="/dashboard/permissions">
           <i class="fas fa-key me-2"></i> Permisos
         </a>
       </li>
-    </ul>
+      <% } %>
 
+    </ul>
+    <% }%>
+
+    <!-- Menú Gestión -->
+    <% if (hasPermission('VIEW_GESTIONS')) { %>
     <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
       <span>Gestion</span>
     </h6>
-    <ul class="nav flex-column">    
-    <li class="nav-item">
-      <a class="nav-link text-white <%= title === 'Marcas' ? 'active' : '' %>" href="/dashboard/brands">
-        <i class="fas fa-box me-2"></i> Marcas
-      </a>
-    </li>    
-    <li class="nav-item">
-      <a class="nav-link text-white <%= title === 'Area' ? 'active' : '' %>" href="/dashboard/areas">
-        <i class="fas fa-border-all me-2"></i> Área
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link text-white <%= title === 'Trabajadores' ? 'active' : '' %>" href="/dashboard/trabajadores">
-        <i class="fas fa-user-tie me-2"></i> Trabajadores
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link text-white <%= title === 'Tipos de Componentes' ? 'active' : '' %>" href="/dashboard/componentTypes">
-        <i class="fas fa-layer-group me-2"></i> Tipos de Componentes
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link text-white <%= title === 'Componentes' ? 'active' : '' %>" href="/dashboard/component">
-        <i class="fas fa-list-ul me-2"></i> Componentes
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link text-white <%= title === 'Tipos de perifericos' ? 'active' : '' %>" href="/dashboard/peripheralsTypes">
-        <i class="fas fa-sitemap me-2"></i> Tipos de Periféricos
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link text-white <%= title === 'Perifericos' ? 'active' : '' %>" href="/dashboard/peripherals">
-        <i class="fas fa-external-link-alt me-2"></i> Periféricos
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link text-white <%= title === 'Dispositivos' ? 'active' : '' %>" href="/dashboard/device">
-        <i class="fas fa-desktop me-2"></i> Dispositivos
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link text-white <%= title === 'Incidencias' ? 'active' : '' %>" href="/dashboard/incidencias">
-        <i class="fas fa-exclamation-circle me-2"></i> Incidencias
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link text-white <%= title === 'Sellos' ? 'active' : '' %>" href="/dashboard/sellos">
-        <i class="fas fa-hashtag me-2"></i> Sellos
-      </a>
-    </li>
-    </ul>
+    <ul class="nav flex-column">
 
-    <h6
-      class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted"
-    >
+      <% if (hasPermission('VIEW_BRANDS')) { %>
+      <li class="nav-item">
+        <a class="nav-link text-white <%= title === 'Marcas' ? 'active' : '' %>" href="/dashboard/brands">
+          <i class="fas fa-box me-2"></i> Marcas
+        </a>
+      </li>
+      <% } %>
+
+      <% if (hasPermission('VIEW_AREAS')) { %>
+      <li class="nav-item">
+        <a class="nav-link text-white <%= title === 'Area' ? 'active' : '' %>" href="/dashboard/areas">
+          <i class="fas fa-border-all me-2"></i> Área
+        </a>
+      </li>
+      <% } %>
+
+      <% if (hasPermission('VIEW_TRABAJADORES')) { %>
+      <li class="nav-item">
+        <a class="nav-link text-white <%= title === 'Trabajadores' ? 'active' : '' %>" href="/dashboard/trabajadores">
+          <i class="fas fa-user-tie me-2"></i> Trabajadores
+        </a>
+      </li>
+      <% } %>
+
+      <% if (hasPermission('VIEW_COMPONENT_TYPES')) { %>
+      <li class="nav-item">
+        <a class="nav-link text-white <%= title === 'Tipos de Componentes' ? 'active' : '' %>"
+          href="/dashboard/componentTypes">
+          <i class="fas fa-layer-group me-2"></i> Tipos de Componentes
+        </a>
+      </li>
+      <% } %>
+
+      <% if (hasPermission('VIEW_COMPONENT')) { %>
+      <li class="nav-item">
+        <a class="nav-link text-white <%= title === 'Componentes' ? 'active' : '' %>" href="/dashboard/component">
+          <i class="fas fa-list-ul me-2"></i> Componentes
+        </a>
+      </li>
+      <% } %>
+
+      <% if (hasPermission('VIEW_PERIPHERALS_TYPES')) { %>
+      <li class="nav-item">
+        <a class="nav-link text-white <%= title === 'Tipos de perifericos' ? 'active' : '' %>"
+          href="/dashboard/peripheralsTypes">
+          <i class="fas fa-sitemap me-2"></i> Tipos de Periféricos
+        </a>
+      </li>
+      <% } %>
+
+      <% if (hasPermission('VIEW_PERIPHERALS')) { %>
+      <li class="nav-item">
+        <a class="nav-link text-white <%= title === 'Perifericos' ? 'active' : '' %>" href="/dashboard/peripherals">
+          <i class="fas fa-external-link-alt me-2"></i> Periféricos
+        </a>
+      </li>
+      <% } %>
+
+      <% if (hasPermission('VIEW_DEVICES')) { %>
+      <li class="nav-item">
+        <a class="nav-link text-white <%= title === 'Dispositivos' ? 'active' : '' %>" href="/dashboard/device">
+          <i class="fas fa-desktop me-2"></i> Dispositivos
+        </a>
+      </li>
+      <% } %>
+
+      <% if (hasPermission('VIEW_INCIDENCES')) { %>
+      <li class="nav-item">
+        <a class="nav-link text-white <%= title === 'Incidencias' ? 'active' : '' %>" href="/dashboard/incidencias">
+          <i class="fas fa-exclamation-circle me-2"></i> Incidencias
+        </a>
+      </li>
+      <% } %>
+
+      <% if (hasPermission('VIEW_SELLOS')) { %>
+      <li class="nav-item">
+        <a class="nav-link text-white <%= title === 'Sellos' ? 'active' : '' %>" href="/dashboard/sellos">
+          <i class="fas fa-hashtag me-2"></i> Sellos
+        </a>
+      </li>
+      <% } %>
+
+    </ul>
+    <% } %>
+
+    <!-- Menú Reportes -->
+    <% if (hasPermission('VIEW_REPORTS')) { %>
+    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
       <span>Reportes</span>
     </h6>
     <ul class="nav flex-column mb-2">
-      <li class="nav-item">
-        <a class="nav-link text-white <%= title === 'Expedientes Tecnicos' ? 'active' : '' %>" href="/dashboard/tecnical_expedient">
-          <i class="fas fa-file-alt me-2"></i> Expedientes técnicos
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white <%= title === 'Registro de incidencia' ? 'active' : '' %>" href="/dashboard/registro_incidencia">
-          <i class="fas fa-file-alt me-2"></i> Registro de Incidencia
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white <%= title === 'Registro de Sellos' ? 'active' : '' %>" href="/dashboard/registro_sellos">
-          <i class="fas fa-file-alt me-2"></i> Registro de Sellos
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white <%= title === 'Registro de partes y piezas' ? 'active' : '' %>" href="/dashboard/partes_piezas">
-          <i class="fas fa-file-alt me-2"></i> Registro Partes y Piezas
-        </a>        
-      </li>
+      <% if (hasPermission('VIEW_PARTESPIEZAS')) { %>
+        <li class="nav-item">
+          <a class="nav-link text-white <%= title === 'Registro de partes y piezas' ? 'active' : '' %>"
+            href="/dashboard/partespiezas">
+            <i class="fas fa-file-alt me-2"></i> Registro Partes y Piezas
+          </a>
+        </li>
+      <% } %>
+
+      <% if (hasPermission('VIEW_AUDITORIA')) { %>
+        <li class="nav-item">
+          <a class="nav-link text-white <%= title === 'Auditoría de Dispositivos' ? 'active' : '' %>"
+            href="/dashboard/auditoria">
+            <i class="fas fa-file-alt me-2"></i> Auditoría de Dispositivos
+          </a>
+         </li>
+      <% } %>
+            
     </ul>
+    <% } %>
+
   </div>
 </aside>

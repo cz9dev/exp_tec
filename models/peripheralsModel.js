@@ -105,10 +105,11 @@ class PeripheralsModel {
   static async findByDeviceId(deviceId) {
     try {
       const [rows] = await pool.execute(
-        `SELECT p.id, p.modelo, p.numero_serie, tp.nombre AS tipo_periferico
+        `SELECT p.id, p.modelo, p.numero_serie, tp.nombre AS tipo_periferico, m.marca, p.numero_inventario AS inventario
          FROM periferico p
          JOIN tipo_periferico tp ON p.id_tipo_periferico = tp.id
          JOIN dispositivo_periferico dp ON p.id = dp.id_periferico
+         JOIN marca m ON p.id_marca = m.id
          WHERE dp.id_dispositivo = ?`,
         [deviceId]
       );

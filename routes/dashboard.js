@@ -13,6 +13,8 @@ const peripheralsController = require("../controllers/peripheralsController");
 const deviceController = require("../controllers/deviceController");
 const incidenciasController = require("../controllers/incidenciasController");
 const sellosController = require("../controllers/sellosController");
+const partespiezasController = require("../controllers/partespiezasController");
+const auditoriaController = require("../controllers/auditoriaController");
 
 const { checkAuth } = require("../middleware/auth");
 
@@ -125,6 +127,7 @@ router.post("/device/:id/delete", checkAuth(["MANAGE_DEVICES"]), deviceControlle
 router.get("/device/:id", checkAuth(["VIEW_DEVICES"]), deviceController.showDetails);
 router.get("/device/:id/incidencia", checkAuth(["MANAGE_DEVICES"]), deviceController.showIncidenciaForm);
 router.post("/device/:id/incidencia", checkAuth(["MANAGE_DEVICES"]), deviceController.createIncidencia);
+router.get("/device/:id/exp_tecnico_pdf", checkAuth(["MANAGE_DEVICES"]), deviceController.generateExpTecnicoPdf);
 // Asignación
 router.post("/device/:id/assign/component", checkAuth(["MANAGE_DEVICES"]), deviceController.assignComponent);
 router.post("/device/:id/assign/peripheral", checkAuth(["MANAGE_DEVICES"]), deviceController.assignPeripheral);
@@ -137,5 +140,11 @@ router.post("/incidencias/:id/delete", checkAuth(["MANAGE_INCIDENCES"]), inciden
 // Gestión de sellos
 router.get("/sellos", checkAuth(["VIEW_SELLOS"]), sellosController.list);
 router.post("/sellos/:id/delete", checkAuth(["MANAGE_SELLOS"]), sellosController.delete);
+// Ver registro de partes y piezas
+router.get("/partespiezas", checkAuth(["VIEW_PARTESPIEZAS"]), partespiezasController.list);
+router.get("/partespiezas/registro_partes_piezas_pdf", checkAuth(["VIEW_PARTESPIEZAS"]), partespiezasController.generatePartesPiezasPdf);
+// Ver registro de auditoria
+router.get("/auditoria", checkAuth(["VIEW_AUDITORIA"]), auditoriaController.list);
+router.get("/auditoria/pdf", checkAuth(["VIEW_AUDITORIA"]), auditoriaController.pdf);
 
 module.exports = router;

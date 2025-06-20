@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
+const { getUserPermissions } = require("../middleware/auth");
 
 /* GET login page */
 router.get("/", function (req, res, next) {
@@ -19,7 +20,7 @@ router.post("/", async function (req, res, next) {
 
   try {
     // 1. Buscar usuario por email
-    const user = await User.findByEmail(email);
+    const user = await User.findByEmail(email);    
 
     // 2. Verificar si el usuario existe y la contraseña coincide
     if (!user) {
@@ -41,12 +42,15 @@ router.post("/", async function (req, res, next) {
       });
     }
 
+    const permissions = await getUserPermissions(user.id);
+
     // 3. Si todo es correcto, crear sesión
     req.session.user = {
       id: user.id,
       username: user.username,
       email: user.email,
       profile_image: user.profile_image,
+      permissions: permissions,
     };
 
     req.session.save(() => {

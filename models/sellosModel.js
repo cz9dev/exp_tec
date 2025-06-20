@@ -129,7 +129,7 @@ class SellosModel {
     // Mapeamos los resultados y formateamos las fechas
     const formattedData = dataResult.map((sello) => ({
       ...sello,
-      fecha_cambio: moment(sello.fecha_cambio).format("MM/DD/YYYY hh:mm:ss A"),
+      fecha_cambio: moment(sello.fecha_cambio).format("DD/MM/YYYY hh:mm:ss A"),
     }));
 
     console.log("countParams:", params); // imprimir parametros

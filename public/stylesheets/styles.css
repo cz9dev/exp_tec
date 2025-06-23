@@ -1,155 +1,381 @@
-body {  
+/* ===== Variables y Estilos Base ===== */
+:root {
+  --primary-color: #28a745;
+  --primary-hover: #218838;
+  --secondary-color: #007bff;
+  --dark-bg: #343a40;
+  --nav-bg: #333;
+  --text-light: #fff;
+  --text-dark: #333;
+  --transition: all 0.3s ease;
+}
+
+body {
   display: flex;
-  min-height: 100vh; /* Asegúrate de que el body ocupe toda la altura */
+  min-height: 100vh;
   margin: 0;
+  font-family: 'Poppins', sans-serif;
+  color: var(--text-dark);
+  background-color: #f5f5f5;
+  background-image: linear-gradient(to right bottom, #f5f7fa, #e4e8f0);
 }
 
-.logo{
-  text-align: center;
-}
-
+/* ===== Contenedores de Autenticación ===== */
+.login-container,
 .register-container,
 .forgot-password-container,
-.login-container,
 .error-container {
-  max-width: 400px;
-  margin: 100px auto;
-  padding: 20px;
-  background: #fff;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 420px;
+  width: 90%;
+  margin: auto;
+  padding: 2.5rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
-.card {         
-    /* Añadir padding para que no quede pegado el texto */
-    padding: 0.25rem 0.5rem;    
+.login-container::before,
+.register-container::before,
+.forgot-password-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+}
+
+.logo {
+  margin-bottom: 1.5rem;
+  transition: var(--transition);
+}
+
+.logo img {
+  width: 150px;
+  height: auto;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+  transition: var(--transition);
+}
+
+.logo:hover img {
+  transform: scale(1.05);
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.15));
+}
+
+.login-container h1,
+.register-container h1,
+.forgot-password-container h1 {
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  font-weight: 600;
+  font-size: 1.8rem;
+}
+
+/* Formularios */
+.login-container form,
+.register-container form,
+.forgot-password-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .form-group {
+  text-align: left;
   margin-bottom: 15px;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #4a5568;
 }
 
 .form-group input {
   width: 100%;
-  padding: 8px;
-  box-sizing: border-box;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: var(--transition);
 }
 
-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #28a745;
+.form-group input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
+}
+
+/* Checkbox "Recordar contraseña" */
+.login-container form>div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: -0.5rem;
+}
+
+.login-container form>div input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+
+.login-container form>div label {
+  margin: 0;
+  font-weight: normal;
+}
+
+/* Botones */
+.login-container button,
+.register-container button,
+.forgot-password-container button {
+  padding: 0.75rem;
+  background-color: var(--primary-color);
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: var(--transition);
+  margin-top: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.login-container button:hover,
+.register-container button:hover,
+.forgot-password-container button:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.btn {
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
 }
 
 .btn-sm {
-    /* Hacer que el ancho se base en el contenido */
-      width: fit-content;
-      /* Remover cualquier ancho máximo o fijo */
-      max-width: none;
-      /* Asegurar que no se aplica un ancho del 100% */
-      width: auto;
-      /* Añadir padding para que no quede pegado el texto */
-      padding: 0.25rem 0.5rem;
-      /* Opcional: Centrar el texto */
-      text-align: center;
+  padding: 6px 12px;
+  font-size: 0.875rem;
+  width: auto;
 }
 
-button:hover {
-  background-color: #218838;
-}
-
+/* Enlaces */
 .links {
-  margin-top: 10px;
-  text-align: center;
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .links a {
-  color: #007bff;
+  color: var(--secondary-color);
   text-decoration: none;
+  font-size: 0.9rem;
+  transition: var(--transition);
 }
 
 .links a:hover {
+  color: #2b6cb0;
   text-decoration: underline;
 }
 
-.dashboard-container {
-  margin-left: 20;
-  margin-right: 20;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1; /* Ocupa todo el espacio disponible */  
+/* Alertas */
+.alert {
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  font-size: 0.9rem;
 }
 
+.alert.error {
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+/* ===== Layout Principal ===== */
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.main-content {
+  margin-top: 60px;
+  padding: 20px;
+  margin-left: 250px;
+  transition: var(--transition);
+}
+
+/* ===== Barra de Navegación Superior ===== */
 .top-nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #333;
-  color: white;
+  background-color: var(--nav-bg);
+  color: var(--text-light);
   padding: 10px 20px;
   width: 100%;
-  position: fixed; /* Fija el top-nav en la parte superior */
-  top: 0; /* Posición en la parte superior */
-  left: 0; /* Posición a la izquierda */
-  z-index: 100; /* Asegura que esté por encima de otros elementos */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.search-box {
+.logo-menu {
   display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
-.search-box input {
-  padding: 5px;
-  border: none;
-  border-radius: 3px;
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.search-box button {
-  background-color: #007bff;
+.logo-bar {
+  height: 40px;
+  filter: brightness(0) invert(1);
+  transition: var(--transition);
+}
+
+.app-name {
+  color: var(--text-light);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.logo-container:hover .app-name {
+  text-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
+}
+
+.menu-toggle {
+  background: none;
   border: none;
-  color: white;
-  padding: 5px 10px;
-  margin-left: 5px;
-  border-radius: 3px;
+  color: var(--text-light);
+  font-size: 1.25rem;
   cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  transition: var(--transition);
 }
 
-.nav-link {
-  background-color: transparent;
-  color: white;
-  padding: 10px 15px;
-  border-radius: 5px;
-  /* Bordes redondeados */
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+.menu-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-.nav-link:hover {
-  background-color: #6c757d;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  /* Sombra sutil */
+/* ===== Sidebar ===== */
+.sidebar {
+  width: 250px;
+  background-color: var(--dark-bg);
+  position: fixed;
+  top: 60px;
+  left: 0;
+  height: calc(100vh - 60px);
+  transition: var(--transition);
+  overflow-y: auto;
+  z-index: 900;
 }
 
-.nav-link.active {
-  background-color: #007bff;
-  color: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  /* Sombra más pronunciada */
+.sidebar-sticky {
+  padding-top: 15px;
 }
 
+.sidebar.collapsed {
+  width: 70px;
+}
+
+.sidebar.collapsed~.main-content {
+  margin-left: 70px;
+}
+
+.sidebar .nav {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar .nav-item {
+  margin-bottom: 5px;
+}
+
+.sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  color: #ecf0f1;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.sidebar .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar .nav-link.active {
+  background-color: #2c3e50;
+}
+
+.sidebar .nav-link i {
+  margin-right: 10px;
+  width: 20px;
+  text-align: center;
+}
+
+/* Sidebar colapsado */
+.sidebar.collapsed .nav-text,
+.sidebar.collapsed .sidebar-heading span {
+  display: none;
+}
+
+.sidebar.collapsed .nav-link {
+  justify-content: center;
+  padding: 12px 0;
+}
+
+.sidebar.collapsed .nav-link i {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+/* ===== Menú de Usuario ===== */
 .user-menu {
   position: relative;
   display: flex;
   align-items: center;
-  margin-left: auto; /* Mueve el menú a la derecha */
+  margin-left: auto;
 }
 
 .user-icon {
@@ -163,6 +389,12 @@ button:hover {
   height: 30px;
   border-radius: 50%;
   margin-right: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: border-color 0.3s ease;
+}
+
+.user-icon:hover img {
+  border-color: rgba(255, 255, 255, 0.7);
 }
 
 .user-icon span {
@@ -170,202 +402,86 @@ button:hover {
   font-size: 14px;
 }
 
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  min-width: 200px;
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1001;
+  overflow: hidden;
+}
+
+.dropdown-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-menu li {
+  border-bottom: 1px solid #eee;
+}
+
+.dropdown-menu li:last-child {
+  border-bottom: none;
+}
+
+.dropdown-menu li a {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  color: var(--text-dark);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.dropdown-menu li a:hover {
+  background-color: #f8f9fa;
+  color: var(--secondary-color);
+}
+
+.user-menu.active .dropdown-menu {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+/* ===== Component-icon ===== */
 .component-icon {
   display: flex;
-  align-items: center; /* Alinea verticalmente al centro */
-  justify-content: center; /* Alinea horizontalmente al centro */
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  flex-direction: column;
+  text-align: center;
 }
 
 .component-icon img {
   width: 80px;
   height: 80px;
-  border-radius: 10%;  
+  border-radius: 10%;
+  margin-bottom: 10px;
+  object-fit: cover;
 }
 
 .component-icon span {
-  color: white;
-  font-size: 14px;
-  margin-left: 10px;
+  color: var(--text-dark);
+  font-size: 0.9rem;
+  margin-left: 0;
 }
 
-/* Estilos para el menú desplegable */
-.dropdown-menu {
-  display: none; /* Oculto por defecto */
-  position: absolute;
-  top: 100%; /* Posición debajo del avatar */
-  right: 0;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000; /* Asegura que esté por encima de otros elementos */
+/* ===== Card ===== */
+.card {
+  padding: 0.25rem 0.5rem;
+  margin-bottom: 1rem;
+  background-color: #fff;
+  border-radius: 0.25rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
 
-.dropdown-menu ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.dropdown-menu ul li {
-  padding: 10px 20px;
-}
-
-.dropdown-menu ul li a {
-  text-decoration: none;
-  color: #333;
-  font-size: 14px;
-}
-
-.dropdown-menu ul li a:hover {
-  color: #007bff;
-}
-
-/* Mostrar el menú desplegable al hacer clic */
-.user-menu.active .dropdown-menu {
-  display: block;
-}
-
-.sidebar {  
-  width: 250px; /* Example width */
-  background-color: #343a40; /* Color de fondo del sidebar */
-  position: fixed; /* Keeps the sidebar in place */
-  top: 0;
-  left: 0;
-  height: 100%; /* Makes the sidebar full height */
-  transition: width 0.3s ease-in-out; /* Agrega transición para una mejor animación */
-  overflow-y: auto; /* Add scrollbar if content is larger than screen height */  
-}
-
-.sticky-margin {
-  margin-top: 50px;
-}
-
-.sidebar-collapsed .sidebar-link {
-  padding: 0.5rem 0.5rem; /* Ajusta este padding a tu gusto */
-  text-align: center; /* Centra los iconos */
-}
-
-
-.sidebar-collapsed .sidebar-link span:first-child { /* Oculta el texto */
-  display: none;
-}
-
-.sidebar-collapsed .sidebar-link svg { /* Si usas SVG para iconos */
-  display: block; /* Mostrar los iconos */
-}
-
-
-.sidebar-collapsed #sidebar-toggle span {
-  /* Cambia el icono cuando el sidebar está colapsado */
-  content: "\25BC"; /* Ejemplo: Triángulo hacia abajo */
-}
-
-.sidebar:not(.sidebar-collapsed) #sidebar-toggle span {
-  /* Icono cuando el sidebar está expandido */
-  content: "\25B2"; /* Ejemplo: Triángulo hacia arriba */
-}
-
-/* Estilo para ocultar la sidebar */
-.sidebar.hide {
-  transform: translateX(-100%);
-  /* Desplaza la sidebar fuera de la vista */
-}
-
-#sidebar-toggle {
-  position: fixed;
-  top: 60px;
-  left: 180px;  /*Posición del botón  Ajusta este valor, debe estar a la derecha del sidebar*/
-  background-color: #28a745; /*Color del botón*/
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: left 0.3s ease-in-out; /* Para la transición suave */
-  z-index: 10; /* Asegúrate de que esté sobre el sidebar */
-}
-
-#sidebar-toggle span {
-  font-size: 20px;
-  width: 20px;
-  height: 20px; /* Ajustar según el icono que uses */
-}
-
-/*Optional styles to improve the look of the button*/
-#sidebar-toggle:hover{
-  background-color: #45a049;
-}
-
-#sidebar-toggle:focus{
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5); /* adds a nice focus outline */
-}
-
-/* El boton cuando el menu esta oculto */
-.sidebar.hide + #sidebar-toggle { /* Selecciona el boton solo cuando el sidebar tiene la clase 'hide' */
-  left: 10px; /*Ajusta este valor*/
-  opacity: 0.5; /* reduce la opacidad para hacerlo sutilmente visible */
-}
-
-.sidebar ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.sidebar ul li {
-  margin-bottom: 10px;
-}
-
-.sidebar ul li a {
-  text-decoration: none;
-  color: #333;
-}
-
-.sidebar ul li a:hover {
-  color: #007bff;
-}
-
-/*Estilos adicionales para el contenido principal*/
-.main-content {
-  margin-top: 36px;
-  padding: 20px;
-  margin-left: 280px; /* Ajusta este valor al ancho del sidebar */
-  flex-grow:1;
-}
-
-/* Para mostrar alertas */
-.alert {
-  padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 5px;
-  font-size: 14px;
-}
-
-.alert.error {
-  background-color: #ffebee;
-  color: #c62828;
-  border: 1px solid #c62828;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(100%);
-  }
-
-  to {
-    transform: translateX(0);
-  }
-}
-
-/* Mantener los valores del formulario */
-input {
-  margin-bottom: 10px;
-}
-
-/* Estilos para la vista de perfil */
-
+/* ===== Estilos para la vista de perfil ===== */
 .profile-card {
   border: none;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
@@ -415,57 +531,91 @@ input {
   box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
 }
 
-.btn-primary {
-  background-color: #28a745;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-  background-color: #218838;
-  transform: translateY(-2px);
-}
-
-/* Estilos para el contenedor principal */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-/* Media queries para responsive */
+/* ===== Responsive ===== */
 @media (max-width: 768px) {
-  .sidebar {
-    width: 200px;
-    /* Reduce el ancho del sidebar en pantallas pequeñas */
-    left: -200px;
+
+  /* Contenedor de autenticación*/
+  .login-container,
+  .register-container,
+  .forgot-password-container,
+  .error-container {
+    margin: 50px auto;
+    padding: 20px;
+    width: 95%;
   }
 
-  .sidebar.hide {
-    left: -200px;
+  .sidebar {
+    width: 70px;
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+    width: 250px;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+
+  .app-name {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: block;
   }
 
   #sidebar-toggle {
-    left: 210px;
-    /* Ajusta la posición del botón */
+    display: none;
   }
 
-  .sidebar.hide+#sidebar-toggle {
-    left: 10px;
-    /* Ajusta la posición del botón */
+  /* Ajustes para component-icon en móviles */
+  .component-icon img {
+    width: 60px;
+    height: 60px;
   }
 
-  .tab-pane {
-    padding: 20px;
-    border-left: 1px solid #ddd;
-    border-right: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    border-radius: 0 0 5px 5px;
+  /* Ajustes para cards en móviles */
+  .card {
+    padding: 0.5rem;
   }
-  
-  .nav-tabs {
-    margin-bottom: 0; 
+}
+
+@media (max-width: 576px) {
+
+  .login-container,
+  .register-container,
+  .forgot-password-container {
+    padding: 1.5rem;
+    width: 95%;
+  }
+
+  .logo img {
+    width: 120px;
+  }
+
+  .login-container h1,
+  .register-container h1,
+  .forgot-password-container h1 {
+    font-size: 1.5rem;
+  }
+
+  .links {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+/* ===== Animaciones ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

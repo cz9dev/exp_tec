@@ -4,7 +4,7 @@
     <ul class="nav flex-column">      
       <li class="nav-item">
         <a class="nav-link text-white <%= title === 'Dashboard' ? 'active' : '' %>" href="/dashboard">
-          <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+          <i class="fas fa-tachometer-alt me-2"></i><span class="nav-text">Dashboard</span>
         </a>
       </li>      
     </ul>
@@ -13,13 +13,13 @@
     <% if (hasPermission('VIEW_SECUQURITYS')) { %>
     <ul class="nav flex-column">
       <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-        <span>Seguridad</span>
+        <span class="nav-text">Seguridad</span>
       </h6>
 
       <% if (hasPermission('VIEW_AUDITORIA')) { %>
       <li class="nav-item">
         <a class="nav-link text-white <%= title === 'Usuarios' ? 'active' : '' %>" href="/dashboard/users">
-          <i class="fas fa-users me-2"></i> Usuarios
+          <i class="fas fa-users me-2"></i> <span class="nav-text">Usuarios</span>
         </a>
       </li>
       <% } %>
@@ -27,7 +27,7 @@
       <% if (hasPermission('VIEW_ROLES')) { %>
       <li class="nav-item">
         <a class="nav-link text-white <%= title === 'Roles' ? 'active' : '' %>" href="/dashboard/roles">
-          <i class="fas fa-user-tag me-2"></i> Roles
+          <i class="fas fa-user-tag me-2"></i> <span class="nav-text">Roles</span>
         </a>
       </li>
       <% } %>
@@ -35,7 +35,7 @@
       <% if (hasPermission('VIEW_PERMISSIONS')) { %>
       <li class="nav-item">
         <a class="nav-link text-white <%= title === 'Permisos' ? 'active' : '' %>" href="/dashboard/permissions">
-          <i class="fas fa-key me-2"></i> Permisos
+          <i class="fas fa-key me-2"></i> <span class="nav-text">Permisos</span>
         </a>
       </li>
       <% } %>
@@ -46,14 +46,14 @@
     <!-- Menú Gestión -->
     <% if (hasPermission('VIEW_GESTIONS')) { %>
     <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-      <span>Gestion</span>
+      <span class="nav-text">Gestion</span>
     </h6>
     <ul class="nav flex-column">
 
       <% if (hasPermission('VIEW_BRANDS')) { %>
       <li class="nav-item">
         <a class="nav-link text-white <%= title === 'Marcas' ? 'active' : '' %>" href="/dashboard/brands">
-          <i class="fas fa-box me-2"></i> Marcas
+          <i class="fas fa-box me-2"></i> <span class="nav-text">Marcas</span>
         </a>
       </li>
       <% } %>
@@ -61,7 +61,7 @@
       <% if (hasPermission('VIEW_AREAS')) { %>
       <li class="nav-item">
         <a class="nav-link text-white <%= title === 'Area' ? 'active' : '' %>" href="/dashboard/areas">
-          <i class="fas fa-border-all me-2"></i> Área
+          <i class="fas fa-border-all me-2"></i> <span class="nav-text">Área</span>
         </a>
       </li>
       <% } %>
@@ -69,7 +69,7 @@
       <% if (hasPermission('VIEW_TRABAJADORES')) { %>
       <li class="nav-item">
         <a class="nav-link text-white <%= title === 'Trabajadores' ? 'active' : '' %>" href="/dashboard/trabajadores">
-          <i class="fas fa-user-tie me-2"></i> Trabajadores
+          <i class="fas fa-user-tie me-2"></i> <span class="nav-text">Trabajadores</span>
         </a>
       </li>
       <% } %>
@@ -78,7 +78,7 @@
       <li class="nav-item">
         <a class="nav-link text-white <%= title === 'Tipos de Componentes' ? 'active' : '' %>"
           href="/dashboard/componentTypes">
-          <i class="fas fa-layer-group me-2"></i> Tipos de Componentes
+          <i class="fas fa-layer-group me-2"></i> <span class="nav-text">Tipos de Componentes</span>
         </a>
       </li>
       <% } %>
@@ -86,7 +86,7 @@
       <% if (hasPermission('VIEW_COMPONENT')) { %>
       <li class="nav-item">
         <a class="nav-link text-white <%= title === 'Componentes' ? 'active' : '' %>" href="/dashboard/component">
-          <i class="fas fa-list-ul me-2"></i> Componentes
+          <i class="fas fa-list-ul me-2"></i> <span class="nav-text">Componentes</span>
         </a>
       </li>
       <% } %>
@@ -95,7 +95,7 @@
       <li class="nav-item">
         <a class="nav-link text-white <%= title === 'Tipos de perifericos' ? 'active' : '' %>"
           href="/dashboard/peripheralsTypes">
-          <i class="fas fa-sitemap me-2"></i> Tipos de Periféricos
+          <i class="fas fa-sitemap me-2"></i> <span class="nav-text">Tipos de Periféricos</span>
         </a>
       </li>
       <% } %>
@@ -103,7 +103,7 @@
       <% if (hasPermission('VIEW_PERIPHERALS')) { %>
       <li class="nav-item">
         <a class="nav-link text-white <%= title === 'Perifericos' ? 'active' : '' %>" href="/dashboard/peripherals">
-          <i class="fas fa-external-link-alt me-2"></i> Periféricos
+          <i class="fas fa-external-link-alt me-2"></i> <span class="nav-text">Periféricos</span>
         </a>
       </li>
       <% } %>
@@ -111,7 +111,7 @@
       <% if (hasPermission('VIEW_DEVICES')) { %>
       <li class="nav-item">
         <a class="nav-link text-white <%= title === 'Dispositivos' ? 'active' : '' %>" href="/dashboard/device">
-          <i class="fas fa-desktop me-2"></i> Dispositivos
+          <i class="fas fa-desktop me-2"></i> <span class="nav-text">Dispositivos</span>
         </a>
       </li>
       <% } %>
@@ -119,7 +119,7 @@
       <% if (hasPermission('VIEW_INCIDENCES')) { %>
       <li class="nav-item">
         <a class="nav-link text-white <%= title === 'Incidencias' ? 'active' : '' %>" href="/dashboard/incidencias">
-          <i class="fas fa-exclamation-circle me-2"></i> Incidencias
+          <i class="fas fa-exclamation-circle me-2"></i> <span class="nav-text">Incidencias</span>
         </a>
       </li>
       <% } %>
@@ -127,7 +127,7 @@
       <% if (hasPermission('VIEW_SELLOS')) { %>
       <li class="nav-item">
         <a class="nav-link text-white <%= title === 'Sellos' ? 'active' : '' %>" href="/dashboard/sellos">
-          <i class="fas fa-hashtag me-2"></i> Sellos
+          <i class="fas fa-hashtag me-2"></i> <span class="nav-text">Sellos</span>
         </a>
       </li>
       <% } %>
@@ -138,14 +138,14 @@
     <!-- Menú Reportes -->
     <% if (hasPermission('VIEW_REPORTS')) { %>
     <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-      <span>Reportes</span>
+      <span class="nav-text">Reportes</span>
     </h6>
     <ul class="nav flex-column mb-2">
       <% if (hasPermission('VIEW_PARTESPIEZAS')) { %>
         <li class="nav-item">
           <a class="nav-link text-white <%= title === 'Registro de partes y piezas' ? 'active' : '' %>"
             href="/dashboard/partespiezas">
-            <i class="fas fa-file-alt me-2"></i> Registro Partes y Piezas
+            <i class="fas fa-file-alt me-2"></i> <span class="nav-text">Registro Partes y Piezas</span>
           </a>
         </li>
       <% } %>
@@ -154,7 +154,7 @@
         <li class="nav-item">
           <a class="nav-link text-white <%= title === 'Auditoría de Dispositivos' ? 'active' : '' %>"
             href="/dashboard/auditoria">
-            <i class="fas fa-file-alt me-2"></i> Auditoría de Dispositivos
+            <i class="fas fa-file-alt me-2"></i> <span class="nav-text">Auditoría de Dispositivos</span>
           </a>
          </li>
       <% } %>

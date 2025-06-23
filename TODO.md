@@ -4,14 +4,10 @@ Esta es una lista de TODO sin order de prioridad específico.
 
 ## Por hacer
 
-- Dashboard (Mostrar en la pagina inicial un resumen de la información gestionada por el sistema, pueden ser graficos, tablas)
-- Reportes 
-    * Expedientes técnicos
-    * Registros de incidencia    
-    * Registro de sellos
-    * Registro de partes y piezas
-- Traducción al Ingles (Documentación y aplicaión)
-- Otros? (Utiliza los issues para esto)
+- Implementación de autenticación contra ldap o AD
+- Mecanismo para escanear el dispositivo y agregar componentes del mismo automaticamente a la DB.
+- Traducción al Ingles (Documentación y aplicaión).
+- Otros? (Utiliza los issues para esto).
 
 ## Completados
 
@@ -22,6 +18,7 @@ Esta es una lista de TODO sin order de prioridad específico.
     * Usuario
     * Roles
     * Permisos
+- Dashboard
 - Gestionar 
     * Marcas
     * Áreas
@@ -33,4 +30,9 @@ Esta es una lista de TODO sin order de prioridad específico.
     * Dispositivos
     * Actividades
     * Sellos
+- Reportes 
+    * Expedientes técnicos
+    * Registros de incidencia    
+    * Registro de sellos
+    * Registro de partes y piezas
 - Logica y programación para la gestion de perfil de usuario

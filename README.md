@@ -1,4 +1,7 @@
-# Exp_Tec
+<p align="center" width="100%">
+  <img src="imgs/logo.png" width="200" height="200"></br>  
+</p>
+
 ![GitHub License](https://img.shields.io/github/license/cz9dev/exp_tec)
 ![GitHub repo size](https://img.shields.io/github/repo-size/cz9dev/exp_tec)
 ![GitHub Tag](https://img.shields.io/github/v/tag/cz9dev/exp_tec)
@@ -8,8 +11,12 @@
 
 Exp-tec es una aplicación web para el registro y control de expedientes técnicos de dispositivos, controlando marcas, modelos y números de series, componentes y perifericos. Además un control de sellos de estos dispositivos, acciones y tareas realizadas sobre los dispositivos.
 
-![](imgs/logo.png)
+# ScreenShot
 
+## Login
+![](imgs/screenshot-login.png)
+## Login
+![](imgs/screenshot-dashboard.png)
 # Requerimientos
 - MySQL o MariaDB
 ## Node.js

@@ -1,19 +1,26 @@
 <nav class="top-nav">
-  <!-- Search box a la izquierda -->
-  <div class="search-box">
-    <input type="text" placeholder="Buscar..." />
-    <button type="submit">🔍</button>
+  <!-- Logo y botón de menú a la izquierda -->
+  <div class="logo-menu">
+    <button id="menu-toggle" class="menu-toggle" aria-label="Toggle menu">
+      <i class="fas fa-bars" aria-hidden="true"></i>
+    </button>
+    <div class="logo-container">
+      <img src="/images/logo.png" alt="Logo de la aplicación" class="logo-bar" />
+      <span class="app-name">ExpTec</span>
+    </div>
   </div>
 
   <!-- Avatar y menú desplegable a la derecha -->
   <div class="user-menu">
     <div class="user-icon" id="user-avatar">
       <img src="<%= user.profile_image ? '/uploads/'+user.profile_image : '/images/user-icon.png' %>" alt="Usuario" />
-      <span><%= user.username%></span>
+      <span>
+        <%= user.username%>
+      </span>
     </div>
     <!-- Menú desplegable -->
     <div class="dropdown-menu" id="dropdown-menu">
-      <ul>        
+      <ul>
         <li class="fa fa-user-circle"><a href="/dashboard/profile"> Perfil</a></li>
         <li><a href="/logout"> Cerrar sesión</a></li>
       </ul>

@@ -1,4 +1,4 @@
-<p align="center" width="100%">
+<p align="center" width="100%" style="filter: brightness(2); background: #889;">
   <img src="imgs/logo.png" width="200" height="200"></br>  
 </p>
 
@@ -13,12 +13,14 @@ Exp-tec es una aplicación web para el registro y control de expedientes técnic
 
 # ScreenShot
 
-## Login
+## ScreenShot-Login
 ![](imgs/screenshot-login.png)
-## Login
+## ScreenShot-Dashboard
 ![](imgs/screenshot-dashboard.png)
+
 # Requerimientos
 - MySQL o MariaDB
+
 ## Node.js
 Instalaremos las dependencias de nuestro proyecto con:
 

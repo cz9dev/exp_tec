@@ -26,10 +26,30 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 module.exports = {
+
   list: async (req, res) => {
+
+    const { page = 1, limit = 10, search = "" } = req.query;
+    const offset = (page - 1) * limit;
+
+    let whereClause = "";
+    if (search) {
+      whereClause = `WHERE (c.modelo LIKE '%${search}%' OR c.numero_serie LIKE '%${search}%')`;
+    }
+
     try {
-      const components = await componentModel.findAll();
+
+      const [components, count] = await Promise.all([
+        componentModel.findAllWithPagination(limit, offset, whereClause), // Nueva función del modelo
+        componentModel.count(whereClause), // Nueva función para el conteo total
+      ]);
+      
       res.render("component/list", {
+        count,
+        limit,
+        page,
+        search,
+        currentPage: parseInt(page),
         components,
         title: "Componentes",
         user: req.session.user,

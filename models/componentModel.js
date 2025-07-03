@@ -20,6 +20,29 @@ class ComponentModel {
     }
   }
 
+  static async findAllWithPagination(limit, offset, whereClause = "") {
+    const [rows] = await pool.execute(
+      `
+      SELECT c.id, c.id_marca, c.modelo, c.id_tipo_componente, c.numero_serie ,
+      c.url_image, ma.marca, tc.nombre AS tipo_componente 
+      FROM componente c 
+      JOIN marca ma ON c.id_marca = ma.id 
+      JOIN tipo_componente tc ON c.id_tipo_componente = tc.id
+      ${whereClause}
+      LIMIT ? OFFSET ?
+    `,
+      [limit, offset]
+    );
+    return rows;
+  }
+
+  static async count(whereClause = "") {
+    const [[{ count }]] = await pool.execute(
+      `SELECT COUNT(*) AS count FROM componente c ${whereClause}`
+    );
+    return count;
+  }
+
   static async findAll() {
     try {
       const [rows] = await pool.execute(

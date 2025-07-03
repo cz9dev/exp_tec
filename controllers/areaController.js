@@ -1,11 +1,31 @@
 // controllers/areaController.js
-const Area = require("../models/areaModel");
+const AreaModel = require("../models/areaModel");
 
 module.exports = {
+
   listAreas: async (req, res) => {
+
+    const { page = 1, limit = 10, search = "" } = req.query;
+    const offset = (page - 1) * limit;
+
+    let whereClause = "";
+    if (search) {
+      whereClause = `WHERE nombre LIKE '%${search}%'`;
+    }
+
     try {
-      const areas = await Area.findAll();
+
+      const [areas, count] = await Promise.all([
+        AreaModel.findAllWithPagination(limit, offset, whereClause), // Nueva función del modelo
+        AreaModel.count(whereClause), // Nueva función para el conteo total
+      ]);
+      
       res.render("areas/list", {
+        count,
+        limit,
+        page,
+        search,
+        currentPage: parseInt(page),
         title: "Area",
         user: req.session.user,
         areas: areas,
@@ -31,13 +51,13 @@ module.exports = {
     try {
       const { nombre } = req.body;
       // Validación de unicidad
-      const existingArea = await Area.findOne(nombre);
+      const existingArea = await AreaModel.findOne(nombre);
       if (existingArea) {
         req.flash("error_msg", "Ya existe una area con ese nombre.");
         return res.redirect("areas/new"); // Redirige de vuelta al formulario
       }
 
-      await Area.create({ nombre });
+      await AreaModel.create({ nombre });
       req.flash("success_msg", "Area creada exitosamente");
       res.redirect("areas");
     } catch (error) {
@@ -50,7 +70,7 @@ module.exports = {
 
   showEditForm: async (req, res) => {
     try {
-      const area = await Area.findById(req.params.id);
+      const area = await AreaModel.findById(req.params.id);
       if (!area) {
         req.flash("error_msg", "Area no encontrada");
         return res.redirect("areas");
@@ -69,13 +89,13 @@ module.exports = {
       const { nombre } = req.body;
 
       // Validación de unicidad
-      const existingArea = await Area.findOne(nombre);
+      const existingArea = await AreaModel.findOne(nombre);
       if (existingArea) {
         req.flash("error_msg", "Ya existe un area con ese nombre.");
         return res.redirect("/dashboard/areas/"+id+"/edit"); // Redirige de vuelta al formulario
       }
 
-      await Area.update(id, { nombre });
+      await AreaModel.update(id, { nombre });
       req.flash("success_msg", "Area actualizada exitosamente");
       res.redirect("/dashboard/areas");
     } catch (error) {
@@ -87,7 +107,7 @@ module.exports = {
 
   deleteArea: async (req, res) => {
     try {
-      await Area.delete(req.params.id);
+      await AreaModel.delete(req.params.id);
       req.flash("success_msg", "Area eliminada exitosamente");
       res.redirect("/dashboard/areas");
     } catch (error) {

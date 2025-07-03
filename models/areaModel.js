@@ -1,6 +1,26 @@
 const pool = require("../config/db");
 
 class AreaModel {
+
+  static async findAllWithPagination(limit, offset, whereClause = "") {
+    const [rows] = await pool.execute(
+      `
+      SELECT * FROM area
+      ${whereClause}
+      LIMIT ? OFFSET ?
+    `,
+      [limit, offset]
+    );
+    return rows;
+  }
+
+  static async count(whereClause = "") {
+    const [[{ count }]] = await pool.execute(
+      `SELECT COUNT(*) AS count FROM area ${whereClause}`
+    );
+    return count;
+  }
+
   static async findAll() {
     const [rows] = await pool.query("SELECT * FROM area");
     return rows;
@@ -12,13 +32,17 @@ class AreaModel {
   }
 
   static async findOne(nombre) {
-    const [rows] = await pool.query("SELECT * FROM area WHERE nombre = ?", [nombre]);
+    const [rows] = await pool.query("SELECT * FROM area WHERE nombre = ?", [
+      nombre,
+    ]);
     return rows[0];
   }
 
   static async create(area) {
     const { nombre } = area;
-    const [result] = await pool.query("INSERT INTO area (nombre) VALUES (?)", [nombre]);
+    const [result] = await pool.query("INSERT INTO area (nombre) VALUES (?)", [
+      nombre,
+    ]);
     return result.insertId;
   }
 

@@ -1,30 +1,62 @@
 const pool = require("../config/db");
 
 class ComponentTypeModel {
+
+  static async findAllWithPagination(limit, offset, whereClause = "") {
+    const [rows] = await pool.execute(
+      `
+      SELECT * FROM tipo_componente
+      ${whereClause}
+      LIMIT ? OFFSET ?
+    `,
+      [limit, offset]
+    );
+    return rows;
+  }
+
+  static async count(whereClause = "") {
+    const [[{ count }]] = await pool.execute(
+      `SELECT COUNT(*) AS count FROM tipo_componente ${whereClause}`
+    );
+    return count;
+  }
+
   static async findAll() {
     const [rows] = await pool.query("SELECT * FROM tipo_componente");
     return rows;
   }
 
   static async findById(id) {
-    const [rows] = await pool.query("SELECT * FROM tipo_componente WHERE id = ?", [id]);
+    const [rows] = await pool.query(
+      "SELECT * FROM tipo_componente WHERE id = ?",
+      [id]
+    );
     return rows[0];
   }
 
   static async findOne(nombre) {
-    const [rows] = await pool.query("SELECT * FROM tipo_componente WHERE nombre = ?", [nombre]);
+    const [rows] = await pool.query(
+      "SELECT * FROM tipo_componente WHERE nombre = ?",
+      [nombre]
+    );
     return rows[0];
   }
 
   static async create(tipo_componente) {
     const { nombre } = tipo_componente;
-    const [result] = await pool.query("INSERT INTO tipo_componente (nombre) VALUES (?)", [nombre]);
+    const [result] = await pool.query(
+      "INSERT INTO tipo_componente (nombre) VALUES (?)",
+      [nombre]
+    );
     return result.insertId;
   }
 
   static async update(id, nombre) {
     //const { nombre } = nombre;
-    await pool.query("UPDATE tipo_componente SET nombre = ? WHERE id = ?", [nombre, id]);
+    await pool.query("UPDATE tipo_componente SET nombre = ? WHERE id = ?", [
+      nombre,
+      id,
+    ]);
   }
 
   static async delete(id) {

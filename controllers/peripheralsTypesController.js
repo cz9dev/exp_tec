@@ -2,9 +2,28 @@ const peripheralsTypesModel = require("../models/peripheralsTypesModel");
 
 module.exports = {
   list: async (req, res) => {
+
+    const { page = 1, limit = 10, search = "" } = req.query;
+    const offset = (page - 1) * limit;
+
+    let whereClause = "";
+    if (search) {
+      whereClause = `WHERE nombre LIKE '%${search}%'`;
+    }
+
     try {
-      const peripheralsTypes = await peripheralsTypesModel.findAll();
+
+      const [peripheralsTypes, count] = await Promise.all([
+        peripheralsTypesModel.findAllWithPagination(limit, offset, whereClause), // Nueva función del modelo
+        peripheralsTypesModel.count(whereClause), // Nueva función para el conteo total
+      ]);
+      
       res.render("peripheralsTypes/list", {
+        count,
+        limit,
+        page,
+        search,
+        currentPage: parseInt(page),
         title: "Tipos de perifericos",
         user: req.session.user,
         peripheralsTypes,

@@ -28,6 +28,29 @@ class PeripheralsModel {
     }
   }
 
+  static async findAllWithPagination(limit, offset, whereClause = "") {
+    const [rows] = await pool.execute(
+      `
+      SELECT p.id, p.id_marca, p.modelo, p.id_tipo_periferico, p.numero_serie,
+      p.numero_inventario, p.url_image, ma.marca, tp.nombre AS tipo_periferico
+      FROM periferico p 
+      JOIN marca ma ON p.id_marca = ma.id 
+      JOIN tipo_periferico tp ON p.id_tipo_periferico = tp.id
+      ${whereClause}
+      LIMIT ? OFFSET ?
+    `,
+      [limit, offset]
+    );
+    return rows;
+  }
+
+  static async count(whereClause = "") {
+    const [[{ count }]] = await pool.execute(
+      `SELECT COUNT(*) AS count FROM periferico p ${whereClause}`
+    );
+    return count;
+  }
+
   static async findAll() {
     try {
       const [rows] = await pool.execute(
@@ -119,7 +142,6 @@ class PeripheralsModel {
       throw error;
     }
   }
-
 }
 
 module.exports = PeripheralsModel;

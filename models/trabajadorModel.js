@@ -14,6 +14,26 @@ class TrabajadorModel {
     }
   }
 
+  static async findAllWithPagination(limit, offset, whereClause = "") {
+    const [rows] = await pool.execute(
+      `
+      SELECT t.id, t.ci, t.nombres, t.apellidos, a.nombre AS area 
+      FROM trabajadores t JOIN area a ON t.id_area = a.id
+      ${whereClause}
+      LIMIT ? OFFSET ?
+    `,
+      [limit, offset]
+    );
+    return rows;
+  }
+
+  static async count(whereClause = "") {
+    const [[{ count }]] = await pool.execute(
+      `SELECT COUNT(*) AS count FROM trabajadores t ${whereClause}`
+    );
+    return count;
+  }
+
   static async findAll() {
     try {
       const [rows] = await pool.execute(

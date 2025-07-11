@@ -1,6 +1,25 @@
 const pool = require("../config/db");
 
 class Role {
+  static async findAllWithPagination(limit, offset, whereClause = "") {
+    const [rows] = await pool.execute(
+      `
+      SELECT * FROM roles
+      ${whereClause}
+      LIMIT ? OFFSET ?
+    `,
+      [limit, offset]
+    );
+    return rows;
+  }
+
+  static async count(whereClause = "") {
+    const [[{ count }]] = await pool.execute(
+      `SELECT COUNT(*) AS count FROM roles ${whereClause}`
+    );
+    return count;
+  }
+
   /**
    * Buscar todos los roles
    * @returns
@@ -9,7 +28,7 @@ class Role {
     const [roles] = await pool.query("SELECT * FROM roles");
     return roles;
   }
-  
+
   static async findByPk(id) {
     const [role] = await pool.query("SELECT * FROM roles WHERE id = ?", [id]);
     return role[0]; // return the single role object or null if not found
@@ -26,14 +45,16 @@ class Role {
         return { error: true };
       }
 
-      await pool.query("INSERT INTO roles_permisos (rol_id, permiso_id) VALUES (?,?)",
-      [id_rol, id_permiso]);   
-      
+      await pool.query(
+        "INSERT INTO roles_permisos (rol_id, permiso_id) VALUES (?,?)",
+        [id_rol, id_permiso]
+      );
+
       return { success: true };
     } catch (error) {
       console.error("Error al agregar permisos al rol:", error);
       return null;
-    } 
+    }
   }
 
   static async deleteRolePermission(roleId, permissionId) {
@@ -50,6 +71,44 @@ class Role {
     } catch (error) {
       console.error("Error deleting role permission:", error);
       return { success: false };
+    }
+  }
+
+  static async countPermisos(whereClause = "") {
+    const query = `SELECT COUNT(*) AS count FROM permisos p
+        JOIN roles_permisos rp ON p.id = rp.permiso_id
+        ${whereClause}`;
+
+    const [[{ count }]] = await pool.query(query);
+
+    return count;
+  }
+
+  static async findAllWithPaginationPermisos(roleId, limit, offset, whereClause = "") {
+    try {
+      const [role] = await pool.query("SELECT * FROM roles WHERE id = ?", [
+        roleId,
+      ]);
+
+      if (role.length === 0) {
+        return null;
+      }
+
+      const [permissions] = await pool.query(
+        `SELECT p.* FROM permisos p
+        JOIN roles_permisos rp ON p.id = rp.permiso_id
+        ${whereClause}
+        LIMIT ? OFFSET ?`,
+        [limit, offset]
+      );
+
+      return {
+        ...role[0],
+        permissions: permissions || [],
+      };
+    } catch (error) {
+      console.error("Error en findWithPermissions:", error);
+      return null;
     }
   }
 

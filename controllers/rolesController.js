@@ -1,13 +1,30 @@
 const User = require("../models/userModel").default;
-const Role = require("../models/roleModel");
+const RoleModel = require("../models/roleModel");
 const Permission = require("../models/permissionModel"); // Asegúrate de que tengas este modelo
 
 module.exports = {
   // Roles
   listRoles: async (req, res) => {
+    const { page = 1, limit = 10, search = "" } = req.query;
+    const offset = (page - 1) * limit;
+
+    let whereClause = "";
+    if (search) {
+      whereClause = `WHERE (nombre LIKE '%${search}%' OR descripcion LIKE '%${search}%')`;
+    }
+
     try {
-      const roles = await Role.findAll();
+      const [roles, count] = await Promise.all([
+        RoleModel.findAllWithPagination(limit, offset, whereClause), // Nueva función del modelo
+        RoleModel.count(whereClause), // Nueva función para el conteo total
+      ]);
+
       res.render("roles/list", {
+        count,
+        limit,
+        page,
+        search,
+        currentPage: parseInt(page),
         title: "Roles",
         user: req.session.user,
         roles,
@@ -20,9 +37,26 @@ module.exports = {
 
   // Nueva función para ver permisos de un rol
   roleDetails: async (req, res) => {
+    const { page = 1, limit = 10, search = "" } = req.query;
+    const offset = (page - 1) * limit;
+    const roleId = req.params.id;
+
+    let whereClause = `WHERE rp.rol_id = ${roleId}`;
+
+    if (search) {
+      whereClause += ` AND p.nombre LIKE '%${search}%'`;
+    }
+
     try {
-      const roleId = req.params.id;
-      const role = await Role.findWithPermissions(roleId);
+      const [role, count] = await Promise.all([
+        RoleModel.findAllWithPaginationPermisos(
+          roleId,
+          limit,
+          offset,
+          whereClause
+        ), // Nueva función del modelo
+        RoleModel.countPermisos(whereClause), // Nueva función para el conteo total
+      ]);
 
       if (!role) {
         res.status(404).send("Rol no encontrado");
@@ -30,6 +64,11 @@ module.exports = {
       }
 
       res.render("roles/details", {
+        count,
+        limit,
+        page,
+        search,
+        currentPage: parseInt(page),
         title: `Permisos de ${role.nombre}`,
         user: req.session.user,
         role,
@@ -43,7 +82,7 @@ module.exports = {
   showAddPermissionForm: async (req, res) => {
     try {
       const roleId = req.params.id;
-      const role = await Role.findByPk(roleId); // Usa findByPk para buscar por ID
+      const role = await RoleModel.findByPk(roleId); // Usa findByPk para buscar por ID
       const permissions = await Permission.findAll();
 
       if (!role) {
@@ -68,7 +107,7 @@ module.exports = {
       roleId = req.params.id;
       const permissionId = req.body.permissionId;
 
-      const result = await Role.addRolePermission(roleId, permissionId);
+      const result = await RoleModel.addRolePermission(roleId, permissionId);
 
       if (result.success) {
         req.flash("success_msg", "Permiso agregado correctamente.");
@@ -91,7 +130,7 @@ module.exports = {
       const roleId = req.params.roleId;
       const permissionId = req.params.permissionId;
 
-      const result = await Role.deleteRolePermission(roleId, permissionId);
+      const result = await RoleModel.deleteRolePermission(roleId, permissionId);
 
       if (result.success) {
         req.flash("success_msg", "Permiso eliminado correctamente.");

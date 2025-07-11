@@ -1,24 +1,49 @@
 <div class="container mt-4">
   <h2>Gestión de Roles</h2>
-  
+
+  <!-- Búsqueda -->
+  <form method="GET" action="/dashboard/roles">
+    <input type="text" name="search" placeholder="Buscar..." value="<%= search %>">
+    <button type="submit" class="btn-sm btn-success mt-2"><i class="fas fa-search"></i> Buscar</button>
+  </form>
+
+  <!-- Tabla de contenido a mostrar -->
   <table class="table table-bordered table-striped text-center mt-4">
     <thead>
-      <tr>        
+      <tr>
         <th>Nombre</th>
         <th>Descripción</th>
         <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
-      <% roles.forEach(role => { %>
-        <tr>          
-          <td><%= role.nombre %></td>
-          <td><%= role.descripcion %></td>
+      <% roles.forEach(role=> { %>
+        <tr>
+          <td>
+            <%= role.nombre %>
+          </td>
+          <td>
+            <%= role.descripcion %>
+          </td>
           <td>
             <a href="/dashboard/roles/<%= role.id %>" class="btn btn-sm btn-info">Ver Permisos</a>
           </td>
         </tr>
-      <% }); %>
+        <% }); %>
     </tbody>
   </table>
+
+  <!-- Paginado -->
+  <nav aria-label="Page navigation">
+    <ul class="pagination">
+      <% for (let i=1; i <=Math.ceil(count / limit); i++) { %>
+        <li class="page-item <%= i == page ? 'active' : '' %>">
+          <a class="page-link" href="?page=<%= i %>&search=<%= search %>">
+            <%= i %>
+          </a>
+        </li>
+        <% } %>
+    </ul>
+  </nav>
+
 </div>

@@ -18,11 +18,29 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 module.exports = {
-  // Usuarios
+  
   listUsers: async (req, res) => {
+
+    const { page = 1, limit = 10, search = "" } = req.query;
+    const offset = (page - 1) * limit;
+
+    let whereClause = "";
+    if (search) {
+      whereClause = `WHERE (u.username LIKE '%${search}%' OR u.email LIKE '%${search}%' OR u.nombre LIKE '%${search}%' OR u.apellido LIKE '%${search}%')`;
+    }
+
     try {
-      const users = await User.findAll();
+      const [users, count] = await Promise.all([
+        User.findAllWithPagination(limit, offset, whereClause), // Nueva función del modelo
+        User.count(whereClause), // Nueva función para el conteo total
+      ]);
+      
       res.render("users/list", {
+        count,
+        limit,
+        page,
+        search,
+        currentPage: parseInt(page),
         title: "Usuarios",
         user: req.session.user,
         users,

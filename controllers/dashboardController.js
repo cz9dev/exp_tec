@@ -35,8 +35,6 @@ const dashboardController = {
         });
       }
 
-      console.log("Datos de incidencias:", ultimos7Dias);
-
       const [dispositivos] = await pool.execute(
         `SELECT COUNT(*) as total FROM dispositivo WHERE estado = 'activo'`
       );

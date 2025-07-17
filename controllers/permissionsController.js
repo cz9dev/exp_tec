@@ -1,13 +1,32 @@
 // permissionsController.js
 
-const Permissions = require("../models/permissionModel");
+const PermissionsModel = require("../models/permissionModel");
 
 module.exports = {
   // Listar permisos
   listPermissions: async (req, res) => {
+
+    const { page = 1, limit = 10, search = "" } = req.query;
+    const offset = (page - 1) * limit;
+
+    let whereClause = "";
+    if (search) {
+      whereClause = `WHERE (nombre LIKE '%${search}%' OR descripcion LIKE '%${search}%')`;
+    }
+
     try {
-      const permissions = await Permissions.findAll();
+
+      const [permissions, count] = await Promise.all([
+        PermissionsModel.findAllWithPagination(limit, offset, whereClause), // Nueva función del modelo
+        PermissionsModel.count(whereClause), // Nueva función para el conteo total
+      ]);
+      
       res.render("permissions/list", {
+        count,
+        limit,
+        page,
+        search,
+        currentPage: parseInt(page),
         permissions,
         title: "Permisos",
         user: req.session.user,
@@ -26,7 +45,7 @@ module.exports = {
   createPermission: async (req, res) => {
     try {
       const { nombre, descripcion, ruta } = req.body;
-      await Permissions.create({ nombre, descripcion, ruta });
+      await PermissionsModel.create({ nombre, descripcion, ruta });
       req.flash("success_msg", "Permiso creado exitosamente.");
       res.redirect("/dashboard/permissions");
     } catch (error) {
@@ -37,7 +56,7 @@ module.exports = {
   },
   showEditForm: async (req, res) => {
     try {
-      const permission = await Permissions.findById(req.params.id);
+      const permission = await PermissionsModel.findById(req.params.id);
       if (!permission) {
         req.flash("error_msg", "Permiso no encontrado.");
         return res.redirect("/dashboard/permissions");
@@ -56,7 +75,7 @@ module.exports = {
   updatePermission: async (req, res) => {
     try {
       const { nombre, descripcion, ruta } = req.body;
-      await Permissions.update(req.params.id, { nombre, descripcion, ruta });
+      await PermissionsModel.update(req.params.id, { nombre, descripcion, ruta });
       req.flash("success_msg", "Permiso actualizado exitosamente.");
       res.redirect("/dashboard/permissions");
     } catch (error) {
@@ -67,7 +86,7 @@ module.exports = {
   },
   deletePermission: async (req, res) => {
     try {
-      await Permissions.delete(req.params.id);
+      await PermissionsModel.delete(req.params.id);
       req.flash("success_msg", "Permiso eliminado exitosamente.");
       res.redirect("/dashboard/permissions");
     } catch (error) {

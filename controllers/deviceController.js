@@ -25,8 +25,7 @@ module.exports = {
       whereClause = `WHERE d.nombre LIKE '%${search}%'`;
     }
 
-    try {
-      //const devices = await DeviceModel.findAll();
+    try {      
       const [devices, count] = await Promise.all([
         DeviceModel.findAllWithPagination(limit, offset, whereClause), // Nueva función del modelo
         DeviceModel.count(whereClause), // Nueva función para el conteo total

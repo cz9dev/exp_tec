@@ -19,33 +19,38 @@ Exp-tec es una aplicación web para el registro y control de expedientes técnic
 ![](imgs/screenshot-dashboard.png)
 
 # Requerimientos
-- MySQL o MariaDB
-- Node.js
+- MySQL/MariaDB
+- Node.js 18+
 
 # Instalación
-El proyecto está desarrollado con Node.js, para probarlo debes desplegar un entorno de desarrollo para Nodejs y luego de clonar este repositorio.
+1. Descargar el repositorio
+```bash
+git clone https://github.com/cz9dev/exp_tec.git
+cd exp_tec
+```
 
-## Instalacion de dependencias
-Instalaremos las dependencias de nuestro proyecto con:
-
-  ```bash
-    npm install
-  ```
+## Configuración incial
+1. Copiar el archivo de ejemplo:
+```bash
+  cp .env.example .env
+```
+2. Completar los valores en .env con tus valores reales
+3. Intalar dependecias:
+```bash
+  npm install
+```
+4. Iniciar la aplicación:
+```bash
+npm start
+```
 
 ## Poblar DB
 Luego debes poblar la DB con los datos iniciales ejecutando el archivo ```/config/seed.js``` (en desarrollo).
+```bash
+npm /config/seed.js
+```
 
 Alternativamente solo debes restaurar la base de datos en mysql o mariadb que se encuentra en el directorio ```/db```
-
-## Configurar
-En el archivo .env que esta en la raiz del proyecto debes modificar los datos siguientes segun tu configuración msql o mariadb:
-
-```
-DB_HOST=localhost
-DB_USER=root
-DB_PASS=numlock
-DB_NAME=exp_tec
-```
 
 ## Uso
 Credenciales por defecto al restaurar la base de datos
@@ -74,3 +79,7 @@ Si usted decea constribuir con Exp-tec por favor lea el fichero [CONTRIBUTING.md
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 Este proyecto sigue las recomendaciones [all-contributors](https://github.com/all-contributors/all-contributors). ¡Cualquier tipo de contribución es bien recibida!
+
+
+## Licencia
+[Apache 2.0](LICENSE)

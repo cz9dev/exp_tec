@@ -27,10 +27,28 @@ const upload = multer({ storage: storage });
 
 module.exports = {
   list: async (req, res) => {
-    try {
-      const perifericos = await peripheralsModel.findAll();
+
+    const { page = 1, limit = 10, search = "" } = req.query;
+    const offset = (page - 1) * limit;
+
+    let whereClause = "";
+    if (search) {
+      whereClause = `WHERE (p.modelo LIKE '%${search}%' OR p.numero_serie LIKE '%${search}%' OR p.numero_inventario LIKE '%${search}%')`;
+    }
+
+    try {      
+      const [perifericos, count] = await Promise.all([
+        peripheralsModel.findAllWithPagination(limit, offset, whereClause), // Nueva función del modelo
+        peripheralsModel.count(whereClause), // Nueva función para el conteo total
+      ]);
+
       res.render("peripherals/list", {
         perifericos,
+        count,
+        limit,
+        page,
+        search,
+        currentPage: parseInt(page),
         title: "Perifericos",
         user: req.session.user,
       });

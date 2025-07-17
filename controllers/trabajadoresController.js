@@ -2,11 +2,31 @@ const trabajadorModel = require('../models/trabajadorModel');
 const areaModel = require('../models/areaModel');
 
 module.exports = {
+
   list: async (req, res) => {
+
+    const { page = 1, limit = 10, search = "" } = req.query;
+    const offset = (page - 1) * limit;
+
+    let whereClause = "";
+    if (search) {
+      whereClause = `WHERE (t.CI LIKE '%${search}%' OR t.nombres LIKE '%${search}%' OR t.apellidos LIKE '%${search}%')`;
+    }
+
     try {
-      const trabajadores = await trabajadorModel.findAll();
+
+      const [trabajadores, count] = await Promise.all([
+        trabajadorModel.findAllWithPagination(limit, offset, whereClause), // Nueva función del modelo
+        trabajadorModel.count(whereClause), // Nueva función para el conteo total
+      ]);
+      
       res.render("trabajadores/list", {
-        trabajadores: trabajadores,
+        count,
+        limit,
+        page,
+        search,
+        currentPage: parseInt(page),
+        trabajadores,
         title: "Trabajadores",
         user: req.session.user,
       });

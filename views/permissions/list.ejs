@@ -1,6 +1,14 @@
 <div class="container mt-4">
   <h2>Gestión de Permisos</h2>
-  <a href="/dashboard/permissions/new" class="btn btn-success mb-2">Nuevo Permiso</a>
+  <a href="/dashboard/permissions/new" class="btn btn-success mb-3">Nuevo</a>
+
+  <!-- Búsqueda -->
+  <form method="GET" action="/dashboard/permissions">
+    <input type="text" name="search" placeholder="Buscar dispositivo..." value="<%= search %>">
+    <button type="submit" class="btn-sm btn-success mt-2"><i class="fas fa-search"></i> Buscar</button>
+  </form>
+
+  <!-- Tabla de contenido a mostrar -->
   <table class="table table-bordered table-striped text-center mt-4 ">
     <thead>
       <tr>
@@ -32,4 +40,18 @@
         <% }); %>
     </tbody>
   </table>
+
+  <!-- Paginado -->
+  <nav aria-label="Page navigation">
+    <ul class="pagination">
+      <% for (let i=1; i <=Math.ceil(count / limit); i++) { %>
+        <li class="page-item <%= i == page ? 'active' : '' %>">
+          <a class="page-link" href="?page=<%= i %>&search=<%= search %>">
+            <%= i %>
+          </a>
+        </li>
+        <% } %>
+    </ul>
+  </nav>
+
 </div>

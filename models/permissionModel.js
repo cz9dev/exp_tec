@@ -3,10 +3,10 @@ const pool = require("../config/db");
 class Permission {
   /**
    * Crear permiso
-   * @param {*} param0 
-   * @returns 
+   * @param {*} param0
+   * @returns
    */
-  static async create({ nombre, descripcion, ruta}) {
+  static async create({ nombre, descripcion, ruta }) {
     const [result] = await pool.execute(
       "INSERT INTO permisos (nombre, descripcion, ruta) VALUES (?, ?, ?)",
       [nombre, descripcion, ruta]
@@ -16,21 +16,20 @@ class Permission {
 
   /**
    * Encontrar permiso por ID
-   * @param {*} id 
-   * @returns 
+   * @param {*} id
+   * @returns
    */
   static async findById(id) {
-    const [rows] = await pool.execute(
-      "SELECT * FROM permisos WHERE id = ?",
-      [id]
-    );
+    const [rows] = await pool.execute("SELECT * FROM permisos WHERE id = ?", [
+      id,
+    ]);
     return rows[0];
   }
 
   /**
    * Encontrar permiso por nombre
-   * @param {*} nombre 
-   * @returns 
+   * @param {*} nombre
+   * @returns
    */
   static async findByNombre(nombre) {
     const [rows] = await pool.execute(
@@ -40,21 +39,38 @@ class Permission {
     return rows[0];
   }
 
+  static async findAllWithPagination(limit, offset, whereClause = "") {
+    const [rows] = await pool.execute(
+      `
+      SELECT * FROM permisos
+      ${whereClause}
+      LIMIT ? OFFSET ?
+    `,
+      [limit, offset]
+    );
+    return rows;
+  }
+
+  static async count(whereClause = "") {
+    const [[{ count }]] = await pool.execute(
+      `SELECT COUNT(*) AS count FROM permisos ${whereClause}`
+    );
+    return count;
+  }
+
   /**
    * Listar todos los permisos
-   * @returns 
+   * @returns
    */
   static async findAll() {
-    const [permissions] = await pool.execute(
-      "SELECT * FROM permisos"
-    );
+    const [permissions] = await pool.execute("SELECT * FROM permisos");
     return permissions;
   }
 
   /**
    * Actualizar permiso
-   * @param {*} id 
-   * @param {*} permission 
+   * @param {*} id
+   * @param {*} permission
    */
   static async update(id, permission) {
     const { nombre, descripcion, ruta } = permission;
@@ -66,19 +82,16 @@ class Permission {
 
   /**
    * Eliminar permiso
-   * @param {*} id 
+   * @param {*} id
    */
   static async delete(id) {
-    await pool.execute(
-      "DELETE FROM permisos WHERE id = ?",
-      [id]
-    );
+    await pool.execute("DELETE FROM permisos WHERE id = ?", [id]);
   }
 
   /**
    * Asignar permiso a un rol
-   * @param {*} permissionId 
-   * @param {*} roleId 
+   * @param {*} permissionId
+   * @param {*} roleId
    */
   static async assignToRole(permissionId, roleId) {
     await pool.execute(
@@ -89,8 +102,8 @@ class Permission {
 
   /**
    * Quitar permiso de un rol
-   * @param {*} permissionId 
-   * @param {*} roleId 
+   * @param {*} permissionId
+   * @param {*} roleId
    */
   static async removeFromRole(permissionId, roleId) {
     await pool.execute(
@@ -101,8 +114,8 @@ class Permission {
 
   /**
    * Obtener permisos de un rol
-   * @param {*} roleId 
-   * @returns 
+   * @param {*} roleId
+   * @returns
    */
   static async getRolePermissions(roleId) {
     const [permissions] = await pool.execute(

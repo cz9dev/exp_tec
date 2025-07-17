@@ -14,12 +14,11 @@ const app = express();
 // Configuración de sesiones
 app.use(
   session({
-    secret: "QSw123+-kYH", // Cambia esto por una clave secreta segura
+    secret: process.env.SESSION_SECRET || "your-secret-key",
     resave: false,
     saveUninitialized: true,
     cookie: {
-      secure: process.env.NODE_ENV === "production", // true en producción, false en desarrollo
-      //secure: false, // cuando este en producción dejar la parte de arriba
+      secure: process.env.NODE_ENV === "production",
       httpOnly: true, // Recomendado para seguridad
       maxAge: 24 * 60 * 60 * 1000, // Ejemplo: 1 día de duración
     },

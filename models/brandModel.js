@@ -1,6 +1,26 @@
 const pool = require("../config/db"); // Ajusta la ruta según tu estructura
 
 class Brand {
+
+  static async findAllWithPagination(limit, offset, whereClause = "") {
+    const [rows] = await pool.execute(
+      `
+      SELECT * FROM marca
+      ${whereClause}
+      LIMIT ? OFFSET ?
+    `,
+      [limit, offset]
+    );
+    return rows;
+  }
+
+  static async count(whereClause = "") {
+    const [[{ count }]] = await pool.execute(
+      `SELECT COUNT(*) AS count FROM marca d ${whereClause}`
+    );
+    return count;
+  }
+
   static async findAll() {
     const [rows] = await pool.query("SELECT * FROM marca");
     return rows;
@@ -12,13 +32,17 @@ class Brand {
   }
 
   static async findOne(marca) {
-    const [rows] = await pool.query("SELECT * FROM marca WHERE marca = ?", [marca]);
+    const [rows] = await pool.query("SELECT * FROM marca WHERE marca = ?", [
+      marca,
+    ]);
     return rows[0];
   }
 
   static async create(brand) {
     const { marca } = brand;
-    const [result] = await pool.query("INSERT INTO marca (marca) VALUES (?)", [marca]);
+    const [result] = await pool.query("INSERT INTO marca (marca) VALUES (?)", [
+      marca,
+    ]);
     return result.insertId;
   }
 

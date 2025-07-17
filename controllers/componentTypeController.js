@@ -1,10 +1,30 @@
 const ComponentTypeModel = require("../models/componentTypeModel");
 
 module.exports = {
+
   list: async (req, res) => {
+
+    const { page = 1, limit = 10, search = "" } = req.query;
+    const offset = (page - 1) * limit;
+
+    let whereClause = "";
+    if (search) {
+      whereClause = `WHERE nombre LIKE '%${search}%'`;
+    }
+
     try {
-      const componentTypes = await ComponentTypeModel.findAll();
+
+      const [componentTypes, count] = await Promise.all([
+        ComponentTypeModel.findAllWithPagination(limit, offset, whereClause), // Nueva función del modelo
+        ComponentTypeModel.count(whereClause), // Nueva función para el conteo total
+      ]);
+      
       res.render("componentTypes/list", {
+        count,
+        limit,
+        page,
+        search,
+        currentPage: parseInt(page),
         title: "Tipos de Componentes",
         user: req.session.user,
         componentTypes,

@@ -1,11 +1,31 @@
 // controllers/brandController.js
-const Brand = require("../models/brandModel");
+const BrandModel = require("../models/brandModel");
 
 module.exports = {
+
   listBrands: async (req, res) => {
+
+    const { page = 1, limit = 10, search = "" } = req.query;
+    const offset = (page - 1) * limit;
+
+    let whereClause = "";
+    if (search) {
+      whereClause = `WHERE marca LIKE '%${search}%'`;
+    }
+
     try {
-      const brands = await Brand.findAll();
+      
+      const [brands, count] = await Promise.all([
+        BrandModel.findAllWithPagination(limit, offset, whereClause), // Nueva función del modelo
+        BrandModel.count(whereClause), // Nueva función para el conteo total
+      ]);
+      
       res.render("brands/list", {
+        count,
+        limit,
+        page,
+        search,
+        currentPage: parseInt(page),
         title: "Marcas",
         user: req.session.user, // Asegúrate de tener la sesión configurada
         brands,
@@ -31,13 +51,13 @@ module.exports = {
     try {
       const { marca } = req.body;
       // Validación de unicidad
-      const existingBrand = await Brand.findOne(marca);
+      const existingBrand = await BrandModel.findOne(marca);
       if (existingBrand) {
         req.flash("error_msg", "Ya existe una marca con ese nombre.");
         return res.redirect("brands/new"); // Redirige de vuelta al formulario
       }
 
-      await Brand.create({ marca });
+      await BrandModel.create({ marca });
       req.flash("success_msg", "Marca creada exitosamente");
       res.redirect("brands");
     } catch (error) {
@@ -50,7 +70,7 @@ module.exports = {
 
   showEditForm: async (req, res) => {
     try {
-      const brand = await Brand.findById(req.params.id);
+      const brand = await BrandModel.findById(req.params.id);
       if (!brand) {
         req.flash("error_msg", "Marca no encontrada");
         return res.redirect("brands");
@@ -69,13 +89,13 @@ module.exports = {
       const { marca } = req.body;
 
       // Validación de unicidad
-      const existingBrand = await Brand.findOne(marca);
+      const existingBrand = await BrandModel.findOne(marca);
       if (existingBrand) {
         req.flash("error_msg", "Ya existe una marca con ese nombre.");
         return res.redirect("/dashboard/brands/"+id+"/edit"); // Redirige de vuelta al formulario
       }
 
-      await Brand.update(id, { marca });
+      await BrandModel.update(id, { marca });
       req.flash("success_msg", "Marca actualizada exitosamente");
       res.redirect("/dashboard/brands");
     } catch (error) {
@@ -87,7 +107,7 @@ module.exports = {
 
   deleteBrand: async (req, res) => {
     try {
-      await Brand.delete(req.params.id);
+      await BrandModel.delete(req.params.id);
       req.flash("success_msg", "Marca eliminada exitosamente");
       res.redirect("/dashboard/brands");
     } catch (error) {

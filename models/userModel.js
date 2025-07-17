@@ -66,6 +66,29 @@ class User {
     return rows[0];
   }
 
+  static async findAllWithPagination(limit, offset, whereClause = "") {
+    const [rows] = await pool.execute(
+      `
+      SELECT u.*, GROUP_CONCAT(r.nombre) as roles 
+      FROM usuarios u
+      LEFT JOIN usuarios_roles ur ON u.id = ur.usuario_id
+      LEFT JOIN roles r ON ur.rol_id = r.id      
+      ${whereClause}
+      GROUP BY u.id
+      LIMIT ? OFFSET ?
+    `,
+      [limit, offset]
+    );
+    return rows;
+  }
+
+  static async count(whereClause = "") {
+    const [[{ count }]] = await pool.execute(
+      `SELECT COUNT(*) AS count FROM usuarios u ${whereClause}`
+    );
+    return count;
+  }
+
   /**
    * Buscar todos los usuarios
    * @returns

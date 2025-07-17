@@ -1,6 +1,12 @@
 <div class="container mt-4">
   <h2>Gestión de perifericos</h2>
-  <a href="/dashboard/peripherals/new" class="btn btn-success">Nuevo periferico</a>
+  <a href="/dashboard/peripherals/new" class="btn btn-success mb-3">Nuevo periferico</a>
+  
+  <form method="GET" action="/dashboard/peripherals">
+    <input type="text" name="search" placeholder="Buscar dispositivo..." value="<%= search %>">
+    <button type="submit" class="btn-sm btn-success mt-2"><i class="fas fa-search"></i> Buscar</button>
+  </form>
+
   <table class="table table-bordered table-striped text-center mt-4">
     <thead>
       <tr>      
@@ -38,4 +44,17 @@
       <% }); %>
     </tbody>
   </table>
+
+  <!-- Paginado -->
+  <nav aria-label="Page navigation">
+    <ul class="pagination">
+      <% for (let i=1; i <=Math.ceil(count / limit); i++) { %>
+        <li class="page-item <%= i == page ? 'active' : '' %>">
+          <a class="page-link" href="?page=<%= i %>&search=<%= search %>">
+            <%= i %>
+          </a>
+        </li>
+        <% } %>
+    </ul>
+  </nav>
 </div>

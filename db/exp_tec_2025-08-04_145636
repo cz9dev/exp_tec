@@ -28,16 +28,8 @@ CREATE TABLE `area` (
   `nombre` varchar(250) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unic_nombre` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `area`
---
-
-/*!40000 ALTER TABLE `area` DISABLE KEYS */;
-INSERT INTO `area` VALUES (12,'AyB'),(2,'Dep. Dirección'),(6,'Dep. Económico'),(1,'Dep. Informático'),(10,'Dep. Jurídico'),(11,'PISO'),(14,'RRHH'),(15,'RRPP'),(13,'SEGIROIDAD');
-/*!40000 ALTER TABLE `area` ENABLE KEYS */;
 
 --
 -- Table structure for table `componente`
@@ -59,16 +51,8 @@ CREATE TABLE `componente` (
   KEY `FK_componente_id_tipo_componente` (`id_tipo_componente`),
   CONSTRAINT `FK_componente_id_marca` FOREIGN KEY (`id_marca`) REFERENCES `marca` (`id`),
   CONSTRAINT `FK_componente_id_tipo_componente` FOREIGN KEY (`id_tipo_componente`) REFERENCES `tipo_componente` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `componente`
---
-
-/*!40000 ALTER TABLE `componente` DISABLE KEYS */;
-INSERT INTO `componente` VALUES (16,20,'Core i7',13,'123','123.jpeg'),(17,24,'DDR4-8GB',3,'DS11703453','fgdf.jpg'),(18,23,'1 TB',4,'WD10EALX','WD10EALX.jpg');
-/*!40000 ALTER TABLE `componente` ENABLE KEYS */;
 
 --
 -- Table structure for table `dispositivo`
@@ -85,6 +69,7 @@ CREATE TABLE `dispositivo` (
   `ip` char(20) DEFAULT NULL,
   `id_trabajador` int(11) NOT NULL,
   `id_area` int(11) NOT NULL,
+  `estado` enum('activo','roto') NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
   `deleted_at` datetime DEFAULT NULL,
@@ -98,14 +83,6 @@ CREATE TABLE `dispositivo` (
   CONSTRAINT `FK_dispositivo_id_trabajador` FOREIGN KEY (`id_trabajador`) REFERENCES `trabajadores` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `dispositivo`
---
-
-/*!40000 ALTER TABLE `dispositivo` DISABLE KEYS */;
-INSERT INTO `dispositivo` VALUES (1,'Computadora','6070290388','PC0388','10.15.23.45',1,6,'2025-06-03 09:16:57','2025-06-03 10:52:08',NULL),(2,'Computadora','6070290365','VINFORMATICO','10.15.23.21',3,1,'2025-06-03 09:16:57','2025-06-04 12:37:29',NULL);
-/*!40000 ALTER TABLE `dispositivo` ENABLE KEYS */;
 
 --
 -- Table structure for table `dispositivo_auditoria`
@@ -129,16 +106,8 @@ CREATE TABLE `dispositivo_auditoria` (
   KEY `usuario_id` (`usuario_id`),
   CONSTRAINT `dispositivo_auditoria_ibfk_1` FOREIGN KEY (`dispositivo_id`) REFERENCES `dispositivo` (`id`),
   CONSTRAINT `dispositivo_auditoria_ibfk_2` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `dispositivo_auditoria`
---
-
-/*!40000 ALTER TABLE `dispositivo_auditoria` DISABLE KEYS */;
-INSERT INTO `dispositivo_auditoria` VALUES (4,2,1,'2025-06-04 16:21:08','asignar_componente',16,NULL,'{\"device\":{\"id\":2,\"tipo\":\"Computadora\",\"inventario\":\"6070290365\",\"nombre\":\"VINFORMATICO\",\"ip\":\"10.15.23.21\",\"id_trabajador\":3,\"id_area\":1,\"created_at\":\"2025-06-03T13:16:57.000Z\",\"updated_at\":\"2025-06-03T13:16:57.000Z\",\"deleted_at\":null},\"component\":[{\"id\":16,\"modelo\":\"Core i7\",\"numero_serie\":\"123\",\"tipo_componente\":\"Procesador\"},{\"id\":17,\"modelo\":\"DDR4-8GB\",\"numero_serie\":\"DS11703453\",\"tipo_componente\":\"Memoria Ram DDR4\"}]}','{\"device\":{\"id\":2,\"tipo\":\"Computadora\",\"inventario\":\"6070290365\",\"nombre\":\"VINFORMATICO\",\"ip\":\"10.15.23.21\",\"id_trabajador\":3,\"id_area\":1,\"created_at\":\"2025-06-03T13:16:57.000Z\",\"updated_at\":\"2025-06-03T13:16:57.000Z\",\"deleted_at\":null},\"component\":[{\"id\":17,\"modelo\":\"DDR4-8GB\",\"numero_serie\":\"DS11703453\",\"tipo_componente\":\"Memoria Ram DDR4\"}]}'),(5,2,1,'2025-06-04 16:21:09','asignar_componente',17,NULL,'{\"device\":{\"id\":2,\"tipo\":\"Computadora\",\"inventario\":\"6070290365\",\"nombre\":\"VINFORMATICO\",\"ip\":\"10.15.23.21\",\"id_trabajador\":3,\"id_area\":1,\"created_at\":\"2025-06-03T13:16:57.000Z\",\"updated_at\":\"2025-06-03T13:16:57.000Z\",\"deleted_at\":null},\"component\":[{\"id\":17,\"modelo\":\"DDR4-8GB\",\"numero_serie\":\"DS11703453\",\"tipo_componente\":\"Memoria Ram DDR4\"}]}','{\"device\":{\"id\":2,\"tipo\":\"Computadora\",\"inventario\":\"6070290365\",\"nombre\":\"VINFORMATICO\",\"ip\":\"10.15.23.21\",\"id_trabajador\":3,\"id_area\":1,\"created_at\":\"2025-06-03T13:16:57.000Z\",\"updated_at\":\"2025-06-03T13:16:57.000Z\",\"deleted_at\":null},\"component\":[]}'),(6,2,1,'2025-06-04 16:28:32','asignar_componente',16,NULL,'{\"device\":{\"id\":2,\"tipo\":\"Computadora\",\"inventario\":\"6070290365\",\"nombre\":\"VINFORMATICO\",\"ip\":\"10.15.23.21\",\"id_trabajador\":3,\"id_area\":1,\"created_at\":\"2025-06-03T13:16:57.000Z\",\"updated_at\":\"2025-06-03T13:16:57.000Z\",\"deleted_at\":null},\"component\":[]}','{\"device\":{\"id\":2,\"tipo\":\"Computadora\",\"inventario\":\"6070290365\",\"nombre\":\"VINFORMATICO\",\"ip\":\"10.15.23.21\",\"id_trabajador\":3,\"id_area\":1,\"created_at\":\"2025-06-03T13:16:57.000Z\",\"updated_at\":\"2025-06-03T13:16:57.000Z\",\"deleted_at\":null},\"component\":[{\"id\":16,\"modelo\":\"Core i7\",\"numero_serie\":\"123\",\"tipo_componente\":\"Procesador\"}]}'),(7,2,1,'2025-06-04 16:28:36','desasignar_componente',16,NULL,'{\"device\":{\"id\":2,\"tipo\":\"Computadora\",\"inventario\":\"6070290365\",\"nombre\":\"VINFORMATICO\",\"ip\":\"10.15.23.21\",\"id_trabajador\":3,\"id_area\":1,\"created_at\":\"2025-06-03T13:16:57.000Z\",\"updated_at\":\"2025-06-03T13:16:57.000Z\",\"deleted_at\":null},\"component\":[{\"id\":16,\"modelo\":\"Core i7\",\"numero_serie\":\"123\",\"tipo_componente\":\"Procesador\"}]}','{\"device\":{\"id\":2,\"tipo\":\"Computadora\",\"inventario\":\"6070290365\",\"nombre\":\"VINFORMATICO\",\"ip\":\"10.15.23.21\",\"id_trabajador\":3,\"id_area\":1,\"created_at\":\"2025-06-03T13:16:57.000Z\",\"updated_at\":\"2025-06-03T13:16:57.000Z\",\"deleted_at\":null},\"component\":[]}'),(8,2,1,'2025-06-04 16:28:47','asignar_periferico',NULL,2,'{\"device\":{\"id\":2,\"tipo\":\"Computadora\",\"inventario\":\"6070290365\",\"nombre\":\"VINFORMATICO\",\"ip\":\"10.15.23.21\",\"id_trabajador\":3,\"id_area\":1,\"created_at\":\"2025-06-03T13:16:57.000Z\",\"updated_at\":\"2025-06-03T13:16:57.000Z\",\"deleted_at\":null},\"peripherals\":[]}','{\"device\":{\"id\":2,\"tipo\":\"Computadora\",\"inventario\":\"6070290365\",\"nombre\":\"VINFORMATICO\",\"ip\":\"10.15.23.21\",\"id_trabajador\":3,\"id_area\":1,\"created_at\":\"2025-06-03T13:16:57.000Z\",\"updated_at\":\"2025-06-03T13:16:57.000Z\",\"deleted_at\":null},\"peripherals\":[{\"id\":2,\"modelo\":\"K120\",\"numero_serie\":\"1647SC504KF8\",\"tipo_periferico\":\"Teclado (Keyboard)\"}]}'),(9,2,1,'2025-06-04 16:28:49','desasignar_periferico',NULL,2,'{\"device\":{\"id\":2,\"tipo\":\"Computadora\",\"inventario\":\"6070290365\",\"nombre\":\"VINFORMATICO\",\"ip\":\"10.15.23.21\",\"id_trabajador\":3,\"id_area\":1,\"created_at\":\"2025-06-03T13:16:57.000Z\",\"updated_at\":\"2025-06-03T13:16:57.000Z\",\"deleted_at\":null},\"peripherals\":[{\"id\":2,\"modelo\":\"K120\",\"numero_serie\":\"1647SC504KF8\",\"tipo_periferico\":\"Teclado (Keyboard)\"}]}','{\"device\":{\"id\":2,\"tipo\":\"Computadora\",\"inventario\":\"6070290365\",\"nombre\":\"VINFORMATICO\",\"ip\":\"10.15.23.21\",\"id_trabajador\":3,\"id_area\":1,\"created_at\":\"2025-06-03T13:16:57.000Z\",\"updated_at\":\"2025-06-03T13:16:57.000Z\",\"deleted_at\":null},\"peripherals\":[]}'),(10,2,1,'2025-06-04 16:36:32','actualizar_dispositivo',NULL,NULL,'{\"device\":{\"id\":2,\"tipo\":\"Computadora\",\"inventario\":\"6070290365\",\"nombre\":\"VINFORMATICO\",\"ip\":\"10.15.23.21\",\"id_trabajador\":3,\"id_area\":1,\"created_at\":\"2025-06-03T13:16:57.000Z\",\"updated_at\":\"2025-06-03T13:16:57.000Z\",\"deleted_at\":null},\"peripherals\":[]}','{\"device\":{\"id\":2,\"tipo\":\"Computadora\",\"inventario\":\"6070290365\",\"nombre\":\"VINFORMATICO\",\"ip\":\"10.15.23.21\",\"id_trabajador\":1,\"id_area\":1,\"created_at\":\"2025-06-03T13:16:57.000Z\",\"updated_at\":\"2025-06-04T16:36:31.000Z\",\"deleted_at\":null},\"peripherals\":[]}'),(11,2,1,'2025-06-04 16:37:29','actualizar_dispositivo',NULL,NULL,'{\"device\":{\"id\":2,\"tipo\":\"Computadora\",\"inventario\":\"6070290365\",\"nombre\":\"VINFORMATICO\",\"ip\":\"10.15.23.21\",\"id_trabajador\":1,\"id_area\":1,\"created_at\":\"2025-06-03T13:16:57.000Z\",\"updated_at\":\"2025-06-04T16:36:31.000Z\",\"deleted_at\":null},\"peripherals\":[]}','{\"device\":{\"id\":2,\"tipo\":\"Computadora\",\"inventario\":\"6070290365\",\"nombre\":\"VINFORMATICO\",\"ip\":\"10.15.23.21\",\"id_trabajador\":3,\"id_area\":1,\"created_at\":\"2025-06-03T13:16:57.000Z\",\"updated_at\":\"2025-06-04T16:37:29.000Z\",\"deleted_at\":null},\"peripherals\":[]}');
-/*!40000 ALTER TABLE `dispositivo_auditoria` ENABLE KEYS */;
 
 --
 -- Table structure for table `dispositivo_componente`
@@ -158,13 +127,6 @@ CREATE TABLE `dispositivo_componente` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `dispositivo_componente`
---
-
-/*!40000 ALTER TABLE `dispositivo_componente` DISABLE KEYS */;
-/*!40000 ALTER TABLE `dispositivo_componente` ENABLE KEYS */;
-
---
 -- Table structure for table `dispositivo_periferico`
 --
 
@@ -180,13 +142,6 @@ CREATE TABLE `dispositivo_periferico` (
   CONSTRAINT `FK_dispositivo_periferico_id_periferico` FOREIGN KEY (`id_periferico`) REFERENCES `periferico` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `dispositivo_periferico`
---
-
-/*!40000 ALTER TABLE `dispositivo_periferico` DISABLE KEYS */;
-/*!40000 ALTER TABLE `dispositivo_periferico` ENABLE KEYS */;
 
 --
 -- Table structure for table `dispositivo_sello`
@@ -210,16 +165,8 @@ CREATE TABLE `dispositivo_sello` (
   CONSTRAINT `dispositivo_sello_ibfk_1` FOREIGN KEY (`id_dispositivo`) REFERENCES `dispositivo` (`id`),
   CONSTRAINT `dispositivo_sello_ibfk_2` FOREIGN KEY (`id_testigo`) REFERENCES `trabajadores` (`id`),
   CONSTRAINT `dispositivo_sello_ibfk_3` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `dispositivo_sello`
---
-
-/*!40000 ALTER TABLE `dispositivo_sello` DISABLE KEYS */;
-INSERT INTO `dispositivo_sello` VALUES (3,'ssf',2,'2025-06-06 00:00:00',1,1,'2025-06-06 13:36:13'),(4,'fgh544',1,'2025-06-06 00:00:00',NULL,1,'2025-06-06 13:57:28'),(5,'dsfg546',1,'2025-06-04 00:00:00',NULL,1,'2025-06-06 14:18:44');
-/*!40000 ALTER TABLE `dispositivo_sello` ENABLE KEYS */;
 
 --
 -- Table structure for table `incidencia`
@@ -245,16 +192,8 @@ CREATE TABLE `incidencia` (
   CONSTRAINT `incidencia_ibfk_1` FOREIGN KEY (`id_dispositivo`) REFERENCES `dispositivo` (`id`),
   CONSTRAINT `incidencia_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `incidencia_ibfk_3` FOREIGN KEY (`id_trabajador`) REFERENCES `trabajadores` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `incidencia`
---
-
-/*!40000 ALTER TABLE `incidencia` DISABLE KEYS */;
-INSERT INTO `incidencia` VALUES (9,2,'software','2025-06-06 00:00:00','Se instalo driver pack',1,1,1,1),(10,2,'mantenimiento','2025-06-06 00:00:00','sdf',1,0,NULL,0),(11,2,'mantenimiento','2025-06-06 00:00:00','gf',1,0,NULL,0),(12,2,'software','2025-06-06 00:00:00','fgh',1,0,NULL,0),(13,1,'mantenimiento','2025-06-06 00:00:00','fgh',1,0,NULL,0),(14,1,'mantenimiento','2025-06-04 00:00:00','sdgfdfg',1,1,NULL,1);
-/*!40000 ALTER TABLE `incidencia` ENABLE KEYS */;
 
 --
 -- Table structure for table `logs_acceso`
@@ -278,13 +217,6 @@ CREATE TABLE `logs_acceso` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `logs_acceso`
---
-
-/*!40000 ALTER TABLE `logs_acceso` DISABLE KEYS */;
-/*!40000 ALTER TABLE `logs_acceso` ENABLE KEYS */;
-
---
 -- Table structure for table `marca`
 --
 
@@ -296,16 +228,8 @@ CREATE TABLE `marca` (
   `marca` char(20) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UQ_marca_marca` (`marca`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `marca`
---
-
-/*!40000 ALTER TABLE `marca` DISABLE KEYS */;
-INSERT INTO `marca` VALUES (1,'Acer'),(22,'Adata'),(24,'Crucial'),(4,'HP'),(20,'Intel'),(3,'Logitech'),(17,'Maxell'),(18,'Motorola'),(16,'Panasonic'),(21,'Seasonic'),(2,'ViewSonic'),(23,'Western Digital');
-/*!40000 ALTER TABLE `marca` ENABLE KEYS */;
 
 --
 -- Table structure for table `periferico`
@@ -328,16 +252,8 @@ CREATE TABLE `periferico` (
   KEY `FK_periferico_id_tipo_periferico` (`id_tipo_periferico`),
   CONSTRAINT `FK_periferico_id_marca` FOREIGN KEY (`id_marca`) REFERENCES `marca` (`id`),
   CONSTRAINT `FK_periferico_id_tipo_periferico` FOREIGN KEY (`id_tipo_periferico`) REFERENCES `tipo_periferico` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `periferico`
---
-
-/*!40000 ALTER TABLE `periferico` DISABLE KEYS */;
-INSERT INTO `periferico` VALUES (2,3,'K120',4,'1647SC504KF8','---','1647SC504KF8.jpg'),(3,3,'M-U0026',2,'-informatico-','---','-informatico-.jpg'),(4,2,'VS16162',1,'UD3162341107','6070290286','UD3162341107.jpg');
-/*!40000 ALTER TABLE `periferico` ENABLE KEYS */;
 
 --
 -- Table structure for table `permisos`
@@ -353,16 +269,8 @@ CREATE TABLE `permisos` (
   `ruta` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `permisos`
---
-
-/*!40000 ALTER TABLE `permisos` DISABLE KEYS */;
-INSERT INTO `permisos` VALUES (1,'VIEW_DASHBOARD','Ver panel principal','/dashboard'),(2,'MANAGE_USERS','Gestionar usuarios','/dashboard/users'),(3,'MANAGE_ROLES','Administrar roles','/dashboard/roles'),(4,'VIEW_REPORTS','Ver Reportes','/dasboard/reports'),(6,'VIEW_PERMISSIONS','Ver Permisos','/dasboard/permissions'),(8,'MANAGE_PERMISSIONS','Gestionar Permisos','/dasboard/permissions'),(9,'VIEW_USERS','Ver usuarios','/dashboard/users'),(10,'VIEW_ROLES','Ver roles','/dashboard/roles'),(12,'VIEW_BRANDS','Ver Marcas','/dashboard/brands'),(13,'MANAGE_BRANDS','Gestionar Marcas','/dashboard/brands '),(16,'VIEW_AREAS','Ver Areas','/dashboard/areas'),(17,'MANAGE_AREAS','Gestionar areas','/dashboard/areas'),(18,'VIEW_TRABAJADORES','Ver trabajadores','/dashboard/trabajadores'),(19,'MANAGE_TRABAJADORES','Gestionar trabajadores','/dashboard/trabajadores'),(20,'VIEW_COMPONENT_TYPES','Ver tipos de componentes','/dashboard/componentTypes'),(21,'MANAGE_COMPONENT_TYPES','Gestionar tipos de componentes','/dashboard/componentTypes'),(22,'VIEW_COMPONENT','Ver Componentes','/dashboard/component'),(23,'MANAGE_COMPONENTS','Gestionar componentes','/dashboard/component'),(24,'VIEW_PERIPHERALS_TYPES','Ver tipos de perifericos','/dashboard/'),(25,'MANAGE_PERIPHERALS_TYPES','Gestionar tipos de perifericos','/ashboard'),(26,'VIEW_PERIPHERALS','Ver perifericos','/dashboard/peripherals'),(27,'MANAGE_PERIPHERALS','Gestionar perifericos','/dashboard/peripherals'),(28,'VIEW_DEVICES','Ver dispositivos','/dashboard/device'),(29,'MANAGE_DEVICES','Gestionar dispositivos','/dashboard/device'),(30,'VIEW_INCIDENCES','Ver Incidencias','/dashboard/incidencias'),(31,'MANAGE_INCIDENCES','Gestionar Incidencias','/dashboard/incidencias'),(32,'VIEW_SELLOS','Ver Sellos','/dashboard/sellos'),(33,'MANAGE_SELLOS','Gestionar Sellos','/dashboard/sellos');
-/*!40000 ALTER TABLE `permisos` ENABLE KEYS */;
 
 --
 -- Table structure for table `roles`
@@ -377,16 +285,8 @@ CREATE TABLE `roles` (
   `descripcion` text DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `roles`
---
-
-/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES (1,'admin','Administrador del sistema'),(2,'user','Usuario estándar');
-/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 
 --
 -- Table structure for table `roles_permisos`
@@ -406,14 +306,6 @@ CREATE TABLE `roles_permisos` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `roles_permisos`
---
-
-/*!40000 ALTER TABLE `roles_permisos` DISABLE KEYS */;
-INSERT INTO `roles_permisos` VALUES (1,1),(1,2),(1,3),(1,4),(1,6),(1,8),(1,9),(1,10),(1,12),(1,13),(1,16),(1,17),(1,18),(1,19),(1,20),(1,21),(1,22),(1,23),(1,24),(1,25),(1,26),(1,27),(1,28),(1,29),(1,30),(1,31),(1,32),(1,33),(2,1),(2,4),(2,16),(2,22),(2,26),(2,28),(2,32);
-/*!40000 ALTER TABLE `roles_permisos` ENABLE KEYS */;
-
---
 -- Table structure for table `tipo_componente`
 --
 
@@ -425,16 +317,8 @@ CREATE TABLE `tipo_componente` (
   `nombre` varchar(250) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unic_nombre_componente` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tipo_componente`
---
-
-/*!40000 ALTER TABLE `tipo_componente` DISABLE KEYS */;
-INSERT INTO `tipo_componente` VALUES (4,'Disco Duro'),(14,'Fuente'),(10,'Lector CD'),(12,'Lector CD/DVD'),(2,'Memoria Ram DDR3'),(3,'Memoria Ram DDR4'),(1,'Mother Board'),(13,'Procesador'),(16,'Tarjeta de Red'),(15,'Tarjeta de Video');
-/*!40000 ALTER TABLE `tipo_componente` ENABLE KEYS */;
 
 --
 -- Table structure for table `tipo_periferico`
@@ -448,16 +332,8 @@ CREATE TABLE `tipo_periferico` (
   `nombre` varchar(250) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unic_nombre_periferico` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tipo_periferico`
---
-
-/*!40000 ALTER TABLE `tipo_periferico` DISABLE KEYS */;
-INSERT INTO `tipo_periferico` VALUES (9,'Fotocopiadora'),(3,'Impresora'),(1,'Monitor (Display)'),(2,'Raton (Mouse)'),(8,'Speaker (bosinas)'),(4,'Teclado (Keyboard)');
-/*!40000 ALTER TABLE `tipo_periferico` ENABLE KEYS */;
 
 --
 -- Table structure for table `trabajadores`
@@ -476,16 +352,8 @@ CREATE TABLE `trabajadores` (
   UNIQUE KEY `ci` (`CI`),
   KEY `fk_id_area` (`id_area`),
   CONSTRAINT `fk_id_area` FOREIGN KEY (`id_area`) REFERENCES `area` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `trabajadores`
---
-
-/*!40000 ALTER TABLE `trabajadores` DISABLE KEYS */;
-INSERT INTO `trabajadores` VALUES (1,'78569452154','Manuel Angulo','Desdin Portelle',1),(3,'78965412302','Antonio','Federio Engel',2);
-/*!40000 ALTER TABLE `trabajadores` ENABLE KEYS */;
 
 --
 -- Table structure for table `usuarios`
@@ -510,16 +378,8 @@ CREATE TABLE `usuarios` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `usuarios`
---
-
-/*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'admin','admin@localhost','$2b$12$7gjDHTrpWsOEv2ODDBnwJO02nao.DWIAO4pc1RlZ9B.AMJnpLLc1W','Administrador','de Sistemas',1,'2025-03-24 19:04:39',NULL,NULL,NULL,'profile_image-1.svg'),(17,'test','test@localhost','$2b$12$Lz2HGqe1XZ785xdXiKPEC.HqAtWaWrds0gQZcCB6oDrdcTvUM0COS','Test','',1,'2025-06-04 15:17:30',NULL,NULL,NULL,NULL);
-/*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 
 --
 -- Table structure for table `usuarios_roles`
@@ -539,12 +399,21 @@ CREATE TABLE `usuarios_roles` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `usuarios_roles`
+-- Table structure for table `usuarios_widgets`
 --
 
-/*!40000 ALTER TABLE `usuarios_roles` DISABLE KEYS */;
-INSERT INTO `usuarios_roles` VALUES (1,1),(17,2);
-/*!40000 ALTER TABLE `usuarios_roles` ENABLE KEYS */;
+DROP TABLE IF EXISTS `usuarios_widgets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `usuarios_widgets` (
+  `usuarios_id` int(11) NOT NULL,
+  `widgets` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`widgets`)),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`usuarios_id`),
+  CONSTRAINT `usuarios_widgets_ibfk_1` FOREIGN KEY (`usuarios_id`) REFERENCES `usuarios` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping routines for database 'exp_tec'
@@ -559,4 +428,4 @@ INSERT INTO `usuarios_roles` VALUES (1,1),(17,2);
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-06 16:23:15
+-- Dump completed on 2025-08-04 14:56:39

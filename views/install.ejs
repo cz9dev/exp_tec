@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="/stylesheets/styles.css" />
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    
+        .alert {
+            border-radius: 8px;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .password-toggle {
+            position: relative;
+        }
+
+        .password-toggle-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #6c757d;
+        }
+
+        @media (max-width: 576px) {
+            .install-container {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="install-container animate__animated animate__fadeIn">
+        <% if (success) { %>
+            <div class="install-header">
+                <div class="logo">
+                    <img src="/images/logo.png" alt="EXP_TEC">
+                </div>
+                <h1>¡Configuración Completa!</h1>
+            </div>
+        
+            <div class="alert alert-success animate__animated animate__fadeIn">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                La aplicación se ha configurado correctamente.
+            </div>
+        
+            <div class="alert alert-info mt-4">
+                <h5><i class="bi bi-exclamation-triangle-fill me-2"></i>Reinicio Requerido</h5>
+                <p>Para completar el proceso, debes reiniciar manualmente el servidor Node.js.</p>
+        
+                <div class="mt-3">
+                    <h6>Comandos útiles:</h6>
+                    <code class="d-block mb-2">pm2 restart all</code>
+                    <small class="text-muted">(Si usas PM2)</small>
+        
+                    <code class="d-block mt-2">node app.js</code>
+                    <small class="text-muted">(Si ejecutas directamente)</small>
+                </div>
+            </div>
+        
+            <div class="text-center mt-4">
+                <a href="/login" class="btn btn-primary">
+                    <i class="bi bi-box-arrow-in-right me-2"></i> Ir al Login
+                </a>
+            </div>
+            <% } else { %>
+        <div class="install-header">
+            <div class="logo">
+                <img src="/images/logo.png" alt="EXP_TEC">
+            </div>            
+            <h1>Configuración Inicial</h1>
+            <p>Por favor, completa los siguientes datos para configurar la aplicación. Recuerde que debes tener creada
+                una base de datos inicialmente</p>
+        </div>
+
+        <% if (error) { %>
+            <div class="alert alert-danger animate__animated animate__shakeX">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <%= error %>
+            </div>
+            <% } %>
+
+                <form method="POST" action="/install">
+
+                    <div class="mb-4">
+                        <label for="dbHost" class="form-label">Host de la Base de Datos</label>
+                        <input type="text" class="form-control" id="dbHost" name="dbHost" value="localhost" required>
+                        <small class="text-muted">Generalmente 'localhost' o la IP del servidor</small>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="dbUser" class="form-label">Usuario de la Base de Datos</label>
+                        <input type="text" class="form-control" id="dbUser" name="dbUser" value="root" required>
+                    </div>
+
+                    <div class="mb-4 password-toggle">
+                        <label for="dbPass" class="form-label">Contraseña de la Base de Datos</label>
+                        <input type="password" class="form-control" id="dbPass" name="dbPass" value="password" required>
+                        <i class="bi bi-eye-slash password-toggle-icon" id="togglePassword"></i>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="dbName" class="form-label">Nombre de la Base de Datos</label>
+                        <input type="text" class="form-control" id="dbName" name="dbName" value="exp_tec" required>
+                        <small class="text-muted">La base de datos debe existir previamente</small>
+                    </div>
+
+                    <div class="mb-4 password-toggle">
+                        <label for="sessionSecret" class="form-label">Clave Secreta de Sesión</label>
+                        <input type="text" class="form-control" id="sessionSecret" name="sessionSecret" required>
+                        <small class="text-muted">Usada para encriptar las cookies de sesión</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-install mt-3">
+                        <i class="bi bi-gear-fill me-2"></i> Configurar Aplicación
+                    </button>
+                </form>
+    </div>
+    <% } %>
+
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle password visibility
+        document.getElementById('togglePassword').addEventListener('click', function () {
+            const passwordInput = document.getElementById('dbPass');
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.classList.toggle('bi-eye');
+            this.classList.toggle('bi-eye-slash');
+        });
+
+        // Generate random session secret
+        document.addEventListener('DOMContentLoaded', function () {
+            const sessionSecretInput = document.getElementById('sessionSecret');
+            if (!sessionSecretInput.value) {
+                const randomSecret = Math.random().toString(36).substring(2, 15) +
+                    Math.random().toString(36).substring(2, 15);
+                sessionSecretInput.value = randomSecret;
+            }
+        });
+    </script>
+</body>
+
+</html>

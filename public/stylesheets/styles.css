@@ -1,4 +1,5 @@
 /* ===== Variables y Estilos Base ===== */
+/*
 :root {
   --primary-color: #28a745;
   --primary-hover: #218838;
@@ -8,6 +9,22 @@
   --text-light: #fff;
   --text-dark: #333;
   --transition: all 0.3s ease;
+}
+  */
+
+:root {
+  --primary-color: #4361ee;
+  --primary-hover: #214e88;
+  --secondary-color: #3f37c9;
+  --accent-color: #4895ef;
+  --light-color: #f8f9fa;
+  --dark-bg: #343a40;
+  --nav-bg: #333;
+  --text-light: #fff;
+  --text-dark: #333;
+  --dark-color: #212529;
+  --success-color: #4cc9f0;
+  --error-color: #f72585;
 }
 
 body {
@@ -215,6 +232,54 @@ body {
   border-radius: 8px;
   margin-bottom: 1.5rem;
   text-align: left;
+}
+
+/* ===== Contenedor de instalador =====*/
+.install-container {
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 600px;
+  margin: 2rem;
+  transition: all 0.3s ease;
+}
+
+.install-container:hover {
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.install-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--primary-color);
+}
+
+.install-header h1 {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.install-header p {
+  color: #6c757d;
+  font-size: 1.1rem;
+}
+
+.btn-install {
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  width: 100%;
+  transition: all 0.3s;
+}
+
+.btn-install:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-2px);
 }
 
 /* ===== Layout Principal ===== */
@@ -526,9 +591,24 @@ body {
   margin-top: 20px;
 }
 
+/*
 .form-control:focus {
   border-color: #28a745;
   box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+*/
+
+/*Este control del formulario no estaba si no me gusta borrarlo*/
+.form-control {
+  border-radius: 8px;
+  padding: 12px 15px;
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s;
+}
+
+.form-control:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
 }
 
 /* ===== Responsive ===== */

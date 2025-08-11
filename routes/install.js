@@ -4,9 +4,9 @@ const fs = require("fs");
 const path = require("path");
 const config = require("../config/config");
 const db = require("../lib/database");
+const seed = require("../config/seed");
 const { promisify } = require("util");
 const { generateToken } = require("csrf-csrf");
-const { error } = require("console");
 
 // Convertimos fs.writeFile a versión con promesas
 const writeFileAsync = promisify(fs.writeFile);
@@ -83,7 +83,6 @@ DB_NAME=${dbName}
 PORT=3000`;
 
     try {
-      // Usar la configuración fresca que acaba de ser escrita
       const freshConfig = {
         host: dbHost,
         user: dbUser,
@@ -94,6 +93,13 @@ PORT=3000`;
 
       await db.connect(freshConfig);
       await writeFileAsync(envPath, envContent, { mode: 0o600 });
+
+      config.reload(); // Forzar recarga de configuración
+
+      // Esperar un momento para asegurar la recarga
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      await seed();
 
       // Mostrar vista de éxito en lugar de redirigir
       res.render("install", {

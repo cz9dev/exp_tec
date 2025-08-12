@@ -82,45 +82,37 @@ DB_NAME=${dbName}
 # Puerto de despliegue
 PORT=3000`;
 
-    try {
-      const freshConfig = {
-        host: dbHost,
-        user: dbUser,
-        password: dbPass,
-        name: dbName,
-        dialect: "mysql",
-      };
+    const freshConfig = {
+      host: dbHost,
+      user: dbUser,
+      password: dbPass,
+      name: dbName,
+      dialect: "mysql",
+    };
 
-      await db.connect(freshConfig);
-      await writeFileAsync(envPath, envContent, { mode: 0o600 });
+    await db.connect(freshConfig);
+    await writeFileAsync(envPath, envContent, { mode: 0o600 });
 
-      config.reload(); // Forzar recarga de configuración
+    config.reload(); // Forzar recarga de configuración
 
-      // Esperar un momento para asegurar la recarga
-      await new Promise((resolve) => setTimeout(resolve, 100));
+    // Esperar un momento para asegurar la recarga
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
-      await seed();
+    await seed();
 
-      // Mostrar vista de éxito en lugar de redirigir
-      res.render("install", {
-        title: "Instalación Completa",
-        success: true,
-        layout: false,
-      });
-    } catch (dbError) {
-      console.error("Error conectando a DB:", dbError);
-      res.render("install", {
-        title: "Instalación",
-        error: `No se pudo conectar a la DB: ${dbError.message}, verifique sus datos`,
-        formData: req.body,
-        layout: false,
-      });
-    }
-  } catch (error) {
-    console.error("Error durante la instalación:", error);
+    // Mostrar vista de éxito en lugar de redirigir
     res.render("install", {
-      title: "Instalación de la Aplicación",
-      error: "Ocurrió un error durante la instalación.  Verifica los logs.",
+      title: "Instalación Completa",
+      success: true,
+      layout: false,
+    });
+  } catch (dbError) {
+    console.error("Error conectando a DB:", dbError);
+    res.render("install", {
+      title: "Instalación",
+      error: `No se pudo conectar a la DB: ${dbError.message}, verifique sus datos`,
+      formData: req.body,
+      success: false,
       layout: false,
     });
   }

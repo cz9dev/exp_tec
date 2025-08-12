@@ -4,9 +4,11 @@ const fs = require("fs");
 const path = require("path");
 const config = require("../config/config");
 const db = require("../lib/database");
+
 const seed = require("../config/seed");
 const { promisify } = require("util");
 const { generateToken } = require("csrf-csrf");
+
 
 // Convertimos fs.writeFile a versión con promesas
 const writeFileAsync = promisify(fs.writeFile);
@@ -81,7 +83,6 @@ DB_PASS=${dbPass}
 DB_NAME=${dbName}
 # Puerto de despliegue
 PORT=3000`;
-
     const freshConfig = {
       host: dbHost,
       user: dbUser,

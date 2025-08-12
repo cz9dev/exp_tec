@@ -382,5 +382,3 @@ async function seedData() {
 }
 
 module.exports = seedData;
-
-//seed().then(() => process.exit());

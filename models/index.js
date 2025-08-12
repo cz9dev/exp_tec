@@ -80,6 +80,7 @@ module.exports = (sequelize) => {
       autoIncrement: true,
       primaryKey: true,
     },
+
     ci: {
       type: DataTypes.STRING(11),
       allowNull: false,
@@ -90,6 +91,7 @@ module.exports = (sequelize) => {
       allowNull: false,
       unique: true,
     },
+
     apellidos: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -165,6 +167,7 @@ module.exports = (sequelize) => {
       allowNull: false,
       unique: true,
     },
+
     descripcion: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -204,6 +207,7 @@ module.exports = (sequelize) => {
    * Definición de modelo usuarios
    */
   const Usuarios = sequelize.define("usuarios", {
+
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -479,6 +483,7 @@ module.exports = (sequelize) => {
       type: DataTypes.TEXT,
     },
     creado_en: {
+
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),

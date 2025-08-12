@@ -27,7 +27,6 @@ const upload = multer({ storage: storage });
 
 module.exports = {
   list: async (req, res) => {
-
     const { page = 1, limit = 10, search = "" } = req.query;
     const offset = (page - 1) * limit;
 
@@ -36,7 +35,7 @@ module.exports = {
       whereClause = `WHERE (p.modelo LIKE '%${search}%' OR p.numero_serie LIKE '%${search}%' OR p.numero_inventario LIKE '%${search}%')`;
     }
 
-    try {      
+    try {
       const [perifericos, count] = await Promise.all([
         peripheralsModel.findAllWithPagination(limit, offset, whereClause), // Nueva función del modelo
         peripheralsModel.count(whereClause), // Nueva función para el conteo total
@@ -76,15 +75,33 @@ module.exports = {
   create: async (req, res) => {
     try {
       upload.single("url_image")(req, res, async (err) => {
+        
+        const {
+          id_marca,
+          modelo,
+          id_tipo_periferico,
+          numero_serie,
+          numero_inventario,
+        } = req.body;
+
+        // Verificar unisidad de periferico por numero de serie
+        const existingPeripherals = await peripheralsModel.findOne(
+          numero_serie
+        );
+
+        if (existingPeripherals) {
+          req.flash("error_msg", "Ya existe un periferico con ese nombre.");
+          return res.redirect("peripherals/new"); // Redirige de vuelta al formulario
+        }
+
         if (err) {
           console.error("Error al subir la imagen: ", err);
           req.flash("error_msg", "Error al subir la imagen.");
-          return res.redirect("/dashboard/component");
+          return res.redirect("/dashboard/peripherals");
         }
 
         const url_image = req.file ? req.file.filename : null; // Obtiene el nombre del archivo subido
 
-        const { id_marca, modelo, id_tipo_periferico, numero_serie, numero_inventario } = req.body;
         await peripheralsModel.create(
           id_marca,
           modelo,
@@ -138,7 +155,13 @@ module.exports = {
           return res.redirect("/dashboard/component");
         }
 
-        const { id_marca, modelo, id_tipo_periferico, numero_serie, numero_inventario } = req.body;
+        const {
+          id_marca,
+          modelo,
+          id_tipo_periferico,
+          numero_serie,
+          numero_inventario,
+        } = req.body;
         const updated = await peripheralsModel.update(
           id,
           id_marca,

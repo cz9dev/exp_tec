@@ -1,7 +1,9 @@
 <div class="container mt-4">
-    <h2><%= title %></h2>
+    <h2>
+        <%= title %>
+    </h2>
     <a href="/dashboard/peripheralsTypes/new" class="btn btn-success mb-3">Crear Tipo de Periferico</a>
-    
+
     <!-- Búsqueda -->
     <form method="GET" action="/dashboard/peripheralsTypes">
         <input type="text" name="search" placeholder="Buscar dispositivo..." value="<%= search %>">
@@ -9,41 +11,47 @@
     </form>
 
     <!-- Tabla de contenido a mostrar -->
-    <table class="table table-bordered table-striped text-center mt-4">
-        <thead>
-            <tr>                
-                <th>Tipo de Periferico</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% peripheralsTypes.forEach(peripheralType=> { %>
-                <tr>                    
-                    <td>
-                        <%= peripheralType.nombre %>
-                    </td>
-                    <td>
-                        <a href="/dashboard/peripheralsTypes/<%= peripheralType.id %>/edit" class="btn btn-sm btn-primary">Editar</a>
-                        <form action="/dashboard/peripheralsTypes/<%= peripheralType.id %>/delete" method="POST" class="d-inline">                            
-                            <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-                        </form>                        
-                    </td>
+    <% if (peripheralsTypes.length> 0) { %>
+        <table class="table table-bordered table-striped text-center mt-4">
+            <thead>
+                <tr>
+                    <th>Tipo de Periferico</th>
+                    <th>Acciones</th>
                 </tr>
-                <% }); %>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <% peripheralsTypes.forEach(peripheralType=> { %>
+                    <tr>
+                        <td>
+                            <%= peripheralType.nombre %>
+                        </td>
+                        <td>
+                            <a href="/dashboard/peripheralsTypes/<%= peripheralType.id %>/edit"
+                                class="btn btn-sm btn-primary">Editar</a>
+                            <form action="/dashboard/peripheralsTypes/<%= peripheralType.id %>/delete" method="POST"
+                                class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }); %>
+            </tbody>
+        </table>
+        <% } else { %>
+            </br>
+            <div class="alert alert-warning">No existen datos para mostrar</div>
+            <% } %>
 
-    <!-- Paginado -->
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            <% for (let i=1; i <=Math.ceil(count / limit); i++) { %>
-                <li class="page-item <%= i == page ? 'active' : '' %>">
-                    <a class="page-link"
-                        href="?page=<%= i %>&search=<%= search %>">
-                        <%= i %>
-                    </a>
-                </li>
-                <% } %>
-        </ul>
-    </nav>
+                <!-- Paginado -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <% for (let i=1; i <=Math.ceil(count / limit); i++) { %>
+                            <li class="page-item <%= i == page ? 'active' : '' %>">
+                                <a class="page-link" href="?page=<%= i %>&search=<%= search %>">
+                                    <%= i %>
+                                </a>
+                            </li>
+                            <% } %>
+                    </ul>
+                </nav>
 </div>

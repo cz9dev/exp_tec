@@ -79,8 +79,7 @@ class SellosModel {
     }
 
     const countQuery = `SELECT COUNT(*) AS total FROM dispositivo_sello ${whereClause}`;
-
-    console.log("countParams:", params); // imprimir parametros
+    
     const [countResult] = await pool.execute(countQuery, params);
     return countResult;
   }

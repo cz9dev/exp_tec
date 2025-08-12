@@ -2,53 +2,65 @@
   <h2>Gestión de trabajadores</h2>
   <a href="/dashboard/trabajadores/new" class="btn btn-success mb-3">Nuevo Trabajador</a>
 
-    <!-- Búsqueda -->
-    <form method="GET" action="/dashboard/trabajadores">
-      <input type="text" name="search" placeholder="Buscar dispositivo..." value="<%= search %>">
-      <button type="submit" class="btn-sm btn-success mt-2"><i class="fas fa-search"></i> Buscar</button>
+  <!-- Búsqueda -->
+  <form method="GET" action="/dashboard/trabajadores">
+    <input type="text" name="search" placeholder="Buscar dispositivo..." value="<%= search %>">
+    <button type="submit" class="btn-sm btn-success mt-2"><i class="fas fa-search"></i> Buscar</button>
   </form>
 
   <!-- Tabla de contenido a mostrar -->
-  <table class="table table-bordered table-striped text-center mt-4">
-    <thead>
-      <tr>        
-        <th>CI</th>
-        <th>Nombre</th>
-        <th>Apellidos</th>
-        <th>Area</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% trabajadores.forEach(trabajador => { %>
-        <tr>          
-          <td><%= trabajador.ci %></td>
-          <td><%= trabajador.nombres %></td>
-          <td><%= trabajador.apellidos %></td>
-          <td><%= trabajador.area %></td>
-          <td>
-            <a href="/dashboard/trabajadores/<%= trabajador.id %>/edit" class="btn btn-sm btn-primary">Editar</a>
-            <form action="/dashboard/trabajadores/<%= trabajador.id %>/delete" method="POST" class="d-inline">
-              <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-            </form>
-          </td>
+  <% if (trabajadores.length> 0) { %>
+    <table class="table table-bordered table-striped text-center mt-4">
+      <thead>
+        <tr>
+          <th>CI</th>
+          <th>Nombre</th>
+          <th>Apellidos</th>
+          <th>Area</th>
+          <th>Acciones</th>
         </tr>
-      <% }); %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% trabajadores.forEach(trabajador=> { %>
+          <tr>
+            <td>
+              <%= trabajador.ci %>
+            </td>
+            <td>
+              <%= trabajador.nombres %>
+            </td>
+            <td>
+              <%= trabajador.apellidos %>
+            </td>
+            <td>
+              <%= trabajador.area %>
+            </td>
+            <td>
+              <a href="/dashboard/trabajadores/<%= trabajador.id %>/edit" class="btn btn-sm btn-primary">Editar</a>
+              <form action="/dashboard/trabajadores/<%= trabajador.id %>/delete" method="POST" class="d-inline">
+                <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+              </form>
+            </td>
+          </tr>
+          <% }); %>
+      </tbody>
+    </table>
+    <% } else { %>
+      </br>
+      <div class="alert alert-warning">No existen datos para mostrar</div>
+      <% } %>
 
-    <!-- Paginado -->
-    <nav aria-label="Page navigation">
-      <ul class="pagination">
-          <% for (let i=1; i <=Math.ceil(count / limit); i++) { %>
+        <!-- Paginado -->
+        <nav aria-label="Page navigation">
+          <ul class="pagination">
+            <% for (let i=1; i <=Math.ceil(count / limit); i++) { %>
               <li class="page-item <%= i == page ? 'active' : '' %>">
-                  <a class="page-link"
-                      href="?page=<%= i %>&search=<%= search %>">
-                      <%= i %>
-                  </a>
+                <a class="page-link" href="?page=<%= i %>&search=<%= search %>">
+                  <%= i %>
+                </a>
               </li>
               <% } %>
-      </ul>
-  </nav>
+          </ul>
+        </nav>
 
 </div>

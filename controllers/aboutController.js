@@ -27,9 +27,12 @@ async function getAppVersion() {
 
 exports.aboutPage = async (req, res) => {
   const versionInfo = await getAppVersion();
+  const nodeVersion = process.versions.node;
+  const expressVersion = require("express/package.json").version;
   res.render("about", {
     title: "Acerca de",
     versionInfo,
-    layout: "layouts/main",
+    nodeVersion,
+    expressVersion,
   });
 };

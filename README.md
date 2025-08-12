@@ -33,22 +33,22 @@ git clone https://github.com/cz9dev/exp_tec.git
 cd exp_tec
 ```
 ## Preparación del esenario
-1. Crear una base de datos y usuario para administrar la misma en Mysql o MariaDB
+1. Crear una base de datos y usuario para administrar la misma en ```Mysql``` o ```MariaDB```
 
 ## Configuración incial
 1. Intalar dependecias:
 ```bash
-  npm install
+  npm install  
 ```
 2. Iniciar la aplicación:
 ```bash
 npm start
 ```
-3. Desde el navegador que usted prefiera acceder a la url: ```http://127.0.0.1```
+3. Desde el navegador que usted prefiera acceder a la url: ```http://127.0.0.1:3000```
 4. Rellenar los datos que se solicitan para la configuración he instalación de la app
 
 ## Uso
-Una ves instalada la app las credenciales por defecto son las siguientes:
+Una ves instalada la app las credenciales por defecto serán las siguientes:
 **usuario: admin@localhost**
 **password:exptec** 
 

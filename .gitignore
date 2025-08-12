@@ -202,7 +202,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # Carpetas publicas
-public/download/
-public/componentes/
-public/perifericos/
-public/uploads/
+public/download/*
+public/componentes/*
+public/perifericos/*
+public/uploads/*

@@ -17,6 +17,7 @@ const incidenciasController = require("../controllers/incidenciasController");
 const sellosController = require("../controllers/sellosController");
 const partespiezasController = require("../controllers/partespiezasController");
 const auditoriaController = require("../controllers/auditoriaController");
+const aboutController = require("../controllers/aboutController");
 
 const { checkAuth } = require("../middleware/auth");
 
@@ -147,5 +148,8 @@ router.get("/partespiezas/registro_partes_piezas_pdf", checkAuth(["VIEW_PARTESPI
 // Ver registro de auditoria
 router.get("/auditoria", checkAuth(["VIEW_AUDITORIA"]), auditoriaController.list);
 router.get("/auditoria/pdf", checkAuth(["VIEW_AUDITORIA"]), auditoriaController.pdf);
+
+// Ver Acerca de
+router.get("/about", aboutController.aboutPage);
 
 module.exports = router;

@@ -68,7 +68,7 @@ Donaciones en dinero
                 <img src="imgs/donation_transfermovil_cup.png" alt="Transfermovil"></img>
             </td>
             <td>
-                <img src="imgs/donation_enzona_cup.jpg" alt="EnZona"></img>
+                <img src="imgs/donation_enzona_cup.png" alt="EnZona"></img>
             </td>
             <td>
                 <img src="imgs/donation_qvapay.png" alt="QvaPay"></img>

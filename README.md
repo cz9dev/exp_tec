@@ -13,6 +13,10 @@ Exp-tec es una aplicación web para el registro y control de expedientes técnic
 
 # ScreenShot
 
+## ScreenShot-Install
+![](imgs/screenshot-install.png)
+## ScreenShot-After-Install
+![](imgs/screenshot-after-install.png)
 ## ScreenShot-Login
 ![](imgs/screenshot-login.png)
 ## ScreenShot-Dashboard
@@ -28,33 +32,24 @@ Exp-tec es una aplicación web para el registro y control de expedientes técnic
 git clone https://github.com/cz9dev/exp_tec.git
 cd exp_tec
 ```
+## Preparación del esenario
+1. Crear una base de datos y usuario para administrar la misma en ```Mysql``` o ```MariaDB```
 
 ## Configuración incial
-1. Copiar el archivo de ejemplo:
+1. Intalar dependecias:
 ```bash
-  cp .env.example .env
+  npm install  
 ```
-2. Completar los valores en .env con tus valores reales
-3. Intalar dependecias:
-```bash
-  npm install
-```
-4. Iniciar la aplicación:
+2. Iniciar la aplicación:
 ```bash
 npm start
 ```
-
-## Poblar DB
-Luego debes poblar la DB con los datos iniciales ejecutando el archivo ```/config/seed.js``` (en desarrollo).
-```bash
-npm /config/seed.js
-```
-
-Alternativamente solo debes restaurar la base de datos en mysql o mariadb que se encuentra en el directorio ```/db```
+3. Desde el navegador que usted prefiera acceder a la url: ```http://127.0.0.1:3000```
+4. Rellenar los datos que se solicitan para la configuración he instalación de la app
 
 ## Uso
-Credenciales por defecto al restaurar la base de datos
-**usuario: admin**
+Una ves instalada la app las credenciales por defecto serán las siguientes:
+**usuario: admin@localhost**
 **password:exptec** 
 
 # Contribuir

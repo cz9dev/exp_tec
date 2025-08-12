@@ -1,0 +1,48 @@
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-header">
+      <h2>Acerca de la Aplicación</h2>
+    </div>
+    <div class="card-body">
+      <h3>Exp Tec</h3>
+      <p>Exp-tec es una aplicación web para el registro y control de expedientes técnicos de dispositivos, controlando
+        marcas,
+        modelos y números de series, componentes y perifericos. Además un control de sellos de estos dispositivos,
+        acciones y
+        tareas realizadas sobre los dispositivos.</p>
+
+      <div class="mt-4">
+        <h4>Información de Versión</h4>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <strong>Versión de la aplicación:</strong>
+            <%= versionInfo.appVersion %>
+          </li>
+          <li class="list-group-item">
+            <strong>Versión Git (tag):</strong>
+            <%= versionInfo.gitTag %>
+          </li>
+          <li class="list-group-item">
+            <strong>Commit actual:</strong>
+            <%= versionInfo.gitHash %>
+          </li>
+          <li class="list-group-item">
+            <strong>Fecha de compilación:</strong>
+            <%= new Date(versionInfo.buildDate).toLocaleString() %>
+          </li>
+        </ul>
+      </div>
+
+      <div class="mt-4">
+        <h4>Dependencias</h4>
+        <ul class="list-group">
+          <li class="list-group-item">Node.js: <%= process.versions.node %>
+          </li>
+          <li class="list-group-item">Express: <%= require('express/package.json').version %>
+          </li>
+          <!-- Agrega otras dependencias importantes -->
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

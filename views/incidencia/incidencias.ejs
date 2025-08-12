@@ -1,6 +1,7 @@
 <div class="container mt-4">
     <h1>Incidencias</h1>
 
+    <!-- Búsqueda -->
     <form id="search-form" method="GET" action="/dashboard/incidencias">
         <input type="text" name="search" id="search" placeholder="Buscar incidencia..." value="<%= search %>">
         <label for="fecha_inicio">Fecha Inicio:</label>
@@ -13,77 +14,84 @@
             <i class="fa fa-file-pdf" aria-hidden="true"></i></a>
     </form>
 
-    <table class="table table-bordered table-striped text-center mt-4">
-        <thead>
-            <tr>
-                <th>Dispositivo</th>
-                <th>Tipo</th>
-                <th>Fecha</th>
-                <th>Descripción</th>
-                <th>Informático</th>
-                <th>Resuelto</th>
-                <th>Trabajador</th>
-                <th>Conforme</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% incidencias.forEach(incidencia=> { %>
+    <!-- Tabla de contenido a mostrar -->
+    <% if (incidencias.length> 0) { %>
+        <table class="table table-bordered table-striped text-center mt-4">
+            <thead>
                 <tr>
-                    <td>
-                        <%= incidencia.dispositivo_nombre %>
-                    </td>
-                    <td>
-                        <%= incidencia.tipo_incidencia %>
-                    </td>
-                    <td>
-                        <%= incidencia.fecha_incidencia %>
-                    </td>
-                    <td>
-                        <%= incidencia.descripcion %>
-                    </td>
-                    <td>
-                        <%= incidencia.usuario_nombre %>
-                    </td>
-                    <td>
-                        <% if (incidencia.resuelto===1) { %>
-                            <i class="fa fa-check-square"></i>
-                        <% } else { %>
-                            <i class="fa fa-square"></i>
-                        <% } %>
-                    </td>
-                    <td>
-                        <%= incidencia.trabajador ? incidencia.trabajador_nombre : 'N/A' %>
-                    </td>
-                    <td>                        
-                        <% if (incidencia.conforme===1) { %>
-                            <i class="fa fa-check-square"></i>
-                        <% } else { %>
-                            <i class="fa fa-square"></i>
-                        <% } %>
-                    </td>
-                    <td>
-                        <form action="/dashboard/incidencias/<%= incidencia.id %>/delete" method="POST"
-                            class="d-inline">
-                            <button type="submit" class="btn btn-sm btn-danger">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </form>                        
-                    </td>
+                    <th>Dispositivo</th>
+                    <th>Tipo</th>
+                    <th>Fecha</th>
+                    <th>Descripción</th>
+                    <th>Informático</th>
+                    <th>Resuelto</th>
+                    <th>Trabajador</th>
+                    <th>Conforme</th>
+                    <th>Acciones</th>
                 </tr>
-                <% }); %>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <% incidencias.forEach(incidencia=> { %>
+                    <tr>
+                        <td>
+                            <%= incidencia.dispositivo_nombre %>
+                        </td>
+                        <td>
+                            <%= incidencia.tipo_incidencia %>
+                        </td>
+                        <td>
+                            <%= incidencia.fecha_incidencia %>
+                        </td>
+                        <td>
+                            <%= incidencia.descripcion %>
+                        </td>
+                        <td>
+                            <%= incidencia.usuario_nombre %>
+                        </td>
+                        <td>
+                            <% if (incidencia.resuelto===1) { %>
+                                <i class="fa fa-check-square"></i>
+                                <% } else { %>
+                                    <i class="fa fa-square"></i>
+                                    <% } %>
+                        </td>
+                        <td>
+                            <%= incidencia.trabajador ? incidencia.trabajador_nombre : 'N/A' %>
+                        </td>
+                        <td>
+                            <% if (incidencia.conforme===1) { %>
+                                <i class="fa fa-check-square"></i>
+                                <% } else { %>
+                                    <i class="fa fa-square"></i>
+                                    <% } %>
+                        </td>
+                        <td>
+                            <form action="/dashboard/incidencias/<%= incidencia.id %>/delete" method="POST"
+                                class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }); %>
+            </tbody>
+        </table>
+        <% } else { %>
+            </br>
+            <div class="alert alert-warning">No existen datos para mostrar</div>
+            <% } %>
 
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            <% for (let i=1; i <=Math.ceil(count / limit); i++) { %>
-                <li class="page-item <%= i == page ? 'active' : '' %>">
-                    <a class="page-link" href="?page=<%= i %>&search=<%= search %>">
-                        <%= i %>
-                    </a>
-                </li>
-                <% } %>
-        </ul>
-    </nav>
+                <!-- Paginado -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <% for (let i=1; i <=Math.ceil(count / limit); i++) { %>
+                            <li class="page-item <%= i == page ? 'active' : '' %>">
+                                <a class="page-link" href="?page=<%= i %>&search=<%= search %>">
+                                    <%= i %>
+                                </a>
+                            </li>
+                            <% } %>
+                    </ul>
+                </nav>
 </div>

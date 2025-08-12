@@ -1,60 +1,75 @@
 <div class="container mt-4">
   <h2>Gestión de perifericos</h2>
   <a href="/dashboard/peripherals/new" class="btn btn-success mb-3">Nuevo periferico</a>
-  
+
   <form method="GET" action="/dashboard/peripherals">
     <input type="text" name="search" placeholder="Buscar dispositivo..." value="<%= search %>">
     <button type="submit" class="btn-sm btn-success mt-2"><i class="fas fa-search"></i> Buscar</button>
   </form>
 
-  <table class="table table-bordered table-striped text-center mt-4">
-    <thead>
-      <tr>      
-        <th>Foto</th>
-        <th>Marca</th>
-        <th>Modelo</th>
-        <th>Tipo de periferico</th>
-        <th>Número de serie</th>
-        <th>Número de inventario</th>        
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% perifericos.forEach(periferico => { %>
-        <tr>    
-          <td>
-            <div class="component-icon">
-              <img class="component-icon"
-                src="<%= periferico.url_image ? '/perifericos/' +periferico.url_image : '/images/question.png' %>"
-                alt="Componente" />
-            </div>
-          </td>
-          <td><%= periferico.marca %></td>
-          <td><%= periferico.modelo %></td>
-          <td><%= periferico.tipo_periferico %></td>
-          <td><%= periferico.numero_serie %></td>          
-          <td><%= periferico.numero_inventario %></td> 
-          <td>
-            <a href="/dashboard/peripherals/<%= periferico.id %>/edit" class="btn btn-sm btn-primary">Editar</a>
-            <form action="/dashboard/peripherals/<%= periferico.id %>/delete" method="POST" class="d-inline">
-              <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-            </form>
-          </td>
+  <% if (perifericos.length> 0) { %>
+    <table class="table table-bordered table-striped text-center mt-4">
+      <thead>
+        <tr>
+          <th>Foto</th>
+          <th>Marca</th>
+          <th>Modelo</th>
+          <th>Tipo de periferico</th>
+          <th>Número de serie</th>
+          <th>Número de inventario</th>
+          <th>Acciones</th>
         </tr>
-      <% }); %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% perifericos.forEach(periferico=> { %>
+          <tr>
+            <td>
+              <div class="component-icon">
+                <img class="component-icon"
+                  src="<%= periferico.url_image ? '/perifericos/' +periferico.url_image : '/images/question.png' %>"
+                  alt="Componente" />
+              </div>
+            </td>
+            <td>
+              <%= periferico.marca %>
+            </td>
+            <td>
+              <%= periferico.modelo %>
+            </td>
+            <td>
+              <%= periferico.tipo_periferico %>
+            </td>
+            <td>
+              <%= periferico.numero_serie %>
+            </td>
+            <td>
+              <%= periferico.numero_inventario %>
+            </td>
+            <td>
+              <a href="/dashboard/peripherals/<%= periferico.id %>/edit" class="btn btn-sm btn-primary">Editar</a>
+              <form action="/dashboard/peripherals/<%= periferico.id %>/delete" method="POST" class="d-inline">
+                <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+              </form>
+            </td>
+          </tr>
+          <% }); %>
+      </tbody>
+    </table>
+    <% } else { %>
+      </br>
+      <div class="alert alert-warning">No existen datos para mostrar</div>
+      <% } %>
 
-  <!-- Paginado -->
-  <nav aria-label="Page navigation">
-    <ul class="pagination">
-      <% for (let i=1; i <=Math.ceil(count / limit); i++) { %>
-        <li class="page-item <%= i == page ? 'active' : '' %>">
-          <a class="page-link" href="?page=<%= i %>&search=<%= search %>">
-            <%= i %>
-          </a>
-        </li>
-        <% } %>
-    </ul>
-  </nav>
+        <!-- Paginado -->
+        <nav aria-label="Page navigation">
+          <ul class="pagination">
+            <% for (let i=1; i <=Math.ceil(count / limit); i++) { %>
+              <li class="page-item <%= i == page ? 'active' : '' %>">
+                <a class="page-link" href="?page=<%= i %>&search=<%= search %>">
+                  <%= i %>
+                </a>
+              </li>
+              <% } %>
+          </ul>
+        </nav>
 </div>

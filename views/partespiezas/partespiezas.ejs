@@ -1,6 +1,7 @@
 <div class="container mt-4">
     <h1>Partes y Piezas</h1>
 
+    <!-- Búsqueda -->
     <form id="search-form" method="GET" action="/dashboard/partespiesas">
         <input type="text" name="search" id="search" placeholder="Buscar parte o pieza..." value="<%= search %>">
         <button type="submit" class="btn-sm btn-success mt-2"><i class="fas fa-search"></i> Buscar</button>
@@ -8,6 +9,7 @@
             <i class="fa fa-file-pdf" aria-hidden="true"></i></a>
     </form>
 
+    <!-- Tabla de contenido a mostrar -->
     <% if (partespiesas.length> 0) { %>
         <table class="table table-bordered table-striped text-center mt-4">
             <thead>
@@ -41,9 +43,10 @@
         </table>
         <% } else { %>
             </br>
-            <div class="alert alert-warning">No existen partes y piezas</div>
+            <div class="alert alert-warning">No existen datos para mostrar</div>
             <% } %>
 
+                <!-- Paginado -->
                 <nav aria-label="Page navigation">
                     <ul class="pagination">
                         <% for (let i=1; i <=Math.ceil(count / limit); i++) { %>

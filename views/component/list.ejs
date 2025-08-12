@@ -9,6 +9,7 @@
   </form>
 
   <!-- Tabla de contenido a mostrar -->
+  <% if (components.length> 0) { %>
   <table class="table table-bordered table-striped text-center mt-4">
     <thead>
       <tr>
@@ -52,6 +53,10 @@
         <% }); %>
     </tbody>
   </table>
+  <% } else { %>
+    </br>
+    <div class="alert alert-warning">No existen datos para mostrar</div>
+    <% } %>
 
     <!-- Paginado -->
     <nav aria-label="Page navigation">

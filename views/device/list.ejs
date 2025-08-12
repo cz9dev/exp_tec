@@ -9,80 +9,86 @@
     </form>
 
     <!-- Tabla de contenido a mostrar -->
-    <table class="table table-bordered table-striped text-center mt-4">
-        <thead>
-            <tr>
-                <th>Inventario</th>
-                <th>Nombre</th>
-                <th>Tipo</th>
-                <th>IP</th>
-                <th>Área</th>
-                <th>Responsable</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% if (devices.length> 0) { %>
-                <% devices.forEach(device=> { %>
-                    <tr>
-                        <td>
-                            <%= device.inventario %>
-                        </td>
-                        <td>
-                            <%= device.nombre %>
-                        </td>
-                        <td>
-                            <%= device.tipo %>
-                        </td>
-                        <td>
-                            <%= device.ip || 'Sin IP' %>
-                        </td>
-                        <td>
-                            <%= device.area || 'Sin asignar' %>
-                        </td>
-                        <td>
-                            <%= device.trabajador || 'Sin asignar' %>
-                        </td>
-                        <td>
-                            <a href="/dashboard/device/<%= device.id %>" class="btn btn-sm btn-info">
-                                <i class="fas fa-search"></i>
-                            </a>
-                            <a href="/dashboard/device/<%= device.id %>/edit" class="btn btn-sm btn-warning">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <form action="/dashboard/device/<%= device.id %>/delete" method="POST" class="d-inline">
-                                <button type="submit" class="btn btn-sm btn-danger">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </form>
-                            <a href="/dashboard/device/<%= device.id %>/incidencia" class="btn btn-sm btn-secondary">
-                                <i class="fas fa-exclamation-circle"></i> Incidencia
-                            </a>
-                            <a href="/dashboard/device/<%= device.id %>/exp_tecnico_pdf" class="btn btn-sm btn-info">
-                                <i class="fa fa-file-pdf" aria-hidden="true"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    <% }); %>
-                        <% } else { %>
-                            <tr>
-                                <td colspan="7" class="alert alert-warning">No se encontraron dispositivos.</td>
-                            </tr>
-                            <% } %>
-        </tbody>
-    </table>
+    <% if (devices.length> 0) { %>
+        <table class="table table-bordered table-striped text-center mt-4">
+            <thead>
+                <tr>
+                    <th>Inventario</th>
+                    <th>Nombre</th>
+                    <th>Tipo</th>
+                    <th>IP</th>
+                    <th>Área</th>
+                    <th>Responsable</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (devices.length> 0) { %>
+                    <% devices.forEach(device=> { %>
+                        <tr>
+                            <td>
+                                <%= device.inventario %>
+                            </td>
+                            <td>
+                                <%= device.nombre %>
+                            </td>
+                            <td>
+                                <%= device.tipo %>
+                            </td>
+                            <td>
+                                <%= device.ip || 'Sin IP' %>
+                            </td>
+                            <td>
+                                <%= device.area || 'Sin asignar' %>
+                            </td>
+                            <td>
+                                <%= device.trabajador || 'Sin asignar' %>
+                            </td>
+                            <td>
+                                <a href="/dashboard/device/<%= device.id %>" class="btn btn-sm btn-info">
+                                    <i class="fas fa-search"></i>
+                                </a>
+                                <a href="/dashboard/device/<%= device.id %>/edit" class="btn btn-sm btn-warning">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="/dashboard/device/<%= device.id %>/delete" method="POST" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                                <a href="/dashboard/device/<%= device.id %>/incidencia"
+                                    class="btn btn-sm btn-secondary">
+                                    <i class="fas fa-exclamation-circle"></i> Incidencia
+                                </a>
+                                <a href="/dashboard/device/<%= device.id %>/exp_tecnico_pdf"
+                                    class="btn btn-sm btn-info">
+                                    <i class="fa fa-file-pdf" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <% }); %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="7" class="alert alert-warning">No se encontraron dispositivos.</td>
+                                </tr>
+                                <% } %>
+            </tbody>
+        </table>
+        <% } else { %>
+            </br>
+            <div class="alert alert-warning">No existen datos para mostrar</div>
+            <% } %>
 
-    <!-- Paginado -->
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            <% for (let i=1; i <=Math.ceil(count / limit); i++) { %>
-                <li class="page-item <%= i == page ? 'active' : '' %>">
-                    <a class="page-link"
-                        href="?page=<%= i %>&search=<%= search %>">
-                        <%= i %>
-                    </a>
-                </li>
-                <% } %>
-        </ul>
-    </nav>
+                <!-- Paginado -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <% for (let i=1; i <=Math.ceil(count / limit); i++) { %>
+                            <li class="page-item <%= i == page ? 'active' : '' %>">
+                                <a class="page-link" href="?page=<%= i %>&search=<%= search %>">
+                                    <%= i %>
+                                </a>
+                            </li>
+                            <% } %>
+                    </ul>
+                </nav>
 </div>

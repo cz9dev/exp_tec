@@ -6,6 +6,7 @@
 <div class="container mt-4">
     <h1>Auditoría de Dispositivos</h1>
 
+    <!-- Búsqueda -->
     <form id="search-form" method="GET" action="/dashboard/auditoria">
         <input type="text" name="search" id="search" placeholder="Buscar tipo de cambio..." value="<%= search %>">
         <label for="fecha_inicio">Fecha Inicio:</label>
@@ -33,59 +34,67 @@
         <a href="/dashboard/auditoria/pdf" class="btn-sm btn-info"><i class="fa fa-file-pdf" aria-hidden="true"></i></a>
     </form>
 
-    <table class="table table-bordered table-striped text-center mt-4">
-        <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>Tipo de Cambio</th>
-                <th>Dispositivo</th>
-                <th>Usuario</th>
-                <th>Datos Antes</th>
-                <th>Datos Después</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% if (auditorias.length> 0) {
-                auditorias.forEach(auditoria=> { %>
+    <!-- Tabla de contenido a mostrar -->
+    <% if (auditorias.length> 0) { %>
+        <table class="table table-bordered table-striped text-center mt-4">
+            <thead>
                 <tr>
-                    <td>
-                        <%= auditoria.fecha_hora %>
-                    </td>
-                    <td>
-                        <%= auditoria.tipo_cambio %>
-                    </td>
-                    <td>
-                        <%= auditoria.dispositivo_nombre %>
-                    </td>
-                    <td>
-                        <%= auditoria.usuario_nombre %>
-                    </td>
-                    <td data-toggle="tooltip" data-placement="top" title="<%= auditoria.datos_antes %>">
-                        <%= auditoria.datos_antes_truncate %>
-                    </td>
-                    <td data-toggle="tooltip" data-placement="top" title="<%= auditoria.datos_despues %>">
-                        <%= auditoria.datos_despues_truncate %></td>
+                    <th>Fecha</th>
+                    <th>Tipo de Cambio</th>
+                    <th>Dispositivo</th>
+                    <th>Usuario</th>
+                    <th>Datos Antes</th>
+                    <th>Datos Después</th>
                 </tr>
-                <% }); } else { %>
+            </thead>
+            <tbody>
+                <% if (auditorias.length> 0) {
+                    auditorias.forEach(auditoria=> { %>
                     <tr>
-                        <td colspan="6" class="alert alert-warning">No existe datos de auditoría</td>
+                        <td>
+                            <%= auditoria.fecha_hora %>
+                        </td>
+                        <td>
+                            <%= auditoria.tipo_cambio %>
+                        </td>
+                        <td>
+                            <%= auditoria.dispositivo_nombre %>
+                        </td>
+                        <td>
+                            <%= auditoria.usuario_nombre %>
+                        </td>
+                        <td data-toggle="tooltip" data-placement="top" title="<%= auditoria.datos_antes %>">
+                            <%= auditoria.datos_antes_truncate %>
+                        </td>
+                        <td data-toggle="tooltip" data-placement="top" title="<%= auditoria.datos_despues %>">
+                            <%= auditoria.datos_despues_truncate %>
+                        </td>
                     </tr>
-                    <% } %>
-        </tbody>
-    </table>
+                    <% }); } else { %>
+                        <tr>
+                            <td colspan="6" class="alert alert-warning">No existe datos de auditoría</td>
+                        </tr>
+                        <% } %>
+            </tbody>
+        </table>
+        <% } else { %>
+            </br>
+            <div class="alert alert-warning">No existen datos para mostrar</div>
+            <% } %>
 
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            <% for (let i=1; i <=Math.ceil(count / limit); i++) { %>
-                <li class="page-item <%= i == page ? 'active' : '' %>">
-                    <a class="page-link"
-                        href="?page=<%= i %>&search=<%= search %>&fecha_inicio=<%= fecha_inicio %>&fecha_fin=<%= fecha_fin %>&dispositivo_id=<%= dispositivo_id %>&usuario_id=<%= usuario_id %>">
-                        <%= i %>
-                    </a>
-                </li>
-                <% } %>
-        </ul>
-    </nav>
+                <!-- Paginado -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <% for (let i=1; i <=Math.ceil(count / limit); i++) { %>
+                            <li class="page-item <%= i == page ? 'active' : '' %>">
+                                <a class="page-link"
+                                    href="?page=<%= i %>&search=<%= search %>&fecha_inicio=<%= fecha_inicio %>&fecha_fin=<%= fecha_fin %>&dispositivo_id=<%= dispositivo_id %>&usuario_id=<%= usuario_id %>">
+                                    <%= i %>
+                                </a>
+                            </li>
+                            <% } %>
+                    </ul>
+                </nav>
 </div>
 
 <script>

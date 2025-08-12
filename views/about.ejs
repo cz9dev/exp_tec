@@ -1,4 +1,4 @@
-<div class="container mt-5">
+<div class="container-fluid">
   <div class="card">
     <div class="card-header">
       <h2>Acerca de la Aplicación</h2>
@@ -10,7 +10,9 @@
         modelos y números de series, componentes y perifericos. Además un control de sellos de estos dispositivos,
         acciones y
         tareas realizadas sobre los dispositivos.</p>
-
+      <h3>Desarrollador</h3>
+      Para revizar el código fuente de esta aplicación usted puede visitar nuetro repo en: <a href="https://github.com/cz9dev/exp-tec">https://github.com/cz9dev/exp-tec</a> <br/>
+      Aplicación desarrollada por <a href="https://cz9dev.github.io/">cz9dev</a>
       <div class="mt-4">
         <h4>Información de Versión</h4>
         <ul class="list-group">
@@ -36,9 +38,9 @@
       <div class="mt-4">
         <h4>Dependencias</h4>
         <ul class="list-group">
-          <li class="list-group-item">Node.js: <%= process.versions.node %>
+          <li class="list-group-item">Node.js: <%= nodeVersion %>
           </li>
-          <li class="list-group-item">Express: <%= require('express/package.json').version %>
+          <li class="list-group-item">Express: <%= expressVersion %>
           </li>
           <!-- Agrega otras dependencias importantes -->
         </ul>

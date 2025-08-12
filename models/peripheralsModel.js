@@ -76,6 +76,14 @@ class PeripheralsModel {
     }
   }
 
+  static async findOne(numero_serie) {
+    const [rows] = await pool.query(
+      "SELECT * FROM periferico WHERE numero_serie = ?",
+      [numero_serie]
+    );
+    return rows[0];
+  }
+
   static async update(
     id,
     id_marca,

@@ -164,6 +164,18 @@ module.exports = {
   delete: async (req, res) => {
     try {
       const id = req.params.id;
+      // borrar imagen del componente a borrar
+      const componente = await componentModel.findById(id);      
+      if (componente && componente.url_image) {
+        const imagePath = path.join(__dirname, "../public/componentes/", componente.url_image);
+        try {
+          fs.unlinkSync(imagePath);
+          console.log("Imagen eliminada correctamente");
+        } catch (error) {
+          console.error("Error al eliminar la imagen:", error);
+          req.flash("error_msg", "Error al eliminar la imagen del componente.");
+        }
+      }
       const deleted = await componentModel.delete(id);
       if (deleted) {
         req.flash("success_msg", "Componente eliminado exitosamente");

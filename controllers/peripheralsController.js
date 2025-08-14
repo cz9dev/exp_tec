@@ -188,6 +188,22 @@ module.exports = {
   delete: async (req, res) => {
     try {
       const id = req.params.id;
+      // borrar imagen del periferico a borrar
+      const periferico = await peripheralsModel.findById(id);
+      if (periferico && periferico.url_image) {
+        const imagePath = path.join(
+          __dirname,
+          "../public/perifericos/",
+          periferico.url_image
+        );
+        try {
+          fs.unlinkSync(imagePath);
+          console.log("Imagen eliminada correctamente");
+        } catch (error) {
+          console.error("Error al eliminar la imagen:", error);
+          req.flash("error_msg", "Error al eliminar la imagen del componente.");
+        }
+      }
       const deleted = await peripheralsModel.delete(id);
       if (deleted) {
         req.flash("success_msg", "Periferico eliminado exitosamente");

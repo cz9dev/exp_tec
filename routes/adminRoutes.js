@@ -136,10 +136,12 @@ router.post("/device/:id/unassign/peripheral/:peripheralId", checkAuth(["MANAGE_
 // Gestión de incidencias
 router.get("/incidencias", checkAuth(["VIEW_INCIDENCES"]), incidenciasController.list);
 router.post("/incidencias/:id/delete", checkAuth(["MANAGE_INCIDENCES"]), incidenciasController.delete);
+router.get("/incidencias/registro_incidencia_pdf", checkAuth(["VIEW_INCIDENCES"]), incidenciasController.generateRegistroIncidenciaPdf);
 
 // Gestión de sellos
 router.get("/sellos", checkAuth(["VIEW_SELLOS"]), sellosController.list);
 router.post("/sellos/:id/delete", checkAuth(["MANAGE_SELLOS"]), sellosController.delete);
+router.get("/sellos/registro_sellos_pdf", checkAuth(["VIEW_SELLOS"]), sellosController.generateRegistroSellosPdf);
 
 // Ver registro de partes y piezas
 router.get("/partespiezas", checkAuth(["VIEW_PARTESPIEZAS"]), partespiezasController.list);

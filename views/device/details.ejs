@@ -34,6 +34,9 @@
                                         <%= comp.modelo %>
                                     </td>
                                     <td>
+                                        sn:<%= comp.numero_serie %>
+                                    </td>
+                                    <td>
                                         <form
                                             action="/dashboard/device/<%= device.id %>/unassign/component/<%= comp.id %>"
                                             method="POST" class="d-inline">
@@ -57,7 +60,7 @@
                                 <select name="componentId" class="form-select" required>
                                     <% availableComponents.forEach(comp=> { %>
                                         <option value="<%= comp.id %>">
-                                            <%= comp.modelo %> (<%= comp.numero_serie %>)
+                                            <%= comp.tipo_componente %> - (<%= comp.modelo %>) sn:(<%= comp.numero_serie %>)
                                         </option>
                                         <% }); %>
                                 </select>
@@ -93,6 +96,9 @@
                                         <%= perif.modelo %>
                                     </td>
                                     <td>
+                                        sn:<%= perif.numero_serie %>
+                                    </td>
+                                    <td>
                                         <form
                                             action="/dashboard/device/<%= device.id %>/unassign/peripheral/<%= perif.id %>"
                                             method="POST" class="d-inline">
@@ -116,7 +122,7 @@
                                 <select name="peripheralId" class="form-select" required>
                                     <% availablePeripherals.forEach(perif=> { %>
                                         <option value="<%= perif.id %>">
-                                            <%= perif.modelo %> (<%= perif.numero_serie %>)
+                                            <%= perif.tipo_periferico %> - (<%= perif.modelo %>) sn:(<%= perif.numero_serie %>)
                                         </option>
                                         <% }); %>
                                 </select>

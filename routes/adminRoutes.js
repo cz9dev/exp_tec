@@ -141,6 +141,7 @@ router.get("/incidencias/registro_incidencia_pdf", checkAuth(["VIEW_INCIDENCES"]
 // Gestión de sellos
 router.get("/sellos", checkAuth(["VIEW_SELLOS"]), sellosController.list);
 router.post("/sellos/:id/delete", checkAuth(["MANAGE_SELLOS"]), sellosController.delete);
+router.get("/sellos/registro_sellos_pdf", checkAuth(["VIEW_SELLOS"]), sellosController.generateRegistroSellosPdf);
 
 // Ver registro de partes y piezas
 router.get("/partespiezas", checkAuth(["VIEW_PARTESPIEZAS"]), partespiezasController.list);

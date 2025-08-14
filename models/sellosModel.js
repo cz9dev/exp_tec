@@ -131,8 +131,6 @@ class SellosModel {
       fecha_cambio: moment(sello.fecha_cambio).format("DD/MM/YYYY hh:mm:ss A"),
     }));
 
-    console.log("countParams:", params); // imprimir parametros
-
     return formattedData;
   }
 

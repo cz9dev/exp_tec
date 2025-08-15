@@ -55,6 +55,15 @@ Una ves instalada la app las credenciales por defecto serán las siguientes:
 # Contribuir
 Si usted decea constribuir con Exp-tec por favor lea el fichero [CONTRIBUTING.md](CONTRIBUTING.md). Aceptamos todo tipo de constribución, parches, nuevas ideas, reportes de fallos o mejoras, lo que usted crea necesario.
 
+# Actualización
+Para actualizar entra al directorio de su app y traiga los cambios existentes en la rama main del repositorio
+```bash
+cd exp_tec
+git checkout main
+git pull origin main 
+```
+Una ves haya descargado los cambios reinicie si servidor node
+
 # Contribuciones
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->

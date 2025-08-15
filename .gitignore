@@ -202,7 +202,14 @@ $RECYCLE.BIN/
 *.lnk
 
 # Carpetas publicas
-public/download/*
-public/componentes/*
-public/perifericos/*
-public/uploads/*
+public/download/**/*
+!public/download/
+public/componentes/**/*
+!public/componentes/
+public/perifericos/**/*
+!public/perifericos/
+public/uploads/**/*
+!public/uploads/
+
+# Mantener archivos .gitkeep en carpetas vacías
+!.gitkeep

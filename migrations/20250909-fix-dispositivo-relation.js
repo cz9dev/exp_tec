@@ -41,9 +41,6 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     // Revertir la migración si es necesario
-    await queryInterface.removeConstraint(
-      "dispositivo",
-      "fk_dispositivo_trabajador"
-    );
+    await queryInterface.removeConstraint("dispositivo", "dispositivo_ibfk_1");
   },
 };

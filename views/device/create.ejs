@@ -41,7 +41,7 @@
                 <option value="" selected>Sin asignar</option>
                 <% trabajadores.forEach(trabajador=> { %>
                     <option value="<%= trabajador.id %>">
-                        <%= trabajador.nombres %>
+                        <%= trabajador.nombres %> <%= trabajador.apellidos %>
                     </option>
                     <% }); %>
             </select>

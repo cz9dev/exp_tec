@@ -360,6 +360,10 @@ module.exports = (sequelize) => {
         type: DataTypes.ENUM("activo", "roto"),
         allowNull: false,
       },
+      id_trabajador: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       created_at: {
         type: DataTypes.DATE,
         allowNull: false,
@@ -385,7 +389,7 @@ module.exports = (sequelize) => {
     }
   );
 
-  Dispositivo.belongsTo(Usuarios, { foreignKey: "id_trabajador" }); // Un dispositivo pertenece a un usuario
+  Dispositivo.belongsTo(Trabajadores, { foreignKey: "id_trabajador", as: "trabajadores" }); // Un dispositivo pertenece a un trabajador
   Dispositivo.belongsTo(Area, { foreignKey: "id_area" }); // Un dispositivo pertenece a un área
 
   // Definición del modelo Componente
@@ -407,7 +411,7 @@ module.exports = (sequelize) => {
         unique: true,
       },
       url_image: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.STRING(255), // corrigiendo bug #64
         allowNull: true,
       },
     },

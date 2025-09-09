@@ -411,7 +411,7 @@ module.exports = (sequelize) => {
         unique: true,
       },
       url_image: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.STRING(255), // corrigiendo bug #64
         allowNull: true,
       },
     },

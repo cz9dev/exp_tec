@@ -1,9 +1,9 @@
 ---
 name: Solicitud de nuevas funciones
 about: Sugieriger una idea para este proyecto
-title: ''
+title: "[FEAT]"
 labels: enhancement
-assignees: ''
+assignees: cz9dev
 
 ---
 

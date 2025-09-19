@@ -1,5 +1,5 @@
 ---
-name: Reporte de bug
+name: [BUG] Reporte de bug
 about: Crear un informe para ayudarnos a mejorar
 title: ''
 labels: bug

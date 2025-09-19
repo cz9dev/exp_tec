@@ -1,9 +1,9 @@
 ---
 name: Reporte de bug
 about: Crear un informe para ayudarnos a mejorar
-title: ''
+title: "[BUG]"
 labels: bug
-assignees: ''
+assignees: cz9dev
 
 ---
 

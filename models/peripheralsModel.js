@@ -7,7 +7,7 @@ class PeripheralsModel {
     id_tipo_periferico,
     numero_serie,
     numero_inventario,
-    url_image
+    url_image,
   ) {
     try {
       const [result] = await pool.execute(
@@ -19,7 +19,7 @@ class PeripheralsModel {
           numero_serie,
           numero_inventario,
           url_image,
-        ]
+        ],
       );
       return result.insertId;
     } catch (error) {
@@ -37,16 +37,16 @@ class PeripheralsModel {
       JOIN marca ma ON p.id_marca = ma.id 
       JOIN tipo_periferico tp ON p.id_tipo_periferico = tp.id
       ${whereClause}
-      LIMIT ? OFFSET ?
+      LIMIT ? OFFSET ? AND WHERE deactivated_at IS NULL;
     `,
-      [limit, offset]
+      [limit, offset],
     );
     return rows;
   }
 
   static async count(whereClause = "") {
     const [[{ count }]] = await pool.execute(
-      `SELECT COUNT(*) AS count FROM periferico p ${whereClause}`
+      `SELECT COUNT(*) AS count FROM periferico p ${whereClause}`,
     );
     return count;
   }
@@ -54,7 +54,7 @@ class PeripheralsModel {
   static async findAll() {
     try {
       const [rows] = await pool.execute(
-        "SELECT p.id, p.id_marca, p.modelo, p.id_tipo_periferico, p.numero_serie, p.numero_inventario, p.url_image, ma.marca, tp.nombre AS tipo_periferico FROM periferico p JOIN marca ma ON p.id_marca = ma.id JOIN tipo_periferico tp ON p.id_tipo_periferico = tp.id"
+        "SELECT p.id, p.id_marca, p.modelo, p.id_tipo_periferico, p.numero_serie, p.numero_inventario, p.url_image, ma.marca, tp.nombre AS tipo_periferico FROM periferico p JOIN marca ma ON p.id_marca = ma.id JOIN tipo_periferico tp ON p.id_tipo_periferico = tp.id WHERE deactivated_at IS NULL;",
       );
       return rows;
     } catch (error) {
@@ -66,8 +66,8 @@ class PeripheralsModel {
   static async findById(id) {
     try {
       const [rows] = await pool.execute(
-        "SELECT p.id, p.id_marca, p.modelo, p.id_tipo_periferico, p.numero_serie, p.numero_inventario, p.url_image, ma.marca, tp.nombre AS tipo_periferico FROM periferico p JOIN marca ma ON p.id_marca = ma.id JOIN tipo_periferico tp ON p.id_tipo_periferico = tp.id WHERE p.id = ?",
-        [id]
+        "SELECT p.id, p.id_marca, p.modelo, p.id_tipo_periferico, p.numero_serie, p.numero_inventario, p.url_image, ma.marca, tp.nombre AS tipo_periferico FROM periferico p JOIN marca ma ON p.id_marca = ma.id JOIN tipo_periferico tp ON p.id_tipo_periferico = tp.id WHERE p.id = ? WHERE deactivated_at IS NULL;",
+        [id],
       );
       return rows[0];
     } catch (error) {
@@ -78,8 +78,8 @@ class PeripheralsModel {
 
   static async findOne(numero_serie) {
     const [rows] = await pool.query(
-      "SELECT * FROM periferico WHERE numero_serie = ?",
-      [numero_serie]
+      "SELECT * FROM periferico WHERE numero_serie = ? AND deactivated_at IS NULL;",
+      [numero_serie],
     );
     return rows[0];
   }
@@ -91,7 +91,7 @@ class PeripheralsModel {
     id_tipo_periferico,
     numero_serie,
     numero_inventario,
-    url_image
+    url_image,
   ) {
     try {
       let sql =
@@ -124,13 +124,31 @@ class PeripheralsModel {
     try {
       const [result] = await pool.execute(
         "DELETE FROM periferico WHERE id = ?",
-        [id]
+        [id],
       );
       return result.affectedRows > 0;
     } catch (error) {
       console.error("Error borrando periferico:", error);
       throw error;
     }
+  }
+
+  static async deactivateAt(id) {
+    const deactivate_at = new Date();
+    const [result] = await pool.execute(
+      "UPDATE periferico SET deactivated_at = ? WHERE id = ?",
+      [deactivate_at, id],
+    );
+    return result.affectedRows > 0;
+  }
+
+  static async deleteAt(id) {
+    const deleted_at = new Date();
+    const [result] = await pool.execute(
+      "UPDATE periferico SET deleted_at = ? WHERE id = ?",
+      [deleted_at, id],
+    );
+    return result.affectedRows > 0;
   }
 
   static async findByDeviceId(deviceId) {
@@ -141,8 +159,8 @@ class PeripheralsModel {
          JOIN tipo_periferico tp ON p.id_tipo_periferico = tp.id
          JOIN dispositivo_periferico dp ON p.id = dp.id_periferico
          JOIN marca m ON p.id_marca = m.id
-         WHERE dp.id_dispositivo = ?`,
-        [deviceId]
+         WHERE dp.id_dispositivo = ? AND deactivated_at IS NULL;`,
+        [deviceId],
       );
       return rows;
     } catch (error) {

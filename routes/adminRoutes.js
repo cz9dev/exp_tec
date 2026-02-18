@@ -97,6 +97,7 @@ router.get("/component/new", checkAuth(["MANAGE_COMPONENTS"]),componentControlle
 router.post("/component", checkAuth(["MANAGE_COMPONENTS"]), componentController.create);
 router.get("/component/:id/edit", checkAuth(["MANAGE_COMPONENTS"]), componentController.edit);
 router.post("/component/:id/update", checkAuth(["MANAGE_COMPONENTS"]), componentController.update);
+router.post("/component/:id/deactivate", checkAuth(["MANAGE_COMPONENTS"]), componentController.deactivate);
 router.post("/component/:id/delete", checkAuth(["MANAGE_COMPONENTS"]), componentController.delete);
 
 // Gestionar Tipos de Perifericos
@@ -113,6 +114,7 @@ router.get("/peripherals/new", checkAuth(["MANAGE_PERIPHERALS"]), peripheralsCon
 router.post("/peripherals", checkAuth(["MANAGE_PERIPHERALS"]), peripheralsController.create);
 router.get("/peripherals/:id/edit", checkAuth(["MANAGE_PERIPHERALS"]), peripheralsController.edit);
 router.post("/peripherals/:id/update", checkAuth(["MANAGE_PERIPHERALS"]), peripheralsController.update);
+router.post("/peripherals/:id/deactivate", checkAuth(["MANAGE_PERIPHERALS"]), peripheralsController.deactivate);
 router.post("/peripherals/:id/delete", checkAuth(["MANAGE_PERIPHERALS"]), peripheralsController.delete);
 
 // Gestionar dispositivos
@@ -121,11 +123,13 @@ router.get("/device/new", checkAuth(["MANAGE_DEVICES"]), deviceController.showCr
 router.post("/device", checkAuth(["MANAGE_DEVICES"]), deviceController.create);
 router.get("/device/:id/edit", checkAuth(["MANAGE_DEVICES"]), deviceController.edit);
 router.post("/device/:id/update", checkAuth(["MANAGE_DEVICES"]), deviceController.update);
+router.post("/device/:id/deactivate", checkAuth(["MANAGE_DEVICES"]), deviceController.deactivate);
 router.post("/device/:id/delete", checkAuth(["MANAGE_DEVICES"]), deviceController.delete);
 router.get("/device/:id", checkAuth(["VIEW_DEVICES"]), deviceController.showDetails);
 router.get("/device/:id/incidencia", checkAuth(["MANAGE_DEVICES"]), deviceController.showIncidenciaForm);
 router.post("/device/:id/incidencia", checkAuth(["MANAGE_DEVICES"]), deviceController.createIncidencia);
 router.get("/device/:id/exp_tecnico_pdf", checkAuth(["MANAGE_DEVICES"]), deviceController.generateExpTecnicoPdf);
+
 // Asignación
 router.post("/device/:id/assign/component", checkAuth(["MANAGE_DEVICES"]), deviceController.assignComponent);
 router.post("/device/:id/assign/peripheral", checkAuth(["MANAGE_DEVICES"]), deviceController.assignPeripheral);

@@ -75,7 +75,6 @@ module.exports = {
   create: async (req, res) => {
     try {
       upload.single("url_image")(req, res, async (err) => {
-        
         const {
           id_marca,
           modelo,
@@ -85,9 +84,8 @@ module.exports = {
         } = req.body;
 
         // Verificar unisidad de periferico por numero de serie
-        const existingPeripherals = await peripheralsModel.findOne(
-          numero_serie
-        );
+        const existingPeripherals =
+          await peripheralsModel.findOne(numero_serie);
 
         if (existingPeripherals) {
           req.flash("error_msg", "Ya existe un periferico con ese nombre.");
@@ -108,7 +106,7 @@ module.exports = {
           id_tipo_periferico,
           numero_serie,
           numero_inventario,
-          url_image
+          url_image,
         );
 
         req.flash("success_msg", "Periferico creado con exito");
@@ -169,7 +167,7 @@ module.exports = {
           id_tipo_periferico,
           numero_serie,
           numero_inventario,
-          req.file ? req.file.filename : null // Asignación condicional
+          req.file ? req.file.filename : null, // Asignación condicional
         );
         if (updated) {
           req.flash("success_msg", "Periferico actualizado con exito");
@@ -185,6 +183,23 @@ module.exports = {
     }
   },
 
+  deactivate: async (req, res) => {
+    try {
+      const id = req.params.id;      
+      const deactivate = await peripheralsModel.deactivateAt(id);
+      if (deactivate) {
+        req.flash("success_msg", "Periferico desactivado exitosamente");
+      } else {
+        req.flash("error_msg", "Error al desactivar el periferico");
+      }
+      res.redirect("/dashboard/peripherals");
+    } catch (error) {
+      console.error(error);
+      req.flash("error_msg", "Error al desactivar periferico");
+      res.redirect("/dashboard/peripherals");
+    }
+  },
+
   delete: async (req, res) => {
     try {
       const id = req.params.id;
@@ -194,7 +209,7 @@ module.exports = {
         const imagePath = path.join(
           __dirname,
           "../public/perifericos/",
-          periferico.url_image
+          periferico.url_image,
         );
         try {
           fs.unlinkSync(imagePath);

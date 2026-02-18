@@ -47,6 +47,9 @@
             </td>
             <td>
               <a href="/dashboard/peripherals/<%= periferico.id %>/edit" class="btn btn-sm btn-primary">Editar</a>
+              <form action="/dashboard/peripherals/<%= periferico.id %>/deactivate" method="POST" class="d-inline">
+                <button type="submit" class="btn btn-sm btn-danger">Dar baja</button>
+              </form>
               <form action="/dashboard/peripherals/<%= periferico.id %>/delete" method="POST" class="d-inline">
                 <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
               </form>

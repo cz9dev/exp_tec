@@ -4,7 +4,7 @@ class DeviceModel {
   static async create(tipo, inventario, nombre, ip, id_area, id_trabajador) {
     const [result] = await pool.execute(
       "INSERT INTO dispositivo (tipo, inventario, nombre, ip, id_area, id_trabajador) VALUES (?, ?, ?, ?, ?, ?)",
-      [tipo, inventario, nombre, ip, id_area, id_trabajador]
+      [tipo, inventario, nombre, ip, id_area, id_trabajador],
     );
     return result.insertId;
   }
@@ -17,16 +17,16 @@ class DeviceModel {
       LEFT JOIN area a ON d.id_area = a.id
       LEFT JOIN trabajadores t ON d.id_trabajador = t.id
       ${whereClause}
-      LIMIT ? OFFSET ?
+      LIMIT ? OFFSET ? AND d.deactivated_at IS NULL;
     `,
-      [limit, offset]
+      [limit, offset],
     );
     return rows;
   }
 
   static async count(whereClause = "") {
     const [[{ count }]] = await pool.execute(
-      `SELECT COUNT(*) AS count FROM dispositivo d ${whereClause}`
+      `SELECT COUNT(*) AS count FROM dispositivo d ${whereClause}`,
     );
     return count;
   }
@@ -37,7 +37,7 @@ class DeviceModel {
       FROM dispositivo d
       LEFT JOIN area a ON d.id_area = a.id
       LEFT JOIN trabajadores t ON d.id_trabajador = t.id
-      WHERE d.deleted_at IS NULL
+      WHERE d.deactivated_at IS NULL;
     `);
     return rows;
   }
@@ -48,9 +48,9 @@ class DeviceModel {
       FROM dispositivo d
       LEFT JOIN area a ON d.id_area = a.id
       LEFT JOIN trabajadores t ON d.id_trabajador = t.id
-      WHERE d.deleted_at IS NULL
-      AND d.id = ? AND d.deleted_at IS NULL`,
-      [id]
+      WHERE d.deactivated_at IS NULL
+      AND d.id = ? AND d.deactivated_at IS NULL`,
+      [id],
     );
     return rows[0];
   }
@@ -62,12 +62,12 @@ class DeviceModel {
     nombre,
     ip,
     id_area,
-    id_trabajador
+    id_trabajador,
   ) {
     const updated_at = new Date();
     const [result] = await pool.execute(
       "UPDATE dispositivo SET tipo = ?, inventario = ?, nombre = ?, ip = ?, id_area = ?, id_trabajador = ?, updated_at = ? WHERE id = ?",
-      [tipo, inventario, nombre, ip, id_area, id_trabajador, updated_at, id]
+      [tipo, inventario, nombre, ip, id_area, id_trabajador, updated_at, id],
     );
     return result.affectedRows > 0;
   }
@@ -75,7 +75,16 @@ class DeviceModel {
   static async delete(id) {
     const [result] = await pool.execute(
       "DELETE FROM dispositivo WHERE id = ?",
-      [id]
+      [id],
+    );
+    return result.affectedRows > 0;
+  }
+
+  static async deactivateAt(id) {
+    const deactivate_at = new Date();
+    const [result] = await pool.execute(
+      "UPDATE dispositivo SET deactivated_at = ? WHERE id = ?",
+      [deactivate_at, id],
     );
     return result.affectedRows > 0;
   }
@@ -83,8 +92,8 @@ class DeviceModel {
   static async deleteAt(id) {
     const deleted_at = new Date();
     const [result] = await pool.execute(
-      "UPDATE dispositivo SET deleted_at = ? WHERE id = ?",
-      [deleted_at, id]
+      "UPDATE dispositivo SET deactivated_at = ? WHERE id = ?",
+      [deleted_at, id],
     );
     return result.affectedRows > 0;
   }
@@ -93,7 +102,7 @@ class DeviceModel {
     // Verificar si tiene componentes/periféricos asignados primero
     const [components] = await pool.execute(
       "SELECT COUNT(*) AS count FROM dispositivo_componente WHERE id_dispositivo = ?",
-      [id]
+      [id],
     );
     return components;
   }
@@ -101,21 +110,21 @@ class DeviceModel {
   static async hasPeripheral(id) {
     const [peripherals] = await pool.execute(
       "SELECT COUNT(*) AS count FROM dispositivo_periferico WHERE id_dispositivo = ?",
-      [id]
+      [id],
     );
     return peripherals;
   }
 
   static async getAvailableComponents() {
     const [rows] = await pool.execute(
-      "SELECT c.*, tc.nombre as tipo_componente FROM componente c, tipo_componente tc WHERE c.id_tipo_componente = tc.id AND c.id NOT IN (SELECT id_componente FROM dispositivo_componente)"
+      "SELECT c.*, tc.nombre as tipo_componente FROM componente c, tipo_componente tc WHERE c.id_tipo_componente = tc.id AND c.id NOT IN (SELECT id_componente FROM dispositivo_componente)",
     );
     return rows;
   }
 
   static async getAvailablePeripherals() {
     const [rows] = await pool.execute(
-      "SELECT p.*, tp.nombre as tipo_periferico FROM periferico p, tipo_periferico tp WHERE p.id_tipo_periferico = tp.id AND p.id NOT IN (SELECT id_periferico FROM dispositivo_periferico)"
+      "SELECT p.*, tp.nombre as tipo_periferico FROM periferico p, tipo_periferico tp WHERE p.id_tipo_periferico = tp.id AND p.id NOT IN (SELECT id_periferico FROM dispositivo_periferico)",
     );
     return rows;
   }
@@ -124,7 +133,7 @@ class DeviceModel {
     try {
       const [result] = await pool.execute(
         "INSERT INTO dispositivo_componente (id_dispositivo, id_componente) VALUES (?, ?)",
-        [deviceId, componentId]
+        [deviceId, componentId],
       );
       return result.affectedRows > 0;
     } catch (error) {
@@ -137,7 +146,7 @@ class DeviceModel {
     try {
       const [result] = await pool.execute(
         "DELETE FROM dispositivo_componente WHERE id_dispositivo = ? AND id_componente = ?",
-        [id, componentId]
+        [id, componentId],
       );
       return result.affectedRows > 0;
     } catch (error) {
@@ -150,7 +159,7 @@ class DeviceModel {
     try {
       const [result] = await pool.execute(
         "INSERT INTO dispositivo_periferico (id_dispositivo, id_periferico) VALUES (?, ?)",
-        [id, peripheralId]
+        [id, peripheralId],
       );
       return result.affectedRows > 0;
     } catch (error) {
@@ -163,7 +172,7 @@ class DeviceModel {
     try {
       const [result] = await pool.execute(
         "DELETE FROM dispositivo_periferico WHERE id_dispositivo = ? AND id_periferico = ?",
-        [id, peripheralId]
+        [id, peripheralId],
       );
       return result.affectedRows > 0;
     } catch (error) {

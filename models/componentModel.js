@@ -6,12 +6,12 @@ class ComponentModel {
     modelo,
     id_tipo_componente,
     numero_serie,
-    url_image
+    url_image,
   ) {
     try {
       const [result] = await pool.execute(
         "INSERT INTO componente (id_marca, modelo, id_tipo_componente, numero_serie, url_image) VALUES (?, ?, ?, ?, ?)",
-        [id_marca, modelo, id_tipo_componente, numero_serie, url_image]
+        [id_marca, modelo, id_tipo_componente, numero_serie, url_image],
       );
       return result.insertId;
     } catch (error) {
@@ -29,16 +29,16 @@ class ComponentModel {
       JOIN marca ma ON c.id_marca = ma.id 
       JOIN tipo_componente tc ON c.id_tipo_componente = tc.id
       ${whereClause}
-      LIMIT ? OFFSET ?
+      LIMIT ? OFFSET ? AND deactivated_at IS NULL;
     `,
-      [limit, offset]
+      [limit, offset],
     );
     return rows;
   }
 
   static async count(whereClause = "") {
     const [[{ count }]] = await pool.execute(
-      `SELECT COUNT(*) AS count FROM componente c ${whereClause}`
+      `SELECT COUNT(*) AS count FROM componente c ${whereClause}`,
     );
     return count;
   }
@@ -46,7 +46,7 @@ class ComponentModel {
   static async findAll() {
     try {
       const [rows] = await pool.execute(
-        "SELECT c.id, c.id_marca, c.modelo, c.id_tipo_componente, c.numero_serie , c.url_image, ma.marca, tc.nombre AS tipo_componente FROM componente c JOIN marca ma ON c.id_marca = ma.id JOIN tipo_componente tc ON c.id_tipo_componente = tc.id"
+        "SELECT c.id, c.id_marca, c.modelo, c.id_tipo_componente, c.numero_serie , c.url_image, ma.marca, tc.nombre AS tipo_componente FROM componente c JOIN marca ma ON c.id_marca = ma.id JOIN tipo_componente tc ON c.id_tipo_componente = tc.id WHERE deactivated_at IS NULL;",
       );
       return rows;
     } catch (error) {
@@ -58,8 +58,8 @@ class ComponentModel {
   static async findById(id) {
     try {
       const [rows] = await pool.execute(
-        "SELECT c.id, c.id_marca, c.modelo, c.id_tipo_componente, c.numero_serie, c.url_image, ma.marca, tc.nombre AS tipo_componente FROM componente c JOIN marca ma ON c.id_marca = ma.id JOIN tipo_componente tc ON c.id_tipo_componente = tc.id WHERE c.id = ?",
-        [id]
+        "SELECT c.id, c.id_marca, c.modelo, c.id_tipo_componente, c.numero_serie, c.url_image, ma.marca, tc.nombre AS tipo_componente FROM componente c JOIN marca ma ON c.id_marca = ma.id JOIN tipo_componente tc ON c.id_tipo_componente = tc.id WHERE c.id = ? AND deactivated_at IS NULL;",
+        [id],
       );
       return rows[0];
     } catch (error) {
@@ -74,7 +74,7 @@ class ComponentModel {
     modelo,
     id_tipo_componente,
     numero_serie,
-    url_image
+    url_image,
   ) {
     try {
       // Construir la consulta SQL dinámicamente
@@ -102,13 +102,31 @@ class ComponentModel {
     try {
       const [result] = await pool.execute(
         "DELETE FROM componente WHERE id = ?",
-        [id]
+        [id],
       );
       return result.affectedRows > 0;
     } catch (error) {
       console.error("Error borrando componente:", error);
       throw error;
     }
+  }
+
+  static async deactivateAt(id) {
+    const deactivate_at = new Date();
+    const [result] = await pool.execute(
+      "UPDATE componente SET deactivated_at = ? WHERE id = ?",
+      [deactivate_at, id],
+    );
+    return result.affectedRows > 0;
+  }
+
+  static async deleteAt(id) {
+    const deleted_at = new Date();
+    const [result] = await pool.execute(
+      "UPDATE componente SET deleted_at = ? WHERE id = ?",
+      [deleted_at, id],
+    );
+    return result.affectedRows > 0;
   }
 
   static async findByDeviceId(deviceId) {
@@ -120,7 +138,7 @@ class ComponentModel {
          JOIN dispositivo_componente dc ON c.id = dc.id_componente
          JOIN marca m ON c.id_marca = m.id
          WHERE dc.id_dispositivo = ?`,
-        [deviceId]
+        [deviceId],
       );
       return rows;
     } catch (error) {

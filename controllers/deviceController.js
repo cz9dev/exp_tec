@@ -14,9 +14,7 @@ const UserModel = require("../models/userModel");
 const { default: test } = require("node:test");
 
 module.exports = {
-
   list: async (req, res) => {
-    
     const { page = 1, limit = 10, search = "" } = req.query;
     const offset = (page - 1) * limit;
 
@@ -25,7 +23,7 @@ module.exports = {
       whereClause = `WHERE d.nombre LIKE '%${search}%'`;
     }
 
-    try {      
+    try {
       const [devices, count] = await Promise.all([
         DeviceModel.findAllWithPagination(limit, offset, whereClause), // Nueva función del modelo
         DeviceModel.count(whereClause), // Nueva función para el conteo total
@@ -67,7 +65,7 @@ module.exports = {
         nombre,
         ip,
         id_area,
-        id_trabajador
+        id_trabajador,
       );
       req.flash("success_msg", "Dispositivo creado con éxito");
       res.redirect("/dashboard/device");
@@ -145,7 +143,7 @@ module.exports = {
         nombre,
         ip,
         id_area,
-        id_trabajador
+        id_trabajador,
       );
 
       // Registrar en la tabla de auditoría
@@ -158,7 +156,7 @@ module.exports = {
         null,
         null,
         JSON.stringify({ device: device, peripherals: peripherals }),
-        JSON.stringify({ device: device_despues, peripherals: peripherals })
+        JSON.stringify({ device: device_despues, peripherals: peripherals }),
       );
 
       if (updated) {
@@ -174,6 +172,38 @@ module.exports = {
     }
   },
 
+  deactivate: async (req, res) => {
+    const { id } = req.params;
+    try {
+      // Verificar si tiene componentes/periféricos asignados primero
+      const components = await DeviceModel.hasComponent(id);
+
+      const peripherals = await DeviceModel.hasPeripheral(id);
+
+      if (components[0].count > 0 || peripherals[0].count > 0) {
+        req.flash(
+          "error_msg",
+          "No se puede eliminar: tiene componentes o periféricos asignados",
+        );
+        return res.redirect("/dashboard/device");
+      }
+
+      const deactivate = await DeviceModel.deactivateAt(id);
+
+      if (deactivate) {
+        req.flash("success_msg", "Dispositivo desactivado correctamente");
+      } else {
+        req.flash("error_msg", "No se pudo desactivar el dispositivo");
+      }
+
+      res.redirect("/dashboard/device");
+    } catch (error) {
+      console.error("Error en deviceController.delete:", error);
+      req.flash("error_msg", "Error al desactivar el dispositivo");
+      res.redirect("/dashboard/device");
+    }
+  },
+
   delete: async (req, res) => {
     const { id } = req.params;
     try {
@@ -185,7 +215,7 @@ module.exports = {
       if (components[0].count > 0 || peripherals[0].count > 0) {
         req.flash(
           "error_msg",
-          "No se puede eliminar: tiene componentes o periféricos asignados"
+          "No se puede eliminar: tiene componentes o periféricos asignados",
         );
         return res.redirect("/dashboard/device");
       }
@@ -225,7 +255,7 @@ module.exports = {
         componentId,
         null,
         JSON.stringify({ device: device, component: component }),
-        JSON.stringify({ device: device, component: component_despues })
+        JSON.stringify({ device: device, component: component_despues }),
       );
 
       req.flash("success_msg", "Componente asignado correctamente");
@@ -254,7 +284,7 @@ module.exports = {
         componentId,
         null,
         JSON.stringify({ device: device, component: component }),
-        JSON.stringify({ device: device, component: component_despues })
+        JSON.stringify({ device: device, component: component_despues }),
       );
 
       if (success) {
@@ -288,7 +318,7 @@ module.exports = {
         null,
         peripheralId,
         JSON.stringify({ device: device, peripherals: peripherals }),
-        JSON.stringify({ device: device, peripherals: peripherals_despues })
+        JSON.stringify({ device: device, peripherals: peripherals_despues }),
       );
 
       if (success) {
@@ -321,7 +351,7 @@ module.exports = {
         null,
         peripheralId,
         JSON.stringify({ device: device, peripherals: peripherals }),
-        JSON.stringify({ device: device, peripherals: peripherals_despues })
+        JSON.stringify({ device: device, peripherals: peripherals_despues }),
       );
 
       if (success) {
@@ -387,7 +417,7 @@ module.exports = {
         id_usuario,
         resueltoBool || false, // Si no se especifica, resuelto es false
         id_trabajador === "" ? null : parseInt(id_trabajador, 10),
-        conformeBool
+        conformeBool,
       );
       if (
         sello &&
@@ -398,7 +428,7 @@ module.exports = {
           id_dispositivo,
           fecha_incidencia,
           id_trabajador === "" ? null : parseInt(id_trabajador, 10),
-          id_usuario
+          id_usuario,
         );
         if (!success_sello) {
           req.flash("error_msg", "Error al registrar el sello");
@@ -432,7 +462,7 @@ module.exports = {
 
       const doc = new PDFDocument({ size: "LETTER" });
       const stream = doc.pipe(
-        fs.createWriteStream("public/download/exp_tecnico.pdf")
+        fs.createWriteStream("public/download/exp_tecnico.pdf"),
       );
 
       doc.rect(30, 30, doc.page.width - 60, doc.page.height - 60).stroke();
@@ -598,13 +628,13 @@ module.exports = {
         "   • Se compromete a utilizar los materiales exclusivamente para fines laborales autorizados.",
         {
           indent: 40,
-        }
+        },
       );
       doc.text(
         "   • Mantendrá los bienes en condiciones óptimas, evitando daños por mal uso o negligencia.",
         {
           indent: 40,
-        }
+        },
       );
 
       doc.moveDown(0.5);
@@ -615,7 +645,7 @@ module.exports = {
         "   • No transferir los materiales a terceros sin autorización escrita.",
         {
           indent: 40,
-        }
+        },
       );
       doc.text("   • No desarmar, modificar o reparar los componentes.", {
         indent: 40,
@@ -629,7 +659,7 @@ module.exports = {
         "   • En caso de reubicación, terminación laboral o solicitud expresa, devolverá los materiales en el mismo estado (considerando desgaste normal).",
         {
           indent: 40,
-        }
+        },
       );
 
       doc.moveDown(0.5);
@@ -640,7 +670,7 @@ module.exports = {
         "   • Reportar inmediatamente cualquier anomalía. Los costos por pérdida o daño atribuible a negligencia serán asumidos por el responsable.",
         {
           indent: 40,
-        }
+        },
       );
 
       // --- SECCIÓN CONFORMIDAD ---
@@ -658,7 +688,7 @@ module.exports = {
           "El abajo responsable firmante acepta los términos y reconoce haber recibido los materiales descritos:",
           {
             align: "left",
-          }
+          },
         );
 
       doc.moveDown(4); // Espacio antes de firmas
@@ -709,7 +739,7 @@ module.exports = {
         res.setHeader("Content-Type", "application/pdf");
         res.setHeader(
           "Content-Disposition",
-          "attachment; filename=exp_tecnico.pdf"
+          "attachment; filename=exp_tecnico.pdf",
         );
         file.pipe(res);
       });

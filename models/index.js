@@ -38,7 +38,7 @@ module.exports = (sequelize) => {
       tableName: "tipo_componente",
       timestamps: false,
       underscored: true,
-    }
+    },
   );
 
   /**
@@ -58,7 +58,7 @@ module.exports = (sequelize) => {
         unique: true,
       },
     },
-    { tableName: "tipo_periferico", timestamps: false, underscored: true }
+    { tableName: "tipo_periferico", timestamps: false, underscored: true },
   );
 
   /**
@@ -78,7 +78,7 @@ module.exports = (sequelize) => {
         unique: true,
       },
     },
-    { tableName: "area", timestamps: false, underscored: true }
+    { tableName: "area", timestamps: false, underscored: true },
   );
 
   // Definición del modelo Trabajador
@@ -107,7 +107,7 @@ module.exports = (sequelize) => {
         allowNull: true,
       },
     },
-    { tableName: "trabajadores", timestamps: false, underscored: true }
+    { tableName: "trabajadores", timestamps: false, underscored: true },
   );
 
   Trabajadores.belongsTo(Area, { foreignKey: "id_area" }); // Un trabajador pertenece a un area
@@ -129,7 +129,7 @@ module.exports = (sequelize) => {
         unique: true,
       },
     },
-    { tableName: "marca", timestamps: false, underscored: true }
+    { tableName: "marca", timestamps: false, underscored: true },
   );
 
   const Periferico = sequelize.define(
@@ -158,8 +158,16 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         unique: true,
       },
+      deactivated_at: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+      deactivation_reason: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
-    { tableName: "periferico", timestamps: false, underscored: true }
+    { tableName: "periferico", timestamps: false, underscored: true },
   );
 
   Periferico.belongsTo(Marca, { foreignKey: "id_marca" }); // Un periferico pertenece a una marca
@@ -191,7 +199,7 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
     },
-    { tableName: "permisos", timestamps: false, underscored: true }
+    { tableName: "permisos", timestamps: false, underscored: true },
   );
 
   /**
@@ -215,13 +223,13 @@ module.exports = (sequelize) => {
         allowNull: true,
       },
     },
-    { tableName: "roles", timestamps: false, underscored: true }
+    { tableName: "roles", timestamps: false, underscored: true },
   );
 
   const RolesPermisos = sequelize.define(
     "roles_permisos",
     {},
-    { tableName: "roles_permisos", timestamps: false, underscored: true }
+    { tableName: "roles_permisos", timestamps: false, underscored: true },
   );
 
   RolesPermisos.belongsTo(Roles, { foreignKey: "rol_id" });
@@ -288,13 +296,13 @@ module.exports = (sequelize) => {
         allowNull: true,
       },
     },
-    { tableName: "usuarios", timestamps: false, underscored: true }
+    { tableName: "usuarios", timestamps: false, underscored: true },
   );
 
   const UsuariosRoles = sequelize.define(
     "usuarios_roles",
     {},
-    { tableName: "usuarios_roles", timestamps: false, underscored: true }
+    { tableName: "usuarios_roles", timestamps: false, underscored: true },
   );
 
   UsuariosRoles.belongsTo(Usuarios, { foreignKey: "usuario_id" });
@@ -327,7 +335,7 @@ module.exports = (sequelize) => {
       underscored: true,
       createdAt: "created_at",
       updatedAt: "updated_at",
-    }
+    },
   );
 
   // Definir la relación con el modelo Usuarios (Uno a Uno)
@@ -378,6 +386,10 @@ module.exports = (sequelize) => {
       deleted_at: {
         type: DataTypes.DATE,
       },
+      deactivation_reason: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
     {
       tableName: "dispositivo",
@@ -386,10 +398,13 @@ module.exports = (sequelize) => {
       createdAt: "created_at",
       updatedAt: "updated_at",
       deletedAt: "deleted_at",
-    }
+    },
   );
 
-  Dispositivo.belongsTo(Trabajadores, { foreignKey: "id_trabajador", as: "trabajadores" }); // Un dispositivo pertenece a un trabajador
+  Dispositivo.belongsTo(Trabajadores, {
+    foreignKey: "id_trabajador",
+    as: "trabajadores",
+  }); // Un dispositivo pertenece a un trabajador
   Dispositivo.belongsTo(Area, { foreignKey: "id_area" }); // Un dispositivo pertenece a un área
 
   // Definición del modelo Componente
@@ -414,8 +429,16 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING(255), // corrigiendo bug #64
         allowNull: true,
       },
+      deactivated_at: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+      deactivation_reason: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
-    { tableName: "componente", timestamps: false, underscored: true }
+    { tableName: "componente", timestamps: false, underscored: true },
   );
 
   Componente.belongsTo(Marca, { foreignKey: "id_marca" }); // Un componente pertenece a una marca
@@ -430,7 +453,7 @@ module.exports = (sequelize) => {
           "desasignar_componente",
           "asignar_periferico",
           "desasignar_periferico",
-          "actualizar_dispositivo"
+          "actualizar_dispositivo",
         ),
       },
       datos_antes: {
@@ -445,7 +468,11 @@ module.exports = (sequelize) => {
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     },
-    { tableName: "dispositivo_auditoria", timestamps: false, underscored: true }
+    {
+      tableName: "dispositivo_auditoria",
+      timestamps: false,
+      underscored: true,
+    },
   );
 
   DispositivoAuditoria.belongsTo(Dispositivo, { foreignKey: "dispositivo_id" });
@@ -460,7 +487,7 @@ module.exports = (sequelize) => {
       tableName: "dispositivo_componente",
       timestamps: false,
       underscored: true,
-    }
+    },
   );
 
   DispositivoComponente.belongsTo(Dispositivo, {
@@ -475,7 +502,7 @@ module.exports = (sequelize) => {
       tableName: "dispositivo_periferico",
       timestamps: false,
       underscored: true,
-    }
+    },
   );
 
   DispositivoPeriferico.belongsTo(Dispositivo, {
@@ -496,7 +523,7 @@ module.exports = (sequelize) => {
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     },
-    { tableName: "dispositivo_sello", timestamps: false, underscored: true }
+    { tableName: "dispositivo_sello", timestamps: false, underscored: true },
   );
 
   DispositivoSello.belongsTo(Dispositivo, { foreignKey: "id_dispositivo" });
@@ -528,7 +555,7 @@ module.exports = (sequelize) => {
         type: DataTypes.BOOLEAN,
       },
     },
-    { tableName: "incidencia", timestamps: false, underscored: true }
+    { tableName: "incidencia", timestamps: false, underscored: true },
   );
 
   Incidencia.belongsTo(Dispositivo, { foreignKey: "id_dispositivo" });
@@ -559,7 +586,7 @@ module.exports = (sequelize) => {
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     },
-    { tableName: "log_acceso", timestamps: false, underscored: true }
+    { tableName: "log_acceso", timestamps: false, underscored: true },
   );
 
   LogsAcceso.belongsTo(Usuarios, { foreignKey: "usuario_id" });

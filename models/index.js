@@ -386,6 +386,10 @@ module.exports = (sequelize) => {
       deleted_at: {
         type: DataTypes.DATE,
       },
+      deactivated_at: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
       deactivation_reason: {
         type: DataTypes.STRING,
         allowNull: true,

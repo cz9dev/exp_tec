@@ -28,8 +28,8 @@ class ComponentModel {
       FROM componente c 
       JOIN marca ma ON c.id_marca = ma.id 
       JOIN tipo_componente tc ON c.id_tipo_componente = tc.id
-      ${whereClause}
-      LIMIT ? OFFSET ? AND deactivated_at IS NULL;
+      ${whereClause} AND deactivated_at IS NULL
+      LIMIT ? OFFSET ?;
     `,
       [limit, offset],
     );

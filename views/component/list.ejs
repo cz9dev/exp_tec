@@ -10,68 +10,121 @@
 
   <!-- Tabla de contenido a mostrar -->
   <% if (components.length> 0) { %>
-  <table class="table table-bordered table-striped text-center mt-4">
-    <thead>
-      <tr>
-        <th>Foto</th>
-        <th>Marca</th>
-        <th>Modelo</th>
-        <th>Tipo de componente</th>
-        <th>Número de serie</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% components.forEach(component=> { %>
+    <table class="table table-bordered table-striped text-center mt-4">
+      <thead>
         <tr>
-          <td>
-            <div class="component-icon">
-              <img class="component-icon"
-                src="<%= component.url_image ? '/componentes/' +component.url_image : '/images/question.png' %>"
-                alt="Componente" />
-            </div>
-          </td>
-          <td>
-            <%= component.marca %>
-          </td>
-          <td>
-            <%= component.modelo %>
-          </td>
-          <td>
-            <%= component.tipo_componente %>
-          </td>
-          <td>
-            <%= component.numero_serie %>
-          </td>
-          <td>
-            <a href="/dashboard/component/<%= component.id %>/edit" class="btn btn-sm btn-primary">Editar</a>
-            <form action="/dashboard/component/<%= component.id %>/deactivate" method="POST" class="d-inline">
-              <button type="submit" class="btn btn-sm btn-danger">Dar baja</button>
-            </form>
-            <form action="/dashboard/component/<%= component.id %>/delete" method="POST" class="d-inline">
-              <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-            </form>
-          </td>
+          <th>Foto</th>
+          <th>Marca</th>
+          <th>Modelo</th>
+          <th>Tipo de componente</th>
+          <th>Número de serie</th>
+          <th>Acciones</th>
         </tr>
-        <% }); %>
-    </tbody>
-  </table>
-  <% } else { %>
-    </br>
-    <div class="alert alert-warning">No existen datos para mostrar</div>
-    <% } %>
+      </thead>
+      <tbody>
+        <% components.forEach(component=> { %>
+          <tr>
+            <td>
+              <div class="component-icon">
+                <img class="component-icon"
+                  src="<%= component.url_image ? '/componentes/' +component.url_image : '/images/question.png' %>"
+                  alt="Componente" />
+              </div>
+            </td>
+            <td>
+              <%= component.marca %>
+            </td>
+            <td>
+              <%= component.modelo %>
+            </td>
+            <td>
+              <%= component.tipo_componente %>
+            </td>
+            <td>
+              <%= component.numero_serie %>
+            </td>
+            <td>
+              <a href="/dashboard/component/<%= component.id %>/edit" class="btn btn-sm btn-primary">
+                <i class="fas fa-edit"></i><span class="tooltip">Has clic para editar</span>
+              </a>
 
-    <!-- Paginado -->
-    <nav aria-label="Page navigation">
-      <ul class="pagination">
-          <% for (let i=1; i <=Math.ceil(count / limit); i++) { %>
+              <form action="/dashboard/component/<%= component.id %>/deactivate" method="POST" class="d-inline"
+                onsubmit="confirmDeactivate(event, '<%= component.modelo %> - <%= component.numero_serie %>', this); return false;">
+                <button type="submit" class="btn btn-sm btn-warning">
+                  <i class="fa fa-archive"></i><span class="tooltip">Has clic para desactivar</span>
+                </button>
+              </form>
+
+              <form action="/dashboard/component/<%= component.id %>/delete" method="POST" class="d-inline"
+                onsubmit="confirmDelete(event, '<%= component.modelo %> - <%= component.numero_serie %>', this); return false;">
+                <button type="submit" class="btn btn-sm btn-danger">
+                  <i class="fas fa-trash-alt"></i><span class="tooltip">Has clic para eliminar</span>
+                </button>
+              </form>
+            </td>
+          </tr>
+          <% }); %>
+      </tbody>
+    </table>
+    <% } else { %>
+      </br>
+      <div class="alert alert-warning">No existen datos para mostrar</div>
+      <% } %>
+
+        <!-- Paginado -->
+        <nav aria-label="Page navigation">
+          <ul class="pagination">
+            <% for (let i=1; i <=Math.ceil(count / limit); i++) { %>
               <li class="page-item <%= i == page ? 'active' : '' %>">
-                  <a class="page-link" href="?page=<%= i %>&search=<%= search %>">
-                      <%= i %>
-                  </a>
+                <a class="page-link" href="?page=<%= i %>&search=<%= search %>">
+                  <%= i %>
+                </a>
               </li>
               <% } %>
-      </ul>
-  </nav>
-  
+          </ul>
+        </nav>
+
 </div>
+
+<script>
+  function confirmDeactivate(event, componentName, formElement) {
+    event.preventDefault();
+
+    Swal.fire({
+      title: '¿Desactivar componente?',
+      html: `¿Estás seguro de que deseas desactivar el componente:<br><strong>${componentName}</strong>?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ffc107',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Sí, desactivar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        formElement.submit();
+      }
+    });
+  }
+
+  function confirmDelete(event, componentName, formElement) {
+    event.preventDefault();
+
+    Swal.fire({
+      title: '¿Eliminar componente?',
+      html: `<strong style="color: red;">⚠️ ADVERTENCIA: Esta acción es IRREVERSIBLE ⚠️</strong><br><br>
+             ¿Estás seguro de que deseas eliminar permanentemente el componente:<br>
+             <strong>${componentName}</strong>?`,
+      icon: 'error',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Sí, eliminar permanentemente',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        formElement.submit();
+      }
+    });
+  }
+</script>

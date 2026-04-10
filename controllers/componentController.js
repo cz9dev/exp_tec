@@ -34,7 +34,6 @@ module.exports = {
     if (search) {
       whereClause = `WHERE (c.modelo LIKE '%${search}%' OR c.numero_serie LIKE '%${search}%')`;
     }
-
     try {
       const [components, count] = await Promise.all([
         componentModel.findAllWithPagination(limit, offset, whereClause), // Nueva función del modelo

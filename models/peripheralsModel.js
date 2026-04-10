@@ -36,8 +36,8 @@ class PeripheralsModel {
       FROM periferico p 
       JOIN marca ma ON p.id_marca = ma.id 
       JOIN tipo_periferico tp ON p.id_tipo_periferico = tp.id
-      ${whereClause}
-      LIMIT ? OFFSET ? AND WHERE deactivated_at IS NULL;
+      ${whereClause} AND deactivated_at IS NULL
+      LIMIT ? OFFSET ?
     `,
       [limit, offset],
     );
@@ -54,7 +54,7 @@ class PeripheralsModel {
   static async findAll() {
     try {
       const [rows] = await pool.execute(
-        "SELECT p.id, p.id_marca, p.modelo, p.id_tipo_periferico, p.numero_serie, p.numero_inventario, p.url_image, ma.marca, tp.nombre AS tipo_periferico FROM periferico p JOIN marca ma ON p.id_marca = ma.id JOIN tipo_periferico tp ON p.id_tipo_periferico = tp.id WHERE deactivated_at IS NULL;",
+        "SELECT p.id, p.id_marca, p.modelo, p.id_tipo_periferico, p.numero_serie, p.numero_inventario, p.url_image, ma.marca, tp.nombre AS tipo_periferico FROM periferico p JOIN marca ma ON p.id_marca = ma.id JOIN tipo_periferico tp ON p.id_tipo_periferico = tp.id WHERE p.deactivated_at IS NULL;",
       );
       return rows;
     } catch (error) {
@@ -66,7 +66,7 @@ class PeripheralsModel {
   static async findById(id) {
     try {
       const [rows] = await pool.execute(
-        "SELECT p.id, p.id_marca, p.modelo, p.id_tipo_periferico, p.numero_serie, p.numero_inventario, p.url_image, ma.marca, tp.nombre AS tipo_periferico FROM periferico p JOIN marca ma ON p.id_marca = ma.id JOIN tipo_periferico tp ON p.id_tipo_periferico = tp.id WHERE p.id = ? WHERE deactivated_at IS NULL;",
+        "SELECT p.id, p.id_marca, p.modelo, p.id_tipo_periferico, p.numero_serie, p.numero_inventario, p.url_image, ma.marca, tp.nombre AS tipo_periferico FROM periferico p JOIN marca ma ON p.id_marca = ma.id JOIN tipo_periferico tp ON p.id_tipo_periferico = tp.id WHERE p.id = ? AND p.deactivated_at IS NULL;",
         [id],
       );
       return rows[0];

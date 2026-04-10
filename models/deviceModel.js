@@ -16,8 +16,8 @@ class DeviceModel {
       FROM dispositivo d
       LEFT JOIN area a ON d.id_area = a.id
       LEFT JOIN trabajadores t ON d.id_trabajador = t.id
-      ${whereClause}
-      LIMIT ? OFFSET ? AND d.deactivated_at IS NULL;
+      ${whereClause} AND deactivated_at IS NULL
+      LIMIT ? OFFSET ?;
     `,
       [limit, offset],
     );

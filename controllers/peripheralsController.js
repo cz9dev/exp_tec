@@ -185,8 +185,10 @@ module.exports = {
 
   deactivate: async (req, res) => {
     try {
-      const id = req.params.id;      
-      const deactivate = await peripheralsModel.deactivateAt(id);
+      const id = req.params.id;
+      const { deactivation_reason } = req.body; // Capturar la razón del body
+
+      const deactivate = await peripheralsModel.deactivateAt(id, deactivation_reason);
       if (deactivate) {
         req.flash("success_msg", "Periferico desactivado exitosamente");
       } else {

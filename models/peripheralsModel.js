@@ -133,12 +133,20 @@ class PeripheralsModel {
     }
   }
 
-  static async deactivateAt(id) {
+  static async deactivateAt(id, deactivation_reason = null) {
     const deactivate_at = new Date();
-    const [result] = await pool.execute(
-      "UPDATE periferico SET deactivated_at = ? WHERE id = ?",
-      [deactivate_at, id],
-    );
+    let sql = "UPDATE periferico SET deactivated_at = ?";
+    let params = [deactivate_at];
+
+    if (deactivation_reason) {
+      sql += ", deactivation_reason = ?";
+      params.push(deactivation_reason);
+    }
+
+    sql += " WHERE id = ?";
+    params.push(id);
+
+    const [result] = await pool.execute(sql, params);
     return result.affectedRows > 0;
   }
 

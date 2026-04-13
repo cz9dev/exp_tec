@@ -92,15 +92,42 @@
 
     Swal.fire({
       title: '¿Desactivar componente?',
-      html: `¿Estás seguro de que deseas desactivar el componente:<br><strong>${componentName}</strong>?`,
+      html: `
+        <div style="text-align: left;">
+          <p>¿Estás seguro de que deseas desactivar el componente:<br>
+          <strong>${componentName}</strong>?</p>
+          
+          <label for="deactivationReason" style="margin-top: 15px; font-weight: bold;">
+            Motivo de desactivación (opcional):
+          </label>
+          <textarea id="deactivationReason" 
+                    class="swal2-textarea" 
+                    placeholder="Ej: Componente dañado, En mantenimiento, Obsoleto, etc."
+                    rows="3"
+                    style="resize: vertical;">
+          </textarea>
+          </br>
+          <small class="text-muted">Este campo es opcional pero recomendado</small>
+        </div>
+      `,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#ffc107',
       cancelButtonColor: '#6c757d',
       confirmButtonText: 'Sí, desactivar',
-      cancelButtonText: 'Cancelar'
+      cancelButtonText: 'Cancelar',
+      preConfirm: () => {
+        const reason = document.getElementById('deactivationReason').value;
+        return { reason: reason };
+      }
     }).then((result) => {
       if (result.isConfirmed) {
+                // Crear un input oculto para enviar la razón
+        const reasonInput = document.createElement('input');
+        reasonInput.type = 'hidden';
+        reasonInput.name = 'deactivation_reason';
+        reasonInput.value = result.value.reason;
+        formElement.appendChild(reasonInput);
         formElement.submit();
       }
     });

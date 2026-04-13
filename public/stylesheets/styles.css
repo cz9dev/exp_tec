@@ -746,3 +746,32 @@ body {
   visibility: visible;
   opacity: 1;
 }
+
+/* Estilo para el textarea en SweetAlert2 */
+.swal2-textarea {
+  width: 90%;
+  min-width: 90%;
+  max-width: 90%;
+  box-sizing: border-box;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+/* Opcional: Estilo para cuando el textarea está enfocado */
+.swal2-textarea:focus {
+  border-color: #ffc107;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+}
+
+/* Media query para móviles */
+@media (max-width: 576px) {
+  .swal2-textarea {
+    font-size: 16px;
+    /* Previene el zoom automático en iOS */
+  }
+}
+

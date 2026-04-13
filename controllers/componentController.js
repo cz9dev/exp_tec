@@ -160,7 +160,9 @@ module.exports = {
   deactivate: async (req, res) => {
     try {
       const id = req.params.id;
-      const deactivate = await componentModel.deactivateAt(id);
+      const { deactivation_reason } = req.body; // Capturar la razón del body
+
+      const deactivate = await componentModel.deactivateAt(id, deactivation_reason);
       if (deactivate) {
         req.flash("success_msg", "Componente desactivado exitosamente");
       } else {

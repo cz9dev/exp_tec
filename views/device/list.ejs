@@ -51,28 +51,33 @@
                                 <a href="/dashboard/device/<%= device.id %>/edit" class="btn btn-sm btn-warning">
                                     <i class="fas fa-edit"></i><span class="tooltip">Has clic para editar</span>
                                 </a>
-                                
-                                <form action="/dashboard/device/<%= device.id %>/deactivate" method="POST" class="d-inline"
+
+                                <form action="/dashboard/device/<%= device.id %>/deactivate" method="POST"
+                                    class="d-inline"
                                     onsubmit="confirmDeactivate(event, '<%= device.nombre %> - <%= device.inventario %>', this); return false;">
                                     <button type="submit" class="btn btn-sm btn-warning">
-                                        <i class="fa fa-archive"></i><span class="tooltip">Has clic para desactivar</span>
+                                        <i class="fa fa-archive"></i><span class="tooltip">Has clic para
+                                            desactivar</span>
                                     </button>
                                 </form>
 
                                 <form action="/dashboard/device/<%= device.id %>/delete" method="POST" class="d-inline"
                                     onsubmit="confirmDelete(event, '<%= device.nombre %> - <%= device.inventario %>', this); return false;">
                                     <button type="submit" class="btn btn-sm btn-danger">
-                                        <i class="fas fa-trash-alt"></i><span class="tooltip">Has clic para eliminar</span>
+                                        <i class="fas fa-trash-alt"></i><span class="tooltip">Has clic para
+                                            eliminar</span>
                                     </button>
                                 </form>
 
                                 <a href="/dashboard/device/<%= device.id %>/incidencia"
                                     class="btn btn-sm btn-secondary">
-                                    <i class="fas fa-exclamation-circle"></i><span class="tooltip">Has clic para registrar incidencia</span>
+                                    <i class="fas fa-exclamation-circle"></i><span class="tooltip">Has clic para
+                                        registrar incidencia</span>
                                 </a>
                                 <a href="/dashboard/device/<%= device.id %>/exp_tecnico_pdf"
                                     class="btn btn-sm btn-info">
-                                    <i class="fa fa-file-pdf" aria-hidden="true"></i><span class="tooltip">Has clic para imprimir expediente técnico</span>
+                                    <i class="fa fa-file-pdf" aria-hidden="true"></i><span class="tooltip">Has clic para
+                                        imprimir expediente técnico</span>
                                 </a>
                             </td>
                         </tr>
@@ -109,15 +114,42 @@
 
         Swal.fire({
             title: '¿Desactivar dispositivo?',
-            html: `¿Estás seguro de que deseas desactivar el dispositivo:<br><strong>${deviceName}</strong>?`,
+            html: `
+        <div style="text-align: left;">
+          <p>¿Estás seguro de que deseas desactivar el dispositivo:<br>
+          <strong>${deviceName}</strong>?</p>
+          
+          <label for="deactivationReason" style="margin-top: 15px; font-weight: bold;">
+            Motivo de desactivación (opcional):
+          </label>
+          <textarea id="deactivationReason" 
+                    class="swal2-textarea" 
+                    placeholder="Ej: Dispositivo dañado, En mantenimiento, Obsoleto, etc."
+                    rows="3"
+                    style="resize: vertical;">
+          </textarea>
+          </br>
+          <small class="text-muted">Este campo es opcional pero recomendado</small>
+        </div>
+      `,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#ffc107',
             cancelButtonColor: '#6c757d',
             confirmButtonText: 'Sí, desactivar',
-            cancelButtonText: 'Cancelar'
+            cancelButtonText: 'Cancelar',
+            preConfirm: () => {
+                const reason = document.getElementById('deactivationReason').value;
+                return { reason: reason };
+            }
         }).then((result) => {
             if (result.isConfirmed) {
+                // Crear un input oculto para enviar la razón
+                const reasonInput = document.createElement('input');
+                reasonInput.type = 'hidden';
+                reasonInput.name = 'deactivation_reason';
+                reasonInput.value = result.value.reason;
+                formElement.appendChild(reasonInput);
                 formElement.submit();
             }
         });

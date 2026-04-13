@@ -16,11 +16,13 @@ class DeviceModel {
       FROM dispositivo d
       LEFT JOIN area a ON d.id_area = a.id
       LEFT JOIN trabajadores t ON d.id_trabajador = t.id
-      ${whereClause} AND deactivated_at IS NULL
+      WHERE d.deactivated_at IS NULL ${whereClause}
       LIMIT ? OFFSET ?;
     `,
       [limit, offset],
     );
+    console.log("Esta es la consulta"+whereClause);
+    
     return rows;
   }
 
@@ -37,7 +39,7 @@ class DeviceModel {
       FROM dispositivo d
       LEFT JOIN area a ON d.id_area = a.id
       LEFT JOIN trabajadores t ON d.id_trabajador = t.id
-      WHERE d.deactivated_at IS NULL;
+      WHERE WHERE d.deactivated_at IS NULL;
     `);
     return rows;
   }
@@ -49,7 +51,7 @@ class DeviceModel {
       LEFT JOIN area a ON d.id_area = a.id
       LEFT JOIN trabajadores t ON d.id_trabajador = t.id
       WHERE d.deactivated_at IS NULL
-      AND d.id = ? AND d.deactivated_at IS NULL`,
+      AND d.id = ? AND d.deactivated_at IS NULL;`,
       [id],
     );
     return rows[0];
@@ -80,12 +82,20 @@ class DeviceModel {
     return result.affectedRows > 0;
   }
 
-  static async deactivateAt(id) {
-    const deactivate_at = new Date();
-    const [result] = await pool.execute(
-      "UPDATE dispositivo SET deactivated_at = ? WHERE id = ?",
-      [deactivate_at, id],
-    );
+  static async deactivateAt(id, deactivation_reason = null) {
+    const deactivate_at = new Date();    
+    let sql = "UPDATE dispositivo SET deactivated_at = ?";
+    let params = [deactivate_at];
+
+    if (deactivation_reason) {
+      sql += ", deactivation_reason = ?";
+      params.push(deactivation_reason);
+    }
+
+    sql += " WHERE id = ?";
+    params.push(id);
+
+    const [result] = await pool.execute(sql, params);
     return result.affectedRows > 0;
   }
 

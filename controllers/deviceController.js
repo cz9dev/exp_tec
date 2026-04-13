@@ -20,7 +20,7 @@ module.exports = {
 
     let whereClause = "";
     if (search) {
-      whereClause = `WHERE d.nombre LIKE '%${search}%'`;
+      whereClause = `AND d.nombre LIKE '%${search}%'`;
     }
 
     try {
@@ -188,7 +188,9 @@ module.exports = {
         return res.redirect("/dashboard/device");
       }
 
-      const deactivate = await DeviceModel.deactivateAt(id);
+      const { deactivation_reason } = req.body; // Capturar la razón del body
+
+      const deactivate = await DeviceModel.deactivateAt(id, deactivation_reason);
 
       if (deactivate) {
         req.flash("success_msg", "Dispositivo desactivado correctamente");

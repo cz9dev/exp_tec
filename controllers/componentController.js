@@ -26,9 +26,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 module.exports = {
-
   list: async (req, res) => {
-
     const { page = 1, limit = 10, search = "" } = req.query;
     const offset = (page - 1) * limit;
 
@@ -36,14 +34,12 @@ module.exports = {
     if (search) {
       whereClause = `WHERE (c.modelo LIKE '%${search}%' OR c.numero_serie LIKE '%${search}%')`;
     }
-
     try {
-
       const [components, count] = await Promise.all([
         componentModel.findAllWithPagination(limit, offset, whereClause), // Nueva función del modelo
         componentModel.count(whereClause), // Nueva función para el conteo total
       ]);
-      
+
       res.render("component/list", {
         count,
         limit,
@@ -92,7 +88,7 @@ module.exports = {
           modelo,
           id_tipo_componente,
           numero_serie,
-          url_image
+          url_image,
         );
         req.flash("success_msg", "Componente creado con exito");
         res.redirect("/dashboard/component");
@@ -137,7 +133,7 @@ module.exports = {
           req.flash("error_msg", "Error al subir la imagen.");
           return res.redirect("/dashboard/component");
         }
-        
+
         const { id_marca, modelo, id_tipo_componente, numero_serie } = req.body;
         const updated = await componentModel.update(
           id,
@@ -145,7 +141,7 @@ module.exports = {
           modelo,
           id_tipo_componente,
           numero_serie,
-          req.file ? req.file.filename : null // Asignación condicional
+          req.file ? req.file.filename : null, // Asignación condicional
         );
         if (updated) {
           req.flash("success_msg", "Componente actualizado con exito");
@@ -161,13 +157,36 @@ module.exports = {
     }
   },
 
+  deactivate: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const { deactivation_reason } = req.body; // Capturar la razón del body
+
+      const deactivate = await componentModel.deactivateAt(id, deactivation_reason);
+      if (deactivate) {
+        req.flash("success_msg", "Componente desactivado exitosamente");
+      } else {
+        req.flash("error_msg", "Error al desactivar el componente");
+      }
+      res.redirect("/dashboard/component");
+    } catch (error) {
+      console.error(error);
+      req.flash("error_msg", "Error al desactivar componente");
+      res.redirect("/dashboard/component");
+    }
+  },
+
   delete: async (req, res) => {
     try {
       const id = req.params.id;
       // borrar imagen del componente a borrar
-      const componente = await componentModel.findById(id);      
+      const componente = await componentModel.findById(id);
       if (componente && componente.url_image) {
-        const imagePath = path.join(__dirname, "../public/componentes/", componente.url_image);
+        const imagePath = path.join(
+          __dirname,
+          "../public/componentes/",
+          componente.url_image,
+        );
         try {
           fs.unlinkSync(imagePath);
           console.log("Imagen eliminada correctamente");

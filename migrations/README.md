@@ -57,6 +57,34 @@ npx sequelize-cli db:migrate
 npx sequelize-cli db:migrate:undo --name 20250909-fix-componente-url-image
 ```
 
+### 3. Fix baja de `dispositico` o `componente`
+
+**Archivo**: `20250909-fix-baja-dispositivo-componente.js`
+**Issue**: #95
+**Fecha**: 15/02/2026
+
+Para ejecutar la migración en la terminal:
+
+```bash
+npx sequelize-cli db:migrate
+```
+
+#### Cambios realizados (Issue #95)
+
+1. **Agregó** la columna `deactivated_at` a la tabla `componente`   
+  - Permitir nulos: Sí
+2. **Agregó** la columna `` a la tabla `componente`
+  - Permitir nulo: Sí
+3. **Agregó** la coluna `deactivated_at` a la tabla `Periferico`   
+  - Permitir nulos: Sí
+4. **Agregó** la columna `` a la tabla `perifierico`
+  - Permitir nulo: Sí
+
+#### Para revertir
+
+```bash
+npx sequelize-cli db:migrate:undo --name 20260216-fix-baja-dispositico-componente
+```
 ---
 
 ## Guía rápida

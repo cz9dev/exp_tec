@@ -1,0 +1,35 @@
+name: Sync develop with main
+
+on:
+  push:
+    branches:
+      - main  # Se ejecuta CADA vez que main recibe cambios
+  workflow_dispatch:  # También puedes ejecutarlo manualmente
+
+jobs:
+  sync-branches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Clona todo el historial
+          
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+      - name: Sync develop with main
+        run: |
+          # Cambiar a la rama develop
+          git checkout develop
+          
+          # Traer los últimos cambios de main
+          git pull origin main --no-rebase
+          
+          # Si hay conflictos (poco común), el workflow fallará
+          # y alguien deberá resolverlos manualmente
+          
+          # Push los cambios a develop
+          git push origin develop

@@ -46,10 +46,23 @@
               <%= periferico.numero_inventario %>
             </td>
             <td>
-              <a href="/dashboard/peripherals/<%= periferico.id %>/edit" class="btn btn-sm btn-primary">Editar</a>
-              <form action="/dashboard/peripherals/<%= periferico.id %>/delete" method="POST" class="d-inline">
-                <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+              <a href="/dashboard/peripherals/<%= periferico.id %>/edit" class="btn btn-sm btn-primary"><i
+                  class="fas fa-edit"></i><span class="tooltip">Has clic para editar</span></a>
+
+              <form action="/dashboard/peripherals/<%= periferico.id %>/deactivate" method="POST" class="d-inline"
+                onsubmit="confirmDeactivate(event, '<%= periferico.tipo_periferico %> - <%= periferico.numero_serie %>', this); return false;">
+                <button type="submit" class="btn btn-sm btn-warning">
+                  <i class="fa fa-archive"></i><span class="tooltip">Has clic para desactivar</span>
+                </button>
               </form>
+
+              <form action="/dashboard/peripherals/<%= periferico.id %>/delete" method="POST" class="d-inline"
+                onsubmit="confirmDelete(event, '<%= periferico.tipo_periferico %> - <%= periferico.numero_serie %>', this); return false;">
+                <button type="submit" class="btn btn-sm btn-danger">
+                  <i class="fas fa-trash-alt"></i><span class="tooltip">Has clic para eliminar</span>
+                </button>
+              </form>
+
             </td>
           </tr>
           <% }); %>
@@ -73,3 +86,73 @@
           </ul>
         </nav>
 </div>
+
+<script>
+  function confirmDeactivate(event, peripheralsName, formElement) {
+    event.preventDefault();
+
+    Swal.fire({
+      title: '¿Desactivar periferico?',      
+      html: `
+        <div style="text-align: left;">
+          <p>¿Estás seguro de que deseas desactivar el periferico:<br>
+          <strong>${peripheralsName}</strong>?</p>
+          
+          <label for="deactivationReason" style="margin-top: 15px; font-weight: bold;">
+            Motivo de desactivación (opcional):
+          </label>
+          <textarea id="deactivationReason" 
+                    class="swal2-textarea" 
+                    placeholder="Ej: Periferico dañado, En mantenimiento, Obsoleto, etc."
+                    rows="3"
+                    style="resize: vertical;">
+          </textarea>
+          </br>
+          <small class="text-muted">Este campo es opcional pero recomendado</small>
+        </div>
+      `,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ffc107',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Sí, desactivar',
+      cancelButtonText: 'Cancelar',
+      preConfirm: () => {
+        const reason = document.getElementById('deactivationReason').value;
+        return { reason: reason };
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Crear un input oculto para enviar la razón
+        const reasonInput = document.createElement('input');
+        reasonInput.type = 'hidden';
+        reasonInput.name = 'deactivation_reason';
+        reasonInput.value = result.value.reason;
+        formElement.appendChild(reasonInput);
+        formElement.submit();
+      }
+    });
+  }
+
+  function confirmDelete(event, componentName, formElement) {
+    event.preventDefault();
+
+    Swal.fire({
+      title: '¿Eliminar periferico?',
+      html: `<strong style="color: red;">⚠️ ADVERTENCIA: Esta acción es IRREVERSIBLE ⚠️</strong><br><br>
+             ¿Estás seguro de que deseas eliminar permanentemente el periferico:<br>
+             <strong>${componentName}</strong>?`,
+      icon: 'error',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Sí, eliminar permanentemente',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        formElement.submit();
+      }
+    });
+  }
+</script>

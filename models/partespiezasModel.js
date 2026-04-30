@@ -15,7 +15,8 @@ class PartespiezasModel {
       conditions.length > 0
         ? "WHERE " + conditions.join(" AND ") + " AND "
         : "WHERE "; // Ajustado aquí
-    where += "c.id NOT IN (SELECT id_componente FROM dispositivo_componente)";
+    where +=
+      "c.id NOT IN (SELECT id_componente FROM dispositivo_componente) AND deactivated_at IS NULL";
 
     const query = `
         SELECT

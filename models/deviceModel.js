@@ -39,7 +39,7 @@ class DeviceModel {
       FROM dispositivo d
       LEFT JOIN area a ON d.id_area = a.id
       LEFT JOIN trabajadores t ON d.id_trabajador = t.id
-      WHERE WHERE d.deactivated_at IS NULL;
+      WHERE d.deactivated_at IS NULL;
     `);
     return rows;
   }

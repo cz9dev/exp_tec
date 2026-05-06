@@ -39,7 +39,7 @@ class DeviceModel {
       FROM dispositivo d
       LEFT JOIN area a ON d.id_area = a.id
       LEFT JOIN trabajadores t ON d.id_trabajador = t.id
-      WHERE WHERE d.deactivated_at IS NULL;
+      WHERE d.deactivated_at IS NULL;
     `);
     return rows;
   }
@@ -127,14 +127,14 @@ class DeviceModel {
 
   static async getAvailableComponents() {
     const [rows] = await pool.execute(
-      "SELECT c.*, tc.nombre as tipo_componente FROM componente c, tipo_componente tc WHERE c.id_tipo_componente = tc.id AND c.id NOT IN (SELECT id_componente FROM dispositivo_componente)",
+      "SELECT c.*, tc.nombre as tipo_componente FROM componente c, tipo_componente tc WHERE c.id_tipo_componente = tc.id AND c.id NOT IN (SELECT id_componente FROM dispositivo_componente) AND deactivated_at IS NULL",
     );
     return rows;
   }
 
   static async getAvailablePeripherals() {
     const [rows] = await pool.execute(
-      "SELECT p.*, tp.nombre as tipo_periferico FROM periferico p, tipo_periferico tp WHERE p.id_tipo_periferico = tp.id AND p.id NOT IN (SELECT id_periferico FROM dispositivo_periferico)",
+      "SELECT p.*, tp.nombre as tipo_periferico FROM periferico p, tipo_periferico tp WHERE p.id_tipo_periferico = tp.id AND p.id NOT IN (SELECT id_periferico FROM dispositivo_periferico) AND deactivated_at IS NULL",
     );
     return rows;
   }

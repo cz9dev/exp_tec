@@ -1,0 +1,57 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  # Servicio para la base de datos MariaDB
+  db:
+    image: mariadb:10.11
+    container_name: exptec-db
+    restart: unless-stopped
+    environment:
+      # ¡IMPORTANTE! Cambia estas contraseñas por otras seguras.
+      MYSQL_ROOT_PASSWORD: rootpassword123
+      MYSQL_DATABASE: exp_tec
+      MYSQL_USER: exptec_user
+      MYSQL_PASSWORD: exptec_password
+    ports:
+      - "3307:3306" # Puerto del host:puerto del contenedor (cambiamos el host a 3307 para evitar conflictos)
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./scripts:/docker-entrypoint-initdb.d # Opcional: para scripts SQL iniciales
+    networks:
+      - exptec-network
+
+  # Servicio para la aplicación Node.js
+  app:
+    build: .
+    container_name: exptec-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000" # Mapea el puerto 3000 de tu máquina al 3000 del contenedor
+    environment:
+      # Variables de entorno que la aplicación leerá (basado en .env.example del repo)
+      # Ajusta los valores para que coincidan con la configuración de la base de datos
+      DB_HOST: db
+      DB_USER: exptec_user
+      DB_PASSWORD: exptec_password
+      DB_NAME: exp_tec
+      DB_PORT: 3306
+      PORT: 3000
+      # NODE_ENV: production
+    depends_on:
+      - db
+    networks:
+      - exptec-network
+    volumes:
+      # Opcional: Montar el directorio actual para reflejar cambios en desarrollo (no recomendado para producción)
+      # - .:/app
+      - /app/node_modules # Evita que sobrescriba node_modules del contenedor
+
+# Volumen persistente para los datos de la base de datos
+volumes:
+  db_data:
+
+# Red interna para que los servicios se comuniquen
+networks:
+  exptec-network:
+    driver: bridge
